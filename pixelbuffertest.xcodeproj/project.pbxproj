@@ -255,7 +255,7 @@
 				A0A6175B14B23DE10082A1F9 /* unzip.c */,
 			);
 			name = snes4iphone_src;
-			path = "../../SNES--HD-/src/snes4iphone_src";
+			path = "snes4iphone_src";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
