@@ -20,9 +20,6 @@
 		A0995BBB14B3AC2A00F7C44F /* LMROMBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0995BBA14B3AC2A00F7C44F /* LMROMBrowserController.m */; };
 		A0995BBE14B4A1D500F7C44F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0995BBD14B4A1D500F7C44F /* Accelerate.framework */; };
 		A0995BC114B4C20100F7C44F /* LMDPadView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0995BC014B4C20000F7C44F /* LMDPadView.m */; };
-		A0995BD414B508AC00F7C44F /* iphone_highlightbar.c in Sources */ = {isa = PBXBuildFile; fileRef = A0995BD014B508AC00F7C44F /* iphone_highlightbar.c */; };
-		A0995BD514B508AC00F7C44F /* iphone_menu_header.c in Sources */ = {isa = PBXBuildFile; fileRef = A0995BD114B508AC00F7C44F /* iphone_menu_header.c */; };
-		A0995BD614B508AC00F7C44F /* iphone_menutile.c in Sources */ = {isa = PBXBuildFile; fileRef = A0995BD214B508AC00F7C44F /* iphone_menutile.c */; };
 		A0995BD714B508AC00F7C44F /* iphone_sdk.c in Sources */ = {isa = PBXBuildFile; fileRef = A0995BD314B508AC00F7C44F /* iphone_sdk.c */; };
 		A0995BED14B508BD00F7C44F /* apu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995BD914B508BD00F7C44F /* apu.cpp */; };
 		A0995BEE14B508BD00F7C44F /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = A0995BE014B508BD00F7C44F /* license.txt */; };
@@ -35,8 +32,6 @@
 		A0995C0A14B524F500F7C44F /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = A0995C0014B524F500F7C44F /* mztools.c */; };
 		A0995C0B14B524F500F7C44F /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = A0995C0214B524F500F7C44F /* unzip.c */; };
 		A0995C0C14B524F500F7C44F /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = A0995C0414B524F500F7C44F /* zip.c */; };
-		A0995C0E14B5254D00F7C44F /* input.c in Sources */ = {isa = PBXBuildFile; fileRef = A0995C0D14B5254D00F7C44F /* input.c */; };
-		A0995C1014B525B700F7C44F /* menu.c in Sources */ = {isa = PBXBuildFile; fileRef = A0995C0F14B525B700F7C44F /* menu.c */; };
 		A0995C1214B525D200F7C44F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995C1114B525D200F7C44F /* main.cpp */; };
 		A0995F4F14B53F2500F7C44F /* sa1cpu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995F4E14B53F2500F7C44F /* sa1cpu.cpp */; };
 		A0995F5114B53FCC00F7C44F /* dsp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995F5014B53FCC00F7C44F /* dsp.cpp */; };
@@ -107,9 +102,6 @@
 		A0995BBD14B4A1D500F7C44F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		A0995BBF14B4C20000F7C44F /* LMDPadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMDPadView.h; sourceTree = "<group>"; };
 		A0995BC014B4C20000F7C44F /* LMDPadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMDPadView.m; sourceTree = "<group>"; };
-		A0995BD014B508AC00F7C44F /* iphone_highlightbar.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = iphone_highlightbar.c; path = pixelbuffertest/snes4iphone/iphone_highlightbar.c; sourceTree = SOURCE_ROOT; };
-		A0995BD114B508AC00F7C44F /* iphone_menu_header.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = iphone_menu_header.c; path = pixelbuffertest/snes4iphone/iphone_menu_header.c; sourceTree = SOURCE_ROOT; };
-		A0995BD214B508AC00F7C44F /* iphone_menutile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = iphone_menutile.c; path = pixelbuffertest/snes4iphone/iphone_menutile.c; sourceTree = SOURCE_ROOT; };
 		A0995BD314B508AC00F7C44F /* iphone_sdk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = iphone_sdk.c; path = pixelbuffertest/snes4iphone/iphone_sdk.c; sourceTree = SOURCE_ROOT; };
 		A0995BD914B508BD00F7C44F /* apu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = apu.cpp; sourceTree = "<group>"; };
 		A0995BDA14B508BD00F7C44F /* apu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apu.h; sourceTree = "<group>"; };
@@ -140,8 +132,6 @@
 		A0995C0314B524F500F7C44F /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
 		A0995C0414B524F500F7C44F /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
 		A0995C0514B524F500F7C44F /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
-		A0995C0D14B5254D00F7C44F /* input.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = input.c; path = pixelbuffertest/snes4iphone/input.c; sourceTree = SOURCE_ROOT; };
-		A0995C0F14B525B700F7C44F /* menu.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = menu.c; path = pixelbuffertest/snes4iphone/menu.c; sourceTree = SOURCE_ROOT; };
 		A0995C1114B525D200F7C44F /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = pixelbuffertest/snes4iphone/main.cpp; sourceTree = SOURCE_ROOT; };
 		A0995F4E14B53F2500F7C44F /* sa1cpu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sa1cpu.cpp; sourceTree = "<group>"; };
 		A0995F5014B53FCC00F7C44F /* dsp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dsp.cpp; sourceTree = "<group>"; };
@@ -278,13 +268,8 @@
 		A0995BCF14B5087600F7C44F /* snes4iphone */ = {
 			isa = PBXGroup;
 			children = (
-				A0995C0D14B5254D00F7C44F /* input.c */,
-				A0995BD014B508AC00F7C44F /* iphone_highlightbar.c */,
-				A0995BD114B508AC00F7C44F /* iphone_menu_header.c */,
-				A0995BD214B508AC00F7C44F /* iphone_menutile.c */,
 				A0995BD314B508AC00F7C44F /* iphone_sdk.c */,
 				A0995C1114B525D200F7C44F /* main.cpp */,
-				A0995C0F14B525B700F7C44F /* menu.c */,
 				A0A616C014B23DE00082A1F9 /* snes9x */,
 			);
 			name = snes4iphone;
@@ -477,9 +462,6 @@
 				A0A617BC14B244210082A1F9 /* LMEmulatorInterface.cpp in Sources */,
 				A0995BBB14B3AC2A00F7C44F /* LMROMBrowserController.m in Sources */,
 				A0995BC114B4C20100F7C44F /* LMDPadView.m in Sources */,
-				A0995BD414B508AC00F7C44F /* iphone_highlightbar.c in Sources */,
-				A0995BD514B508AC00F7C44F /* iphone_menu_header.c in Sources */,
-				A0995BD614B508AC00F7C44F /* iphone_menutile.c in Sources */,
 				A0995BD714B508AC00F7C44F /* iphone_sdk.c in Sources */,
 				A0995BED14B508BD00F7C44F /* apu.cpp in Sources */,
 				A0995BEF14B508BD00F7C44F /* SNES_SPC.cpp in Sources */,
@@ -491,8 +473,6 @@
 				A0995C0A14B524F500F7C44F /* mztools.c in Sources */,
 				A0995C0B14B524F500F7C44F /* unzip.c in Sources */,
 				A0995C0C14B524F500F7C44F /* zip.c in Sources */,
-				A0995C0E14B5254D00F7C44F /* input.c in Sources */,
-				A0995C1014B525B700F7C44F /* menu.c in Sources */,
 				A0995C1214B525D200F7C44F /* main.cpp in Sources */,
 				A0995F4F14B53F2500F7C44F /* sa1cpu.cpp in Sources */,
 				A0995F5114B53FCC00F7C44F /* dsp.cpp in Sources */,
