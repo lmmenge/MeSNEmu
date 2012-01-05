@@ -70,15 +70,15 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
     //source[i] = 0x7E0; // green
     //source[i] = 0xF800; // red
   }*/
-  const vImage_Buffer sourceBuffer = (vImage_Buffer){source, height, width, width*2};
+  /*const vImage_Buffer sourceBuffer = (vImage_Buffer){source, height, width, width*2};
   const vImage_Buffer destinationBuffer = (vImage_Buffer){dest, height, width, width*4};
   vImageConvert_RGB565toARGB8888(0xFF, &sourceBuffer, &destinationBuffer, kvImageDoNotTile);
   static uint8_t channels[4] = {1,2,3,0};
   vImagePermuteChannels_ARGB8888(&destinationBuffer, &destinationBuffer, channels, kvImageDoNotTile);
-  //vImageConvert_ARGB1555toARGB8888(&sourceBuffer, &destinationBuffer, kvImageDoNotTile);
+  //vImageConvert_ARGB1555toARGB8888(&sourceBuffer, &destinationBuffer, kvImageDoNotTile);*/
   
   // fastest method but wrong image. memcpy
-  //memcpy(dest, source, pixelCount*2);
+  memcpy(dest, source, width*height*2);
 }
 
 #pragma mark -
@@ -360,18 +360,18 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   // RGBA888 format
   unsigned short defaultComponentCount = 4;
   unsigned short bufferBitsPerComponent = 8;
-  unsigned int pixelSizeBytes = bufferBitsPerComponent/8*defaultComponentCount;
+  unsigned int pixelSizeBytes = (_bufferWidth*bufferBitsPerComponent*defaultComponentCount)/8/_bufferWidth;
   if(pixelSizeBytes == 0)
     pixelSizeBytes = defaultComponentCount;
   unsigned int bufferBytesPerRow = _bufferWidth*pixelSizeBytes;
   CGBitmapInfo bufferBitmapInfo = kCGImageAlphaNoneSkipLast;
   
   // BGR 555 format (something weird)
-  /*defaultComponentCount = 3;
+  defaultComponentCount = 3;
   bufferBitsPerComponent = 5;
   pixelSizeBytes = 2;
   bufferBytesPerRow = _bufferWidth*pixelSizeBytes;
-  bufferBitmapInfo = kCGImageAlphaNoneSkipFirst|kCGBitmapByteOrder16Little;*/
+  bufferBitmapInfo = kCGImageAlphaNoneSkipFirst|kCGBitmapByteOrder16Little;
   
   if(_imageBuffer == nil)
   {

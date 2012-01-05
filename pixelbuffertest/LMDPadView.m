@@ -17,19 +17,32 @@
   UITouch* touch = [touches anyObject];
   if(touch.phase == UITouchPhaseCancelled || touch.phase == UITouchPhaseEnded || touch == nil)
   {
-    LMSetControllerReleaseButton(GP2X_UP|GP2X_LEFT|GP2X_RIGHT|GP2X_DOWN);
+    LMSetControllerReleaseButton(GP2X_UP);
+    LMSetControllerReleaseButton(GP2X_LEFT);
+    LMSetControllerReleaseButton(GP2X_RIGHT);
+    LMSetControllerReleaseButton(GP2X_DOWN);
     return;
   }
-  LMSetControllerReleaseButton(GP2X_UP|GP2X_LEFT|GP2X_RIGHT|GP2X_DOWN); // TODO: make this atomic
+  //LMSetControllerReleaseButton(GP2X_UP|GP2X_LEFT|GP2X_RIGHT|GP2X_DOWN); // TODO: make this atomic
+  LMSetControllerReleaseButton(GP2X_UP);
+  LMSetControllerReleaseButton(GP2X_LEFT);
+  LMSetControllerReleaseButton(GP2X_RIGHT);
+  LMSetControllerReleaseButton(GP2X_DOWN);
   CGPoint location = [touch locationInView:self];
   if(location.x < 50)
   {
     if(location.y < 50)
-      LMSetControllerPushButton(GP2X_UP|GP2X_LEFT);
+    {
+      LMSetControllerPushButton(GP2X_UP);
+      LMSetControllerPushButton(GP2X_LEFT);
+    }
     else if(location.y < 100)
       LMSetControllerPushButton(GP2X_LEFT);
     else
-      LMSetControllerPushButton(GP2X_DOWN|GP2X_LEFT);
+    {
+      LMSetControllerPushButton(GP2X_DOWN);
+      LMSetControllerPushButton(GP2X_LEFT);
+    }
   }
   else if(location.x < 100)
   {
@@ -41,11 +54,17 @@
   else
   {
     if(location.y < 50)
-      LMSetControllerPushButton(GP2X_UP|GP2X_RIGHT);
+    {
+      LMSetControllerPushButton(GP2X_UP);
+      LMSetControllerPushButton(GP2X_RIGHT);
+    }
     else if(location.y < 100)
       LMSetControllerPushButton(GP2X_RIGHT);
     else
-      LMSetControllerPushButton(GP2X_DOWN|GP2X_RIGHT);
+    {
+      LMSetControllerPushButton(GP2X_DOWN);
+      LMSetControllerPushButton(GP2X_RIGHT);
+    }
   }
 }
 

@@ -1543,9 +1543,13 @@ extern "C" int iphone_main (char* rom_filename)
 	Settings.FrameTimePAL = 20000;
 	Settings.FrameTimeNTSC = 16667;
 	Settings.SixteenBitSound = TRUE;
-	Settings.Stereo = TRUE;
-	Settings.SoundPlaybackRate = 32000;
-	Settings.SoundInputRate = 32000;
+	//Settings.Stereo = TRUE;
+  Settings.Stereo = FALSE;
+	//Settings.SoundPlaybackRate = 32000;
+  Settings.SoundPlaybackRate = 22050;
+	//Settings.SoundInputRate = 32000;
+  Settings.SoundInputRate = 22050;
+  Settings.SoundSync = FALSE;
 	Settings.SupportHiRes = TRUE;
 	Settings.Transparency = TRUE;
 	Settings.AutoDisplayMessages = TRUE;
@@ -1558,6 +1562,7 @@ extern "C" int iphone_main (char* rom_filename)
 	Settings.StretchScreenshots = 1;
 	Settings.SnapshotScreenshots = TRUE;
 	Settings.SkipFrames = AUTO_FRAMERATE;
+  //Settings.SkipFrames = 1;
 	Settings.TurboSkipFrames = 15;
 	Settings.CartAName[0] = 0;
 	Settings.CartBName[0] = 0;
@@ -1593,6 +1598,8 @@ extern "C" int iphone_main (char* rom_filename)
   
 	S9xInitSound(samplecount<<(1+(Settings.Stereo?1:0)), 0);
 	S9xSetSoundMute(TRUE);
+  
+  S9xReset();
   
   S9xUnmapAllControls();
   S9xSetController(0, CTL_JOYPAD, 0, 0, 0, 0);
@@ -1690,7 +1697,8 @@ extern "C" int iphone_main (char* rom_filename)
 	}
   
 	//NSRTControllerSetup();
-	Memory.LoadSRAM(S9xGetFilename(".srm", SRAM_DIR));
+	//Memory.LoadSRAM(S9xGetFilename(".srm", SRAM_DIR));
+  S9xLoadSRAM();
 	//S9xLoadCheatFile(S9xGetFilename(".cht", CHEAT_DIR));
   
 	CPU.Flags = saved_flags;
@@ -1853,12 +1861,29 @@ extern "C" int iphone_main (char* rom_filename)
 			S9xDoDebug();
 		else
 #endif
-      if (Settings.Paused || __emulation_paused)
+      if (Settings.Paused || __emulation_paused || !__emulation_run)
       {
         do {
           //S9xProcessEvents(FALSE);
+          if(!__emulation_run)
+            break;
           usleep(100000);
         } while (__emulation_paused);
+        
+        if(!__emulation_run)
+        {
+          S9xSaveSRAM();
+          
+          app_MuteSound();
+          if(vrambuffer != NULL)
+            free(vrambuffer);
+          vrambuffer = NULL;
+          
+          S9xGraphicsDeinit();
+          Memory.Deinit();
+          S9xDeinitAPU();
+          break;
+        }
       }
     
 #ifdef JOYSTICK_SUPPORT
@@ -1874,18 +1899,6 @@ extern "C" int iphone_main (char* rom_filename)
       if (!Settings.Paused && !__emulation_paused)
 #endif
         S9xSetSoundMute(FALSE);
-    
-    if(!__emulation_run)
-    {
-      app_MuteSound();
-      if(vrambuffer != NULL)
-        free(vrambuffer);
-      vrambuffer = NULL;
-      S9xGraphicsDeinit();
-      S9xDeinitAPU();
-      Memory.Deinit();
-      break;
-    }
 	}
   
 	return (0);
