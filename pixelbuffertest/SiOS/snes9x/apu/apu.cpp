@@ -292,7 +292,7 @@ bool8 S9xMixSamples (uint8 *buffer, int sample_count)
 			sample_count <<= 1;
 
 		/* We still have to generate 16-bit samples for bit-dropping, too */
-		if (shrink_buffer_size < (sample_count << 1))
+		if (shrink_buffer_size < (sample_count << 1) || spc::shrink_buffer == NULL)
 		{
 			delete[] spc::shrink_buffer;
 			spc::shrink_buffer = new uint8[sample_count << 1];

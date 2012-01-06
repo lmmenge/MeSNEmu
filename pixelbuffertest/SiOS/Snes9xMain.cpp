@@ -169,7 +169,7 @@ extern "C" int SIStartWithROM (char* rom_filename)
 	//Settings.SoundPlaybackRate = 32000;
   Settings.SoundPlaybackRate = 22050;
 	//Settings.SoundInputRate = 32000;
-  Settings.SoundInputRate = 22050;
+  Settings.SoundInputRate = 32000;
   Settings.SoundSync = FALSE;
 	Settings.SupportHiRes = TRUE;
 	Settings.Transparency = TRUE;
@@ -217,8 +217,9 @@ extern "C" int SIStartWithROM (char* rom_filename)
 		exit(1);
 	}
   
-  int samplecount=0;
-	S9xInitSound(samplecount<<(1+(Settings.Stereo?1:0)), 0);
+  int samplecount = Settings.SoundPlaybackRate/(Settings.PAL ? 50 : 60);
+  int soundBufferSize = samplecount<<(1+(Settings.Stereo?1:0));
+	S9xInitSound(soundBufferSize, 0);
 	S9xSetSoundMute(TRUE);
   
   S9xReset();
@@ -410,6 +411,7 @@ extern "C" int SIStartWithROM (char* rom_filename)
 	uint32	JoypadSkip = 0;
 #endif
   
+  SIDemuteSound(soundBufferSize);
 	S9xSetSoundMute(FALSE);
   
 #ifdef NETPLAY_SUPPORT
