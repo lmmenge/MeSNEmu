@@ -13,7 +13,7 @@
 #import "LMPixelLayer.h"
 #import "LMPixelView.h"
 
-static LMEmulatorController* sharedInstance = nil;
+#import "snes4iphone/Snes9xMain.h"
 
 void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 {
@@ -98,13 +98,13 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
     _emulationThread = [NSThread currentThread];
   
   const char* originalString = [romFileName UTF8String];
-  char* romFileNameCString = calloc(strlen(originalString)+1, sizeof(char));
+  char* romFileNameCString = (char*)calloc(strlen(originalString)+1, sizeof(char));
   strcpy(romFileNameCString, originalString);
   originalString = nil;
 
   LMSetEmulationPaused(0);
   LMSetEmulationRunning(1);
-  iphone_main(romFileNameCString);
+  SIStartWithROM(romFileNameCString);
   LMSetEmulationRunning(0);
   
   free(romFileNameCString);
@@ -246,14 +246,15 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   [NSThread detachNewThreadSelector:@selector(emulationThreadMethod:) toTarget:self withObject:romFileName];
 }
 
-- (void)updateView
+- (void)flipFrontbuffer
 {
   if(_imageBuffer == nil || _565ImageBuffer == nil)
     return;
   
   if(((LMPixelLayer*)_screenView.layer).displayMainBuffer == YES)
   {
-    convert565ToARGB((unsigned int*)_imageBuffer, (unsigned short*)_565ImageBuffer, _bufferWidth, _bufferHeight);
+    //convert565ToARGB((unsigned int*)_imageBuffer, (unsigned short*)_565ImageBuffer, _bufferWidth, _bufferHeight);
+    LMSetScreen(_imageBufferAlt);
   
     [_screenView setNeedsDisplay];
     
@@ -261,17 +262,13 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   }
   else
   {
-    convert565ToARGB((unsigned int*)_imageBufferAlt, (unsigned short*)_565ImageBuffer, _bufferWidth, _bufferHeight);
+    //convert565ToARGB((unsigned int*)_imageBufferAlt, (unsigned short*)_565ImageBuffer, _bufferWidth, _bufferHeight);
+    LMSetScreen(_imageBuffer);
     
     [_screenView setNeedsDisplay];
     
     ((LMPixelLayer*)_screenView.layer).displayMainBuffer = YES;
   }
-}
-
-+ (LMEmulatorController*)sharedInstance
-{
-  return sharedInstance;
 }
 
 @end
@@ -283,6 +280,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 - (void)loadView
 {
   [super loadView];
+  self.view.backgroundColor = [UIColor blackColor];
   
   self.wantsFullScreenLayout = YES;
   self.view.multipleTouchEnabled = YES;
@@ -327,7 +325,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   int buttonSize = 0;
   _aButton = [[self buttonNamed:@"A"] retain];
   buttonSize = _aButton.frame.size.width;
-  _aButton.frame = (CGRect){size.width-buttonSize-screenBorder, size.height-buttonSize-screenBorder-buttonSize/2, _aButton.frame.size};
+  _aButton.frame = (CGRect){size.width-buttonSize-screenBorder, size.height-buttonSize-screenBorder, _aButton.frame.size};
   [self.view addSubview:_aButton];
   
   _bButton = [[self buttonNamed:@"B"] retain];
@@ -335,7 +333,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   [self.view addSubview:_bButton];
   
   _xButton = [[self buttonNamed:@"X"] retain];
-  _xButton.frame = (CGRect){size.width-buttonSize-screenBorder, size.height-buttonSize*2-screenBorder-buttonSpacing-buttonSize/2, _xButton.frame.size};
+  _xButton.frame = (CGRect){size.width-buttonSize-screenBorder, size.height-buttonSize*2-screenBorder-buttonSpacing, _xButton.frame.size};
   [self.view addSubview:_xButton];
   
   _yButton = [[self buttonNamed:@"Y"] retain];
@@ -375,17 +373,17 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   
   if(_imageBuffer == nil)
   {
-    _imageBuffer = calloc(_bufferWidth*_bufferHeight, pixelSizeBytes);
+    _imageBuffer = (unsigned char*)calloc(_bufferWidth*_bufferHeight, pixelSizeBytes);
     NSLog(@"Got buffer of size %i", _bufferWidth*_bufferHeight*pixelSizeBytes);
     /*for(int i=0; i<_bufferWidth*_bufferHeight; i++)
       ((uint32_t*)_imageBuffer)[i] = 0xFFFFFFFF;*/
   }
   if(_imageBufferAlt == nil)
   {
-    _imageBufferAlt = calloc(_bufferWidth*_bufferHeight, pixelSizeBytes);
+    _imageBufferAlt = (unsigned char*)calloc(_bufferWidth*_bufferHeight, pixelSizeBytes);
   }
   if(_565ImageBuffer == nil)
-    _565ImageBuffer = calloc(_bufferWidth*_bufferHeight, 2);
+    _565ImageBuffer = (unsigned char*)calloc(_bufferWidth*_bufferHeight, 2);
   
   [(LMPixelLayer*)_screenView.layer setImageBuffer:_imageBuffer
                                            width:_bufferWidth
@@ -441,8 +439,10 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeInactive) name:UIApplicationWillResignActiveNotification object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
   
-  sharedInstance = self;
-  screenPixels = (unsigned int*)_565ImageBuffer;
+  SISetScreenDelegate(self);
+  
+  //screenPixels = (unsigned int*)_565ImageBuffer;
+  LMSetScreen(_imageBuffer);
   
   [self startWithROM:_romFileName];
 }
@@ -504,8 +504,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   [_optionsButton release];
   _optionsButton = nil;
   
-  if(sharedInstance == self)
-    sharedInstance = nil;
+  SISetScreenDelegate(nil);
   
   if(_imageBuffer != nil)
     free(_imageBuffer);

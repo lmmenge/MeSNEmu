@@ -18,9 +18,8 @@
 		A050663014B21D1B003E0C5E /* LMPixelLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A050662F14B21D1B003E0C5E /* LMPixelLayer.m */; };
 		A050663214B21DDB003E0C5E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A050663114B21DDB003E0C5E /* QuartzCore.framework */; };
 		A0995BBB14B3AC2A00F7C44F /* LMROMBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0995BBA14B3AC2A00F7C44F /* LMROMBrowserController.m */; };
-		A0995BBE14B4A1D500F7C44F /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0995BBD14B4A1D500F7C44F /* Accelerate.framework */; };
 		A0995BC114B4C20100F7C44F /* LMDPadView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0995BC014B4C20000F7C44F /* LMDPadView.m */; };
-		A0995BD714B508AC00F7C44F /* iphone_sdk.c in Sources */ = {isa = PBXBuildFile; fileRef = A0995BD314B508AC00F7C44F /* iphone_sdk.c */; };
+		A0995BD714B508AC00F7C44F /* iOSAudio.c in Sources */ = {isa = PBXBuildFile; fileRef = A0995BD314B508AC00F7C44F /* iOSAudio.c */; };
 		A0995BED14B508BD00F7C44F /* apu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995BD914B508BD00F7C44F /* apu.cpp */; };
 		A0995BEE14B508BD00F7C44F /* license.txt in Resources */ = {isa = PBXBuildFile; fileRef = A0995BE014B508BD00F7C44F /* license.txt */; };
 		A0995BEF14B508BD00F7C44F /* SNES_SPC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995BE414B508BD00F7C44F /* SNES_SPC.cpp */; };
@@ -32,7 +31,7 @@
 		A0995C0A14B524F500F7C44F /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = A0995C0014B524F500F7C44F /* mztools.c */; };
 		A0995C0B14B524F500F7C44F /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = A0995C0214B524F500F7C44F /* unzip.c */; };
 		A0995C0C14B524F500F7C44F /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = A0995C0414B524F500F7C44F /* zip.c */; };
-		A0995C1214B525D200F7C44F /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995C1114B525D200F7C44F /* main.cpp */; };
+		A0995C1214B525D200F7C44F /* Snes9xMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995C1114B525D200F7C44F /* Snes9xMain.cpp */; };
 		A0995F4F14B53F2500F7C44F /* sa1cpu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995F4E14B53F2500F7C44F /* sa1cpu.cpp */; };
 		A0995F5114B53FCC00F7C44F /* dsp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995F5014B53FCC00F7C44F /* dsp.cpp */; };
 		A0995F5314B5405000F7C44F /* cpuops.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995F5214B5404F00F7C44F /* cpuops.cpp */; };
@@ -51,7 +50,8 @@
 		A0995F7514B5461A00F7C44F /* crosshairs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995F7414B5461900F7C44F /* crosshairs.cpp */; };
 		A0995F7714B5464000F7C44F /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995F7614B5463F00F7C44F /* logger.cpp */; };
 		A0995F7914B546A900F7C44F /* reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995F7814B546A800F7C44F /* reader.cpp */; };
-		A0995F7B14B5DDAA00F7C44F /* LMCocoaEmulatorInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = A0995F7A14B5DDA800F7C44F /* LMCocoaEmulatorInterface.m */; };
+		A0995F8014B679FF00F7C44F /* Snes9xCallbacks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995F7F14B679F300F7C44F /* Snes9xCallbacks.cpp */; };
+		A0995F8614B6884F00F7C44F /* SIScreenDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A0995F8514B6883E00F7C44F /* SIScreenDelegate.m */; };
 		A0A6176314B23DE10082A1F9 /* c4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A616C814B23DE10082A1F9 /* c4.cpp */; };
 		A0A6176414B23DE10082A1F9 /* c4emu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A616CA14B23DE10082A1F9 /* c4emu.cpp */; };
 		A0A6176514B23DE10082A1F9 /* cheats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0A616CB14B23DE10082A1F9 /* cheats.cpp */; };
@@ -99,10 +99,9 @@
 		A050663114B21DDB003E0C5E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A0995BB914B3AC2A00F7C44F /* LMROMBrowserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMROMBrowserController.h; sourceTree = "<group>"; };
 		A0995BBA14B3AC2A00F7C44F /* LMROMBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMROMBrowserController.m; sourceTree = "<group>"; };
-		A0995BBD14B4A1D500F7C44F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		A0995BBF14B4C20000F7C44F /* LMDPadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMDPadView.h; sourceTree = "<group>"; };
 		A0995BC014B4C20000F7C44F /* LMDPadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMDPadView.m; sourceTree = "<group>"; };
-		A0995BD314B508AC00F7C44F /* iphone_sdk.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = iphone_sdk.c; path = pixelbuffertest/snes4iphone/iphone_sdk.c; sourceTree = SOURCE_ROOT; };
+		A0995BD314B508AC00F7C44F /* iOSAudio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = iOSAudio.c; path = pixelbuffertest/snes4iphone/iOSAudio.c; sourceTree = SOURCE_ROOT; };
 		A0995BD914B508BD00F7C44F /* apu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = apu.cpp; sourceTree = "<group>"; };
 		A0995BDA14B508BD00F7C44F /* apu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apu.h; sourceTree = "<group>"; };
 		A0995BDB14B508BD00F7C44F /* blargg_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = blargg_common.h; sourceTree = "<group>"; };
@@ -132,7 +131,7 @@
 		A0995C0314B524F500F7C44F /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
 		A0995C0414B524F500F7C44F /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
 		A0995C0514B524F500F7C44F /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
-		A0995C1114B525D200F7C44F /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = pixelbuffertest/snes4iphone/main.cpp; sourceTree = SOURCE_ROOT; };
+		A0995C1114B525D200F7C44F /* Snes9xMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Snes9xMain.cpp; path = pixelbuffertest/snes4iphone/Snes9xMain.cpp; sourceTree = SOURCE_ROOT; };
 		A0995F4E14B53F2500F7C44F /* sa1cpu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sa1cpu.cpp; sourceTree = "<group>"; };
 		A0995F5014B53FCC00F7C44F /* dsp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dsp.cpp; sourceTree = "<group>"; };
 		A0995F5214B5404F00F7C44F /* cpuops.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cpuops.cpp; sourceTree = "<group>"; };
@@ -151,8 +150,13 @@
 		A0995F7414B5461900F7C44F /* crosshairs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = crosshairs.cpp; sourceTree = "<group>"; };
 		A0995F7614B5463F00F7C44F /* logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = logger.cpp; sourceTree = "<group>"; };
 		A0995F7814B546A800F7C44F /* reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = reader.cpp; sourceTree = "<group>"; };
-		A0995F7A14B5DDA800F7C44F /* LMCocoaEmulatorInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMCocoaEmulatorInterface.m; sourceTree = "<group>"; };
 		A0995F7C14B5DEBF00F7C44F /* port.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = port.h; sourceTree = "<group>"; };
+		A0995F7F14B679F300F7C44F /* Snes9xCallbacks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Snes9xCallbacks.cpp; path = pixelbuffertest/snes4iphone/Snes9xCallbacks.cpp; sourceTree = SOURCE_ROOT; };
+		A0995F8114B67AAB00F7C44F /* Snes9xCallbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Snes9xCallbacks.h; path = pixelbuffertest/snes4iphone/Snes9xCallbacks.h; sourceTree = SOURCE_ROOT; };
+		A0995F8214B67B7E00F7C44F /* Snes9xMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Snes9xMain.h; path = pixelbuffertest/snes4iphone/Snes9xMain.h; sourceTree = SOURCE_ROOT; };
+		A0995F8314B67E2100F7C44F /* iOSAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iOSAudio.h; path = pixelbuffertest/snes4iphone/iOSAudio.h; sourceTree = SOURCE_ROOT; };
+		A0995F8414B6883200F7C44F /* SIScreenDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIScreenDelegate.h; path = pixelbuffertest/snes4iphone/SIScreenDelegate.h; sourceTree = SOURCE_ROOT; };
+		A0995F8514B6883E00F7C44F /* SIScreenDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIScreenDelegate.m; path = pixelbuffertest/snes4iphone/SIScreenDelegate.m; sourceTree = SOURCE_ROOT; };
 		A0A616C814B23DE10082A1F9 /* c4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c4.cpp; sourceTree = "<group>"; };
 		A0A616CA14B23DE10082A1F9 /* c4emu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = c4emu.cpp; sourceTree = "<group>"; };
 		A0A616CB14B23DE10082A1F9 /* cheats.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = cheats.cpp; sourceTree = "<group>"; };
@@ -186,7 +190,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0995BBE14B4A1D500F7C44F /* Accelerate.framework in Frameworks */,
 				A0A8A0FC14B25409003C5688 /* libz.dylib in Frameworks */,
 				A0A8A0FA14B25401003C5688 /* AudioToolbox.framework in Frameworks */,
 				A050663214B21DDB003E0C5E /* QuartzCore.framework in Frameworks */,
@@ -219,7 +222,6 @@
 		A050660A14B21C7F003E0C5E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A0995BBD14B4A1D500F7C44F /* Accelerate.framework */,
 				A0A8A0FB14B25409003C5688 /* libz.dylib */,
 				A0A8A0F914B25401003C5688 /* AudioToolbox.framework */,
 				A050663114B21DDB003E0C5E /* QuartzCore.framework */,
@@ -247,9 +249,8 @@
 				A0995BC014B4C20000F7C44F /* LMDPadView.m */,
 				A0A617BD14B24B410082A1F9 /* LMEmulatorInterface.h */,
 				A0A617BB14B244210082A1F9 /* LMEmulatorInterface.cpp */,
-				A0995F7A14B5DDA800F7C44F /* LMCocoaEmulatorInterface.m */,
 				A050661214B21C7F003E0C5E /* Supporting Files */,
-				A0995BCF14B5087600F7C44F /* snes4iphone */,
+				A0995BCF14B5087600F7C44F /* SiOS */,
 			);
 			path = pixelbuffertest;
 			sourceTree = "<group>";
@@ -265,14 +266,20 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		A0995BCF14B5087600F7C44F /* snes4iphone */ = {
+		A0995BCF14B5087600F7C44F /* SiOS */ = {
 			isa = PBXGroup;
 			children = (
-				A0995BD314B508AC00F7C44F /* iphone_sdk.c */,
-				A0995C1114B525D200F7C44F /* main.cpp */,
+				A0995F8314B67E2100F7C44F /* iOSAudio.h */,
+				A0995BD314B508AC00F7C44F /* iOSAudio.c */,
+				A0995F8414B6883200F7C44F /* SIScreenDelegate.h */,
+				A0995F8514B6883E00F7C44F /* SIScreenDelegate.m */,
+				A0995F8114B67AAB00F7C44F /* Snes9xCallbacks.h */,
+				A0995F7F14B679F300F7C44F /* Snes9xCallbacks.cpp */,
+				A0995F8214B67B7E00F7C44F /* Snes9xMain.h */,
+				A0995C1114B525D200F7C44F /* Snes9xMain.cpp */,
 				A0A616C014B23DE00082A1F9 /* snes9x */,
 			);
-			name = snes4iphone;
+			name = SiOS;
 			path = snes4iphone/snes9x;
 			sourceTree = "<group>";
 		};
@@ -462,7 +469,7 @@
 				A0A617BC14B244210082A1F9 /* LMEmulatorInterface.cpp in Sources */,
 				A0995BBB14B3AC2A00F7C44F /* LMROMBrowserController.m in Sources */,
 				A0995BC114B4C20100F7C44F /* LMDPadView.m in Sources */,
-				A0995BD714B508AC00F7C44F /* iphone_sdk.c in Sources */,
+				A0995BD714B508AC00F7C44F /* iOSAudio.c in Sources */,
 				A0995BED14B508BD00F7C44F /* apu.cpp in Sources */,
 				A0995BEF14B508BD00F7C44F /* SNES_SPC.cpp in Sources */,
 				A0995BF014B508BD00F7C44F /* SNES_SPC_misc.cpp in Sources */,
@@ -473,7 +480,7 @@
 				A0995C0A14B524F500F7C44F /* mztools.c in Sources */,
 				A0995C0B14B524F500F7C44F /* unzip.c in Sources */,
 				A0995C0C14B524F500F7C44F /* zip.c in Sources */,
-				A0995C1214B525D200F7C44F /* main.cpp in Sources */,
+				A0995C1214B525D200F7C44F /* Snes9xMain.cpp in Sources */,
 				A0995F4F14B53F2500F7C44F /* sa1cpu.cpp in Sources */,
 				A0995F5114B53FCC00F7C44F /* dsp.cpp in Sources */,
 				A0995F5314B5405000F7C44F /* cpuops.cpp in Sources */,
@@ -492,7 +499,8 @@
 				A0995F7514B5461A00F7C44F /* crosshairs.cpp in Sources */,
 				A0995F7714B5464000F7C44F /* logger.cpp in Sources */,
 				A0995F7914B546A900F7C44F /* reader.cpp in Sources */,
-				A0995F7B14B5DDAA00F7C44F /* LMCocoaEmulatorInterface.m in Sources */,
+				A0995F8014B679FF00F7C44F /* Snes9xCallbacks.cpp in Sources */,
+				A0995F8614B6884F00F7C44F /* SIScreenDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

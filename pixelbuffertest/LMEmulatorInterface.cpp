@@ -7,40 +7,26 @@
 //
 
 #import "snes4iphone/snes9x/port.h"
+#import "snes4iphone/snes9x/snes9x.h"
 #import "snes4iphone/snes9x/controls.h"
+#import "snes4iphone/snes9x/gfx.h"
 
-unsigned int* screenPixels = 0;
+//unsigned int* screenPixels = 0;
 
-volatile int __emulation_run = 0;
-volatile int __emulation_saving = 0;
-volatile int __emulation_paused = 0;
+volatile int SI_EmulationRun = 0;
+volatile int SI_EmulationSaving = 0;
+volatile int SI_EmulationPaused = 0;
 
-char SYSTEM_DIR[255];
-int iphone_soundon = 1;
-int __autosave = 0;
-int __speedhack = 0;
-int __transparency = 0;
-int __smooth_scaling = 0;
-unsigned long __fps_debug = 0;
+char SI_DocumentsPath[255];
 
-unsigned long padStatus = 0;
-
-unsigned long padStatusForPadNumber(int which)
+extern "C" void LMSetScreen(unsigned char* screen)
 {
-  if(which == 0)
-    return padStatus;
-  else
-    return 0;
-}
-
-void saveScreenshotToFile(char* filepath)
-{
-  
+  GFX.Screen = (uint16*)screen;
 }
 
 extern "C" void LMSetSystemPath(const char* path)
 {
-  strcpy(SYSTEM_DIR, path);
+  strcpy(SI_DocumentsPath, path);
 }
 
 extern "C" void LMSetEmulationRunning(int value)
@@ -49,9 +35,7 @@ extern "C" void LMSetEmulationRunning(int value)
     value = 0;
   else if(value > 1)
     value = 1;
-  __emulation_run = value;
-  
-  padStatus = 0;
+  SI_EmulationRun = value;
 }
 
 extern "C" void LMSetEmulationPaused(int value)
@@ -60,19 +44,15 @@ extern "C" void LMSetEmulationPaused(int value)
     value = 0;
   else if(value > 1)
     value = 1;
-  __emulation_paused = value;
+  SI_EmulationPaused = value;
 }
 
 extern "C" void LMSetControllerPushButton(unsigned long button)
 {
-  padStatus |= button;
-  //printf("Press %lX -> %lX\n", button, padStatus);
   S9xReportButton((uint32)button, (bool)1);
 }
 
 extern "C" void LMSetControllerReleaseButton(unsigned long button)
 {
-  padStatus &= ~button;
-  //printf("Release %lX (%lX) -> %lX\n", button, ~button, padStatus);
   S9xReportButton((uint32)button, (bool)0);
 }

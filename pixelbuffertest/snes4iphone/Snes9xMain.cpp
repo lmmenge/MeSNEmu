@@ -1,3 +1,5 @@
+#include "Snes9xMain.h"
+
 #include <sys/stat.h>
 
 #include "snes9x/snes9x.h"
@@ -6,13 +8,15 @@
 #include "snes9x/controls.h"
 #include "snes9x/display.h"
 
-#include "iphone_sdk.h"
+#include "iOSAudio.h"
+
+#pragma mark Defines
 
 #define MAX_PATH 255
 #define DIR_SEPERATOR	"/"
 #define SNES_SRAM_DIR "sram"
 
-#define EMUVERSION "LMSNES 0.1 (2012-01-05)"
+#define	ASSIGN_BUTTONf(n, s)	S9xMapButton (n, cmd = S9xGetCommandT(s), false)
 
 enum
 {
@@ -33,347 +37,76 @@ enum
   GP2X_PUSH=1<<27
 };
 
-extern char SYSTEM_DIR[1024];
+#pragma mark - External Forward Declarations
+
+extern "C" void SIFlipFramebufferClient(void);
+
+extern char SI_DocumentsPath[1024];
+extern volatile int SI_EmulationRun;
+extern volatile int SI_EmulationPaused;
+extern unsigned int *screenPixels;
+
+#pragma mark - Global Variables
+
 char currentWorkingDir[MAX_PATH+1];
 char snesSramDir[MAX_PATH+1];
 
-extern volatile int __emulation_paused;
-extern volatile int __emulation_run;
-
-void S9xSaveSRAM (void);
-
-//---------------------------------------------------------------------------
-
-typedef unsigned char	bool8_32;
-
-typedef struct {
-  int playback_rate;
-  bool8 stereo;
-  bool8 mute_sound;
-  uint8 sound_switch;
-  int noise_gen;
-	uint32 freqbase; // notaz
-} SoundStatus;
-
-static SoundStatus		so;
+SoundStatus so;
 
 uint8 *vrambuffer = NULL;
-char fps_display[256];
-int samplecount=0;
 
-void S9xExit ()
+#pragma mark - Utility Functions
+
+void SIFlipFramebuffer(int flip, int sync)
 {
-}
-   
-//extern "C"
-//{
-
-  const char * S9xGetDirectory (enum s9x_getdirtype dirtype)
-  {
-    static int	index = 0;
-    static char	path[4][PATH_MAX + 1];
-    
-    char	inExt[16];
-    char	drive[_MAX_DRIVE + 1], dir[_MAX_DIR + 1], fname[_MAX_FNAME + 1], ext[_MAX_EXT + 1];
-    
-    index++;
-    if (index > 3)
-      index = 0;
-    
-    switch (dirtype)
-    {
-      case SNAPSHOT_DIR:		strcpy(inExt, ".frz");	break;
-      case SRAM_DIR:			strcpy(inExt, ".srm");	break;
-      case SCREENSHOT_DIR:	strcpy(inExt, ".png");	break;
-      case SPC_DIR:			strcpy(inExt, ".spc");	break;
-      case CHEAT_DIR:			strcpy(inExt, ".cht");	break;
-      case BIOS_DIR:			strcpy(inExt, ".bio");	break;
-      case LOG_DIR:			strcpy(inExt, ".log");	break;
-      default:				strcpy(inExt, ".xxx");	break;
-    }
-    
-    _splitpath(S9xGetFilename(inExt, dirtype), drive, dir, fname, ext);
-    _makepath(path[index], drive, dir, "", "");
-    
-    int	l = strlen(path[index]);
-    if (l > 1)
-      path[index][l - 1] = 0;
-    
-    return (path[index]);
-  }
-
-  bool8 S9xDoScreenshot (int width, int height)
-  {
-    return true;
-  }
-
-  const char * S9xStringInput (const char *s)
-  {
-    return (NULL);
-  }
-
-  void S9xHandlePortCommand (s9xcommand_t cmd, int16 data1, int16 data2)
-  {
-    return;
-  }
-
-  bool S9xPollAxis (uint32 id, int16 *value)
-  {
-    return (false);
-  }
-
-  void S9xToggleSoundChannel (int c)
-  {
-    static int	channel_enable = 255;
-    
-    if (c == 8)
-      channel_enable = 255;
-    else
-      channel_enable ^= 1 << c;
-    
-    S9xSetSoundControl(channel_enable);
-  }
-
-  bool S9xPollButton (uint32 id, bool *pressed)
-  {
-    *pressed = false;
-    return true;
-  }
-
-  bool8 S9xContinueUpdate (int width, int height)
-  {
-    return (true);
-  }
-
-  bool S9xPollPointer (uint32 id, int16 *x, int16 *y)
-  {
-    *x = *y = 0;
-    
-    return (true);
-  }
-  
-  const char * S9xChooseFilename (bool8 read_only)
-  {
-    return (NULL);
-  }
-  
-  const char * S9xChooseMovieFilename (bool8 read_only)
-  {
-    return (NULL);
-  }
-  
-	void S9xSetPalette ()
-	{
-
-	}
-
-	bool8 S9xOpenSnapshotFile (const char *fname, bool8 read_only, STREAM *file)
-	{
-		if (read_only)
-		{
-      *file = OPEN_STREAM(fname,"rb");
-			if (*file) 
-				return(TRUE);
-		}
-		else
-		{
-      *file = OPEN_STREAM(fname,"w+b");
-			if (*file) 
-				return(TRUE);
-		}
-
-		return (FALSE);	
-	}
-	
-	void S9xCloseSnapshotFile (STREAM file)
-	{
-		CLOSE_STREAM(file);
-	}
-
-   void S9xMessage (int /* type */, int /* number */, const char *message)
-   {
-		printf ("%s\n", message);
-   }
-
-   const char *S9xGetSnapshotDirectory(void)
-   {
-      S9xMessage (0,0,"get snapshot dir");
-      return "";
-   }
-
-   bool8_32 S9xInitUpdate ()
-   {
-	  //GFX.Screen = (uint8 *) framebuffer16 + (640*8) + 64;
-
-	  return (TRUE);
-   }
-
-   //bool8_32 S9xDeinitUpdate (int Width, int Height, bool8_32) // HACK: renamed
-   bool8 S9xDeinitUpdate (int width, int height)
-   {
-	  
-    // TODO clear Z buffer if not in fastsprite mode
-		gp_setFramebuffer(0,0);
-	   
-	   return (TRUE);
-   }
-
-   //const char *S9xGetFilename (const char *ex) // HACK: renamed
-  const char *S9xGetFilename (const char *ex, enum s9x_getdirtype dirtype)
-   {
-      static char filename [PATH_MAX + 1];
-      char drive [_MAX_DRIVE + 1];
-      char dir [_MAX_DIR + 1];
-      char fname [_MAX_FNAME + 1];
-      char ext [_MAX_EXT + 1];
-
-      _splitpath (Memory.ROMFilename, drive, dir, fname, ext);
-      strcpy (filename, S9xGetSnapshotDirectory ());
-      strcat (filename, SLASH_STR);
-      strcat (filename, fname);
-      strcat (filename, ex);
-      return (filename);
-   }
-
-  const char *S9xGetFilename (const char *ex)
-  {
-    static char filename [PATH_MAX + 1];
-    char drive [_MAX_DRIVE + 1];
-    char dir [_MAX_DIR + 1];
-    char fname [_MAX_FNAME + 1];
-    char ext [_MAX_EXT + 1];
-    
-    _splitpath (Memory.ROMFilename, drive, dir, fname, ext);
-    strcpy (filename, S9xGetSnapshotDirectory ());
-    strcat (filename, SLASH_STR);
-    strcat (filename, fname);
-    strcat (filename, ex);
-    return (filename);
-  }
-
-   //const char *S9xGetFilenameInc (const char *e)
-const char * S9xGetFilenameInc (const char *inExt, enum s9x_getdirtype dirtype)
-   {
-      S9xMessage (0,0,"get filename inc");
-      //return e;
-     return inExt;
-   }
-
-   void S9xSyncSpeed(void)
-   {
-      //S9xMessage (0,0,"sync speed");
-   }
-
-   const char *S9xBasename (const char *f)
-   {
-      const char *p;
-
-      S9xMessage (0,0,"s9x base name");
-
-      if ((p = strrchr (f, '/')) != NULL || (p = strrchr (f, '\\')) != NULL)
-         return (p + 1);
-
-      return (f);
-   }
-
-//};
-
-//bool8_32 S9xOpenSoundDevice (int mode, bool8_32 stereo, int buffer_size)
-bool8 S9xOpenSoundDevice (void) // HACK: this is never called, apparently
-	{
-		so.sound_switch = 255;
-		//so.playback_rate = mode;
-		so.stereo = FALSE;//stereo;
-		return TRUE;
-	}
-	
-void S9xAutoSaveSRAM (void)
-{
-	//since I can't sync the data, there is no point in even writing the data
-	//out at this point.  Instead I'm now saving the data as the users enter the menu.
-  S9xSaveSRAM();
-	//sync();  can't sync when emulator is running as it causes delays
+  //memcpy(screenPixels, vrambuffer, 256*224*2);
+  SIFlipFramebufferClient();
 }
 
-void S9xLoadSRAM (void)
+const char* SIGetSnapshotDirectory(void)
+{
+  S9xMessage (0,0,"get snapshot dir");
+  return "";
+}
+
+const char *SIGetFilename (const char *ex)
+{
+  static char filename [PATH_MAX + 1];
+  char drive [_MAX_DRIVE + 1];
+  char dir [_MAX_DIR + 1];
+  char fname [_MAX_FNAME + 1];
+  char ext [_MAX_EXT + 1];
+  
+  _splitpath (Memory.ROMFilename, drive, dir, fname, ext);
+  strcpy (filename, SIGetSnapshotDirectory());
+  strcat (filename, SLASH_STR);
+  strcat (filename, fname);
+  strcat (filename, ex);
+  return (filename);
+}
+
+void SILoadSRAM (void)
 {
 	char path[MAX_PATH];
 	
-	sprintf(path,"%s%s%s",snesSramDir,DIR_SEPERATOR,S9xGetFilename (".srm"));
+	sprintf(path,"%s%s%s",snesSramDir,DIR_SEPERATOR,SIGetFilename (".srm"));
 	Memory.LoadSRAM (path);
 }
 
-void S9xSaveSRAM (void)
+void SISaveSRAM (void)
 {
 	char path[MAX_PATH];
 #if 0	
 	if (CPU.SRAMModified)
 #endif
 	{
-		sprintf(path,"%s%s%s",snesSramDir,DIR_SEPERATOR,S9xGetFilename (".srm"));
+		sprintf(path,"%s%s%s",snesSramDir,DIR_SEPERATOR,SIGetFilename (".srm"));
 		Memory.SaveSRAM (path);
 		sync();
 	}
 }
 
-void _makepath (char *path, const char *, const char *dir,
-	const char *fname, const char *ext)
-{
-	if (dir && *dir)
-	{
-		strcpy (path, dir);
-		strcat (path, "/");
-	}
-	else
-	*path = 0;
-	strcat (path, fname);
-	if (ext && *ext)
-	{
-		strcat (path, ".");
-		strcat (path, ext);
-	}
-}
-
-void _splitpath (const char *path, char *drive, char *dir, char *fname,
-	char *ext)
-{
-	*drive = 0;
-
-	char *slash = strrchr (path, '/');
-	if (!slash)
-		slash = strrchr (path, '\\');
-
-	char *dot = strrchr (path, '.');
-
-	if (dot && slash && dot < slash)
-		dot = NULL;
-
-	if (!slash)
-	{
-		strcpy (dir, "");
-		strcpy (fname, path);
-		if (dot)
-		{
-			*(fname + (dot - path)) = 0;
-			strcpy (ext, dot + 1);
-		}
-		else
-			strcpy (ext, "");
-	}
-	else
-	{
-		strcpy (dir, path);
-		*(dir + (slash - path)) = 0;
-		strcpy (fname, slash + 1);
-		if (dot)
-		{
-			*(fname + (dot - slash) - 1) = 0;
-			strcpy (ext, dot + 1);
-		}
-		else
-			strcpy (ext, "");
-	}
-} 
+#pragma mark - Save State I/O
 
 // save state file I/O
 int  (*statef_open)(const char *fname, const char *mode);
@@ -403,11 +136,9 @@ void state_unc_close()
 	fclose(state_file);
 }
 
-#pragma mark -
+#pragma mark - Start Up and Tear Down
 
-#define	ASSIGN_BUTTONf(n, s)	S9xMapButton (n, cmd = S9xGetCommandT(s), false)
-
-extern "C" int iphone_main (char* rom_filename)
+extern "C" int SIStartWithROM (char* rom_filename)
 {
   // legacy init
   // saves
@@ -417,7 +148,7 @@ extern "C" int iphone_main (char* rom_filename)
 	statef_close = state_unc_close;
   
   // paths
-  sprintf(currentWorkingDir, "%s", SYSTEM_DIR);
+  sprintf(currentWorkingDir, "%s", SI_DocumentsPath);
 	sprintf(snesSramDir,"%s%s%s",currentWorkingDir,DIR_SEPERATOR,SNES_SRAM_DIR);
   
   // ensure dirs exist
@@ -486,6 +217,7 @@ extern "C" int iphone_main (char* rom_filename)
 		exit(1);
 	}
   
+  int samplecount=0;
 	S9xInitSound(samplecount<<(1+(Settings.Stereo?1:0)), 0);
 	S9xSetSoundMute(TRUE);
   
@@ -559,7 +291,7 @@ extern "C" int iphone_main (char* rom_filename)
     if (rom_filename)
     {
       char rom_path[1024] = {0};
-      sprintf(rom_path,"%s%s%s",SYSTEM_DIR,DIR_SEPERATOR,rom_filename);
+      sprintf(rom_path,"%s%s%s",SI_DocumentsPath,DIR_SEPERATOR,rom_filename);
       
       loaded = Memory.LoadROM(rom_path);
       
@@ -588,7 +320,7 @@ extern "C" int iphone_main (char* rom_filename)
   
 	//NSRTControllerSetup();
 	//Memory.LoadSRAM(S9xGetFilename(".srm", SRAM_DIR));
-  S9xLoadSRAM();
+  SILoadSRAM();
 	//S9xLoadCheatFile(S9xGetFilename(".cht", CHEAT_DIR));
   
 	CPU.Flags = saved_flags;
@@ -606,15 +338,10 @@ extern "C" int iphone_main (char* rom_filename)
 	sigaction(SIGINT, &sa, NULL);
 #endif
   
-	//S9xInitInputDevices();
-	//S9xInitDisplay(argc, argv); // HACK: TODO: figure out what this does
-	//S9xSetupDefaultKeymap();
-	//S9xTextMode();
-  
   GFX.Pitch = SNES_WIDTH*2;
-  vrambuffer = (uint8 *) malloc (GFX.Pitch * SNES_HEIGHT_EXTENDED*2);
+  /*vrambuffer = (uint8 *) malloc (GFX.Pitch * SNES_HEIGHT_EXTENDED*2);
 	memset (vrambuffer, 0, GFX.Pitch * SNES_HEIGHT_EXTENDED*2);
-  GFX.Screen = (uint16*)vrambuffer;
+  GFX.Screen = (uint16*)vrambuffer;*/
   S9xGraphicsInit();
   
 #ifdef NETPLAY_SUPPORT
@@ -683,7 +410,6 @@ extern "C" int iphone_main (char* rom_filename)
 	uint32	JoypadSkip = 0;
 #endif
   
-	//InitTimer(); // HACK: this does nothing related to us, apparently
 	S9xSetSoundMute(FALSE);
   
 #ifdef NETPLAY_SUPPORT
@@ -727,7 +453,7 @@ extern "C" int iphone_main (char* rom_filename)
 #ifdef DEBUGGER
 		if (!Settings.Paused || (CPU.Flags & (DEBUG_MODE_FLAG | SINGLE_STEP_FLAG)))
 #else
-    if (!Settings.Paused)
+    if (!Settings.Paused && !SI_EmulationPaused)
 #endif
       S9xMainLoop();
     
@@ -742,7 +468,7 @@ extern "C" int iphone_main (char* rom_filename)
 #ifdef DEBUGGER
 		if (Settings.Paused || (CPU.Flags & DEBUG_MODE_FLAG))
 #else
-      if (Settings.Paused || __emulation_paused)
+      if (Settings.Paused || SI_EmulationPaused)
 #endif
         S9xSetSoundMute(TRUE);
     
@@ -751,20 +477,20 @@ extern "C" int iphone_main (char* rom_filename)
 			S9xDoDebug();
 		else
 #endif
-      if (Settings.Paused || __emulation_paused || !__emulation_run)
+      if (Settings.Paused || SI_EmulationPaused || !SI_EmulationRun)
       {
         do {
           //S9xProcessEvents(FALSE);
-          if(!__emulation_run)
+          if(!SI_EmulationRun)
             break;
           usleep(100000);
-        } while (__emulation_paused);
+        } while (SI_EmulationPaused);
         
-        if(!__emulation_run)
+        if(!SI_EmulationRun)
         {
-          S9xSaveSRAM();
+          SISaveSRAM();
           
-          app_MuteSound();
+          SIMuteSound();
           if(vrambuffer != NULL)
             free(vrambuffer);
           vrambuffer = NULL;
@@ -786,7 +512,7 @@ extern "C" int iphone_main (char* rom_filename)
 #ifdef DEBUGGER
 		if (!Settings.Paused && !(CPU.Flags & DEBUG_MODE_FLAG))
 #else
-      if (!Settings.Paused && !__emulation_paused)
+      if (!Settings.Paused && !SI_EmulationPaused)
 #endif
         S9xSetSoundMute(FALSE);
 	}

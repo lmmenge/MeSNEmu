@@ -10,17 +10,13 @@
 #define pixelbuffertest_LMEmulatorInterface_h
 
 // where the pixels for the screen are stored. front-end defined
-extern unsigned int* screenPixels;
+//extern unsigned int* screenPixels;
 
 // emulator entry point
 extern int iphone_main(char* filename);
 
-// implemented by the frontend to be notified of screen updates
-void refreshScreenSurface();
-// implemented by the frontend to be polled for joypad status
-unsigned long padStatusForPadNumber(int which);
-
 // convenience functions implemented to make things clearer
+void LMSetScreen(unsigned char* screen);
 void LMSetSystemPath(const char* path);
 void LMSetEmulationRunning(int value);
 void LMSetEmulationPaused(int value);

@@ -337,6 +337,7 @@ void SetInfoDlgColor(unsigned char, unsigned char, unsigned char);
 #endif
 
 #if defined(__i386__) || defined(__i486__) || defined(__i586__) || defined(__i686__) || defined(__x86_64__) || defined(__alpha__) || defined(__MIPSEL__) || defined(_M_IX86) || defined(_M_X64)
+#undef LSB_FIRST
 #define LSB_FIRST
 #define FAST_LSB_WORD_ACCESS
 #else

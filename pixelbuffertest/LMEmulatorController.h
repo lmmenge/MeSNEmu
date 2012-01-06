@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+#import "snes4iphone/SIScreenDelegate.h"
+
 @class LMDPadView;
 @class LMPixelView;
 
-@interface LMEmulatorController : UIViewController {
+@interface LMEmulatorController : UIViewController <SIScreenDelegate> {
   LMPixelView* _screenView;
   
   unsigned int _bufferWidth;
@@ -43,8 +45,6 @@
 @property (copy) NSString* romFileName;
 
 - (void)startWithROM:(NSString*)romFileName;
-- (void)updateView;
-
-+ (LMEmulatorController*)sharedInstance;
+- (void)flipFrontbuffer;
 
 @end
