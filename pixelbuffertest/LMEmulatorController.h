@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "snes4iphone/SIScreenDelegate.h"
+#import "SiOS/SIScreenDelegate.h"
 
 @class LMDPadView;
 @class LMPixelView;

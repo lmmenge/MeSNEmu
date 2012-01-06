@@ -13,7 +13,7 @@
 #import "LMPixelLayer.h"
 #import "LMPixelView.h"
 
-#import "snes4iphone/Snes9xMain.h"
+#import "SiOS/Snes9xMain.h"
 
 void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 {

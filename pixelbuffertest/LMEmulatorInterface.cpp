@@ -6,10 +6,9 @@
 //  Copyright (c) 2012 Lucas Menge. All rights reserved.
 //
 
-#import "snes4iphone/snes9x/port.h"
-#import "snes4iphone/snes9x/snes9x.h"
-#import "snes4iphone/snes9x/controls.h"
-#import "snes4iphone/snes9x/gfx.h"
+#import "SiOS/snes9x/snes9x.h"
+#import "SiOS/snes9x/controls.h"
+#import "SiOS/snes9x/gfx.h"
 
 //unsigned int* screenPixels = 0;
 
