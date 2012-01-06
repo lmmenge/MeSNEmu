@@ -214,11 +214,19 @@ void S9xSyncSpeed(void)
     ++next_frame_time.tv_usec;
   }
   
-  if (Settings.SkipFrames == AUTO_FRAMERATE && !Settings.SoundSync)
+  int lag = TIMER_DIFF (now, next_frame_time);
+  debt += lag-(int)Settings.FrameTime;
+  
+  // if we're  going too fast
+  if(debt < 0 && IPPU.SkippedFrames == 0)
   {
-    int lag = TIMER_DIFF (now, next_frame_time);
-    debt += lag-(int)Settings.FrameTime;
-    
+    usleep(-debt);
+    debt = 0;
+  }
+  
+  // if we're going too slow
+  if (Settings.SkipFrames == AUTO_FRAMERATE && !Settings.SoundSync)
+  {    
     if(debt > (int)Settings.FrameTime*10 || IPPU.SkippedFrames >= 2)
       debt = 0;
     
@@ -233,7 +241,8 @@ void S9xSyncSpeed(void)
       IPPU.SkippedFrames = 0;
     }
   }
-  next_frame_time = now;
+  //next_frame_time = now;
+  gettimeofday (&next_frame_time, NULL);
 }
 
 const char *S9xBasename (const char *f)
