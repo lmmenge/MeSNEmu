@@ -57,7 +57,6 @@ int SIOpenSound(int buffersize)
 {
   SI_SoundIsInit = 0;
 	
-  //SIMuteSound();
   if(SI_AQCallbackStruct.queue != 0)
     AudioQueueDispose(SI_AQCallbackStruct.queue, true);
   

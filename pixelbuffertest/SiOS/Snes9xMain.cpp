@@ -481,6 +481,8 @@ extern "C" int SIStartWithROM (char* rom_filename)
 #endif
       if (Settings.Paused || SI_EmulationPaused || !SI_EmulationRun)
       {
+        SISaveSRAM();
+        
         do {
           //S9xProcessEvents(FALSE);
           if(!SI_EmulationRun)
