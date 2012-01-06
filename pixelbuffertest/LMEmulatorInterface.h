@@ -18,8 +18,10 @@ extern int iphone_main(char* filename);
 // convenience functions implemented to make things clearer
 void LMSetScreen(unsigned char* screen);
 void LMSetSystemPath(const char* path);
+
 void LMSetEmulationRunning(int value);
 void LMSetEmulationPaused(int value);
+void LMReset();
 
 void LMSetControllerPushButton(int button);
 void LMSetControllerReleaseButton(int button);

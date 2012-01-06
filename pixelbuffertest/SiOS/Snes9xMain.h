@@ -21,6 +21,7 @@ typedef struct {
 } SoundStatus;
 
 const char *SIGetSnapshotDirectory(void);
+void SILoadSRAM (void);
 void SISaveSRAM (void);
 void SIFlipFramebuffer(int flip, int sync);
 

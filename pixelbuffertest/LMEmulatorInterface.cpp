@@ -1,5 +1,5 @@
 //
-//  LMEmulatorInterface.c
+//  LMEmulatorInterface.cpp
 //  pixelbuffertest
 //
 //  Created by Lucas Menge on 1/2/12.
@@ -7,8 +7,11 @@
 //
 
 #import "SiOS/snes9x/snes9x.h"
+#import "SiOS/snes9x/memmap.h"
 #import "SiOS/snes9x/controls.h"
 #import "SiOS/snes9x/gfx.h"
+
+#import "SiOS/Snes9xMain.h"
 
 //unsigned int* screenPixels = 0;
 
@@ -44,6 +47,15 @@ extern "C" void LMSetEmulationPaused(int value)
   else if(value > 1)
     value = 1;
   SI_EmulationPaused = value;
+}
+
+extern "C" void LMReset()
+{
+  SI_EmulationPaused = 1;
+  SISaveSRAM();
+  S9xReset();
+  SILoadSRAM();
+  SI_EmulationPaused = 0;
 }
 
 extern "C" void LMSetControllerPushButton(unsigned long button)

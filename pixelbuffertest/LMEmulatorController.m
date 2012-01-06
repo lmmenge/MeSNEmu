@@ -15,6 +15,12 @@
 
 #import "SiOS/Snes9xMain.h"
 
+typedef enum _LMEmulatorAlert
+{
+  LMEmulatorAlertReset,
+  LMEmulatorAlertExit
+} LMEmulatorAlert;
+
 void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 {
   // slowest method. direct computation
@@ -83,7 +89,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 
 #pragma mark -
 
-@interface LMEmulatorController(Privates) <UIActionSheetDelegate>
+@interface LMEmulatorController(Privates) <UIActionSheetDelegate, UIAlertViewDelegate>
 @end
 
 #pragma mark -
@@ -115,15 +121,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   [pool release];
 }
 
-- (void)didBecomeInactive
-{
-  LMSetEmulationPaused(1);
-}
-
-- (void)didBecomeActive
-{
-  LMSetEmulationPaused(0);
-}
+#pragma mark UI Interaction Handling
 
 - (void)buttonDown:(UIButton*)button
 {
@@ -173,21 +171,68 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 {
   LMSetEmulationPaused(1);
   
-  UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:@"Options" delegate:self cancelButtonTitle:@"Back to game" destructiveButtonTitle:@"Exit game" otherButtonTitles:nil];
+  UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:@"Options" delegate:self cancelButtonTitle:@"Back to game" destructiveButtonTitle:@"Exit game" otherButtonTitles:@"Reset", nil];
   [sheet showInView:self.view];
   [sheet release];
 }
 
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+#pragma mark Delegates
+
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+  NSLog(@"%i", buttonIndex);
   if(buttonIndex == actionSheet.destructiveButtonIndex)
   {
-    LMSetEmulationRunning(0);
-    [self.navigationController popViewControllerAnimated:YES];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Exit game?" message:@"Any unsaved progress will be lost." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Exit", nil];
+    alert.tag = LMEmulatorAlertExit;
+    [alert show];
+    [alert release];
+  }
+  else if(buttonIndex == 1)
+  {
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Reset game?" message:@"Any unsaved progress will be lost." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Reset", nil];
+    alert.tag = LMEmulatorAlertReset;
+    [alert show];
+    [alert release];
   }
   else
     LMSetEmulationPaused(0);
 }
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+  if(alertView.tag == LMEmulatorAlertReset)
+  {
+    if(buttonIndex == alertView.cancelButtonIndex)
+      LMSetEmulationPaused(0);
+    else
+      LMReset();
+  }
+  else if(alertView.tag == LMEmulatorAlertExit)
+  {
+    if(buttonIndex == alertView.cancelButtonIndex)
+      LMSetEmulationPaused(0);
+    else
+    {
+      LMSetEmulationRunning(0);
+      [self.navigationController popViewControllerAnimated:YES];
+    }
+  }
+}
+
+#pragma mark Notifications
+
+- (void)didBecomeInactive
+{
+  LMSetEmulationPaused(1);
+}
+
+- (void)didBecomeActive
+{
+  LMSetEmulationPaused(0);
+}
+
+#pragma mark UI Creation Shortcuts
 
 - (UIButton*)smallButtonNamed:(NSString*)name
 {
