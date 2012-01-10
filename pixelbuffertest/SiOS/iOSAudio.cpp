@@ -28,7 +28,8 @@ typedef struct AQCallbackStruct {
 
 #pragma mark - Global Variables
 
-const int SI_IsStereo = 0;
+//const int SI_IsStereo = 0;
+const int SI_IsStereo = 1;
 AQCallbackStruct SI_AQCallbackStruct = {0};
 uint32_t SI_SoundBufferSizeBytes = 0;
 int SI_SoundIsInit = 0;
@@ -64,6 +65,7 @@ int SIOpenSound(int buffersize)
   memset(&SI_AQCallbackStruct, 0, sizeof(AQCallbackStruct));
   
   Float64 sampleRate = 22050.0;	
+  sampleRate = 32000.0;
 	SI_SoundBufferSizeBytes = buffersize;
 	
   SI_AQCallbackStruct.mDataFormat.mSampleRate = sampleRate;

@@ -203,6 +203,7 @@ const char * S9xGetFilenameInc (const char *inExt, enum s9x_getdirtype dirtype)
 void S9xSyncSpeed(void)
 {
   static int debt = 0;
+  static bool sleptLast = 0;
   static struct timeval next_frame_time = { 0, 0 };
   struct timeval now;
   
@@ -218,10 +219,15 @@ void S9xSyncSpeed(void)
   debt += lag-(int)Settings.FrameTime;
   
   // if we're  going too fast
+  // TODO: slow down when going too fast in a way that we don't frameskip too much
+  bool sleptThis = 0;
   if(debt < 0 && IPPU.SkippedFrames == 0)
+  //if(debt+(int)Settings.FrameTime < 0 && IPPU.SkippedFrames == 0)
   {
     usleep(-debt);
+    //usleep(-(debt+(int)Settings.FrameTime));
     debt = 0;
+    sleptThis = 1;
   }
   
   // if we're going too slow
@@ -230,7 +236,7 @@ void S9xSyncSpeed(void)
     if(debt > (int)Settings.FrameTime*10 || IPPU.SkippedFrames >= 2)
       debt = 0;
     
-    if(debt > 0)
+    if(debt > 0 && sleptLast == 0)
     {
       IPPU.RenderThisFrame = 0;
       IPPU.SkippedFrames++;
@@ -241,6 +247,11 @@ void S9xSyncSpeed(void)
       IPPU.SkippedFrames = 0;
     }
   }
+  if(sleptThis == 1)
+    sleptLast = 1;
+  else
+    sleptLast = 0;
+  
   //next_frame_time = now;
   gettimeofday (&next_frame_time, NULL);
 }

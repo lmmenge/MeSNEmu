@@ -584,6 +584,7 @@
 		A050662914B21C7F003E0C5E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "pixelbuffertest/pixelbuffertest-Prefix.pch";
 				INFOPLIST_FILE = "pixelbuffertest/pixelbuffertest-Info.plist";

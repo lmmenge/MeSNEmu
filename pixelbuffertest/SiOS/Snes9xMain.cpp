@@ -164,10 +164,10 @@ extern "C" int SIStartWithROM (char* rom_filename)
 	Settings.FrameTimePAL = 20000;
 	Settings.FrameTimeNTSC = 16667;
 	Settings.SixteenBitSound = TRUE;
-	//Settings.Stereo = TRUE;
-  Settings.Stereo = FALSE;
-	//Settings.SoundPlaybackRate = 32000;
-  Settings.SoundPlaybackRate = 22050;
+	Settings.Stereo = TRUE;
+  //Settings.Stereo = FALSE;
+	Settings.SoundPlaybackRate = 32000;
+  //Settings.SoundPlaybackRate = 22050;
 	//Settings.SoundInputRate = 32000;
   Settings.SoundInputRate = 32000;
   Settings.SoundSync = FALSE;
