@@ -219,7 +219,7 @@ void S9xSyncSpeed(void)
   debt += lag-(int)Settings.FrameTime;
   
   // if we're  going too fast
-  // TODO: slow down when going too fast in a way that we don't frameskip too much
+  // TODO: slow down better when going too fast in a way that we don't frameskip too much
   bool sleptThis = 0;
   if(debt < 0 && IPPU.SkippedFrames == 0)
   //if(debt+(int)Settings.FrameTime < 0 && IPPU.SkippedFrames == 0)
