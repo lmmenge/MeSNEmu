@@ -1,13 +1,13 @@
 //
 //  LMEmulatorInterface.h
-//  pixelbuffertest
+//  SiOS
 //
 //  Created by Lucas Menge on 1/2/12.
 //  Copyright (c) 2012 Lucas Menge. All rights reserved.
 //
 
-#ifndef pixelbuffertest_LMEmulatorInterface_h
-#define pixelbuffertest_LMEmulatorInterface_h
+#ifndef SiOS_LMEmulatorInterface_h
+#define SiOS_LMEmulatorInterface_h
 
 // where the pixels for the screen are stored. front-end defined
 //extern unsigned int* screenPixels;

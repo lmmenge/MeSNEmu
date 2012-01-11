@@ -1,5 +1,5 @@
 //
-// Prefix header for all source files of the 'pixelbuffertest' target in the 'pixelbuffertest' project
+// Prefix header for all source files of the 'SiOS' target in the 'SiOS' project
 //
 
 #import <Availability.h>

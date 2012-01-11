@@ -1,13 +1,13 @@
 //
 //  iOSAudio.h
-//  pixelbuffertest
+//  SiOS
 //
 //  Created by Lucas Menge on 1/2/12.
 //  Copyright (c) 2012 Lucas Menge. All rights reserved.
 //
 
-#ifndef pixelbuffertest_iOSAudio_h
-#define pixelbuffertest_iOSAudio_h
+#ifndef SiOS_iOSAudio_h
+#define SiOS_iOSAudio_h
 
 #ifdef __cplusplus
 extern "C" {

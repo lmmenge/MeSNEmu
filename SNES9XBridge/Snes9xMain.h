@@ -1,13 +1,13 @@
 //
 //  Snes9xMain.h
-//  pixelbuffertest
+//  SiOS
 //
 //  Created by Lucas Menge on 1/2/12.
 //  Copyright (c) 2012 Lucas Menge. All rights reserved.
 //
 
-#ifndef pixelbuffertest_Snes9xMain_h
-#define pixelbuffertest_Snes9xMain_h
+#ifndef SiOS_Snes9xMain_h
+#define SiOS_Snes9xMain_h
 
 #include "../SNES9X/port.h"
 
