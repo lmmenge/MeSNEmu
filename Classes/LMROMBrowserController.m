@@ -11,6 +11,36 @@
 #import "LMEmulatorController.h"
 #import "LMEmulatorInterface.h"
 
+@implementation LMROMBrowserController(Privates)
+
+- (void)reloadROMList
+{
+  // copy all ROMs from the Inbox to the documents folder
+  // TODO: import the ROMs
+  [[NSFileManager defaultManager] removeItemAtPath:[_romPath stringByAppendingPathComponent:@"Inbox"] error:nil];
+  
+  // list all ROMs in the documents folder
+  NSMutableArray* tempRomList = [NSMutableArray array];
+  NSArray* proposedFileList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_romPath error:nil];
+  
+  for(NSString* file in proposedFileList)
+  {
+    BOOL isDirectory = NO;
+    if([[NSFileManager defaultManager] fileExistsAtPath:[_romPath stringByAppendingPathComponent:file] isDirectory:&isDirectory])
+    {
+      if(isDirectory == NO)
+        [tempRomList addObject:file];
+    }
+  }
+  
+  _romList = [tempRomList copy];
+  [self.tableView reloadData];
+}
+
+@end
+
+#pragma mark -
+
 @implementation LMROMBrowserController
 
 
@@ -100,24 +130,8 @@
   // set it as the system dir
   LMSetSystemPath([documentsPath UTF8String]);
   
-  // copy all ROMs from the Inbox to the documents folder
-  [[NSFileManager defaultManager] removeItemAtPath:[documentsPath stringByAppendingPathComponent:@"Inbox"] error:nil];
-  
-  // list all ROMs in the documents folder
-  NSMutableArray* tempRomList = [NSMutableArray array];
-  NSArray* proposedFileList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsPath error:nil];
-  
-  for(NSString* file in proposedFileList)
-  {
-    BOOL isDirectory = NO;
-    if([[NSFileManager defaultManager] fileExistsAtPath:[documentsPath stringByAppendingPathComponent:file] isDirectory:&isDirectory])
-    {
-      if(isDirectory == NO)
-        [tempRomList addObject:file];
-    }
-  }
-  
-  _romList = [tempRomList copy];
+  _romPath = [documentsPath copy];
+  [self reloadROMList];
 }
 
 - (void)viewDidUnload
@@ -131,6 +145,17 @@
   
   [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
   [self.navigationController setNavigationBarHidden:NO animated:YES];
+  
+  [self reloadROMList];
+  
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadROMList) name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+  [super viewWillDisappear:animated];
+  
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -151,8 +176,12 @@
 
 - (void)dealloc
 {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  
   [_romList release];
   _romList = nil;
+  [_romPath release];
+  _romPath = nil;
   
   [super dealloc];
 }

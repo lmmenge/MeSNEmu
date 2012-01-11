@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface LMROMBrowserController : UITableViewController {
+  NSString* _romPath;
   NSArray* _romList;
 }
 
