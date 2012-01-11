@@ -6,12 +6,12 @@
 //  Copyright (c) 2012 Lucas Menge. All rights reserved.
 //
 
-#import "SiOS/snes9x/snes9x.h"
-#import "SiOS/snes9x/memmap.h"
-#import "SiOS/snes9x/controls.h"
-#import "SiOS/snes9x/gfx.h"
+#import "../SNES9X/snes9x.h"
+#import "../SNES9X/memmap.h"
+#import "../SNES9X/controls.h"
+#import "../SNES9X/gfx.h"
 
-#import "SiOS/Snes9xMain.h"
+#import "../SNES9XBridge/Snes9xMain.h"
 
 //unsigned int* screenPixels = 0;
 

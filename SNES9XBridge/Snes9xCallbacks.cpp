@@ -10,11 +10,11 @@
 
 #include <sys/time.h>
 
-#include "snes9x/snes9x.h"
-#include "snes9x/memmap.h"
-#include "snes9x/apu/apu.h"
-#include "snes9x/controls.h"
-#include "snes9x/display.h"
+#include "../SNES9X/snes9x.h"
+#include "../SNES9X/memmap.h"
+#include "../SNES9X/apu/apu.h"
+#include "../SNES9X/controls.h"
+#include "../SNES9X/display.h"
 
 #include "Snes9xMain.h"
 

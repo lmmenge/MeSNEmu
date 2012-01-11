@@ -2,11 +2,11 @@
 
 #include <sys/stat.h>
 
-#include "snes9x/snes9x.h"
-#include "snes9x/memmap.h"
-#include "snes9x/apu/apu.h"
-#include "snes9x/controls.h"
-#include "snes9x/display.h"
+#include "../SNES9X/snes9x.h"
+#include "../SNES9X/memmap.h"
+#include "../SNES9X/apu/apu.h"
+#include "../SNES9X/controls.h"
+#include "../SNES9X/display.h"
 
 #include "iOSAudio.h"
 
@@ -230,10 +230,10 @@ extern "C" int SIStartWithROM (char* rom_filename)
   
   s9xcommand_t	cmd;
   
-	ASSIGN_BUTTONf(GP2X_Y,         "Joypad1 X");
-	ASSIGN_BUTTONf(GP2X_B,         "Joypad1 A");
-	ASSIGN_BUTTONf(GP2X_X,         "Joypad1 B");
-	ASSIGN_BUTTONf(GP2X_A,         "Joypad1 Y");
+	ASSIGN_BUTTONf(GP2X_X,         "Joypad1 X");
+	ASSIGN_BUTTONf(GP2X_A,         "Joypad1 A");
+	ASSIGN_BUTTONf(GP2X_B,         "Joypad1 B");
+	ASSIGN_BUTTONf(GP2X_Y,         "Joypad1 Y");
 	ASSIGN_BUTTONf(GP2X_L,         "Joypad1 L");
 	ASSIGN_BUTTONf(GP2X_R,         "Joypad1 R");
 	ASSIGN_BUTTONf(GP2X_SELECT,    "Joypad1 Select");

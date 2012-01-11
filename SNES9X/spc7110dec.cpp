@@ -18,7 +18,7 @@
 
 #ifdef _SPC7110EMU_CPP_
 
-uint8 SPC7110Decomp::read() {
+uint8_t SPC7110Decomp::read() {
   if(decomp_buffer_length == 0) {
     //decompress at least (decomp_buffer_size / 2) bytes to the buffer
     switch(decomp_mode) {

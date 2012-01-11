@@ -84,7 +84,9 @@
   if(self)
   {
     self.userInteractionEnabled = YES;
-    self.backgroundColor = [UIColor whiteColor];
+    
+    self.image = [UIImage imageNamed:@"ButtonDPad.png"];
+    self.contentMode = UIViewContentModeCenter;
   }
   return self;
 }

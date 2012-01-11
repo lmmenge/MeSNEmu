@@ -2,7 +2,7 @@
 
 #import <AudioToolbox/AudioQueue.h>
 
-#include "snes9x/port.h"
+#include "../SNES9X/port.h"
 
 #pragma mark Defines
 

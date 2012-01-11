@@ -8,12 +8,13 @@
 
 #import "LMEmulatorController.h"
 
+#import "LMButtonView.h"
 #import "LMDPadView.h"
 #import "LMEmulatorInterface.h"
 #import "LMPixelLayer.h"
 #import "LMPixelView.h"
 
-#import "SiOS/Snes9xMain.h"
+#import "../SNES9XBridge/Snes9xMain.h"
 
 typedef enum _LMEmulatorAlert
 {
@@ -123,50 +124,6 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 
 #pragma mark UI Interaction Handling
 
-- (void)buttonDown:(UIButton*)button
-{
-  // buttons
-  if(button == _aButton)
-    LMSetControllerPushButton(GP2X_B);
-  else if(button == _bButton)
-    LMSetControllerPushButton(GP2X_X);
-  else if(button == _xButton)
-    LMSetControllerPushButton(GP2X_Y);
-  else if(button == _yButton)
-    LMSetControllerPushButton(GP2X_A);
-  else if(button == _lButton)
-    LMSetControllerPushButton(GP2X_L);
-  else if(button == _rButton)
-    LMSetControllerPushButton(GP2X_R);
-  // start / select
-  else if(button == _startButton)
-    LMSetControllerPushButton(GP2X_START);
-  else if(button == _selectButton)
-    LMSetControllerPushButton(GP2X_SELECT);
-}
-
-- (void)buttonUp:(UIButton*)button
-{
-  // buttons
-  if(button == _aButton)
-    LMSetControllerReleaseButton(GP2X_B);
-  else if(button == _bButton)
-    LMSetControllerReleaseButton(GP2X_X);
-  else if(button == _xButton)
-    LMSetControllerReleaseButton(GP2X_Y);
-  else if(button == _yButton)
-    LMSetControllerReleaseButton(GP2X_A);
-  else if(button == _lButton)
-    LMSetControllerReleaseButton(GP2X_L);
-  else if(button == _rButton)
-    LMSetControllerReleaseButton(GP2X_R);
-  // start / select
-  else if(button == _startButton)
-    LMSetControllerReleaseButton(GP2X_START);
-  else if(button == _selectButton)
-    LMSetControllerReleaseButton(GP2X_SELECT);
-}
-
 - (void)options:(UIButton*)sender event:(UIEvent*)event;
 {
   LMSetEmulationPaused(1);
@@ -234,46 +191,58 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 
 #pragma mark UI Creation Shortcuts
 
-- (UIButton*)smallButtonNamed:(NSString*)name
+- (LMButtonView*)smallButtonWithButton:(int)buttonMap
 {
-  int width = 40;
-  int height = 20;
-  UIButton* button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-  [button setTitle:name forState:UIControlStateNormal];
-  button.titleLabel.font = [UIFont systemFontOfSize:10];
-  button.frame = (CGRect){0,0, width, height};
+  int width = 44;
+  int height = 24;
+  
+  LMButtonView* button = [[LMButtonView alloc] initWithFrame:(CGRect){0,0, width,height}];
   button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-  [button addTarget:self action:@selector(buttonDown:) forControlEvents:UIControlEventTouchDown|UIControlEventTouchDragEnter];
-  [button addTarget:self action:@selector(buttonUp:) forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchDragExit];
-  return button;
+  button.image = [UIImage imageNamed:@"ButtonWide.png"];
+  button.label.textColor = [UIColor colorWithWhite:1 alpha:0.75];
+  button.label.shadowColor = [UIColor colorWithWhite:0 alpha:0.35];
+  button.label.shadowOffset = CGSizeMake(0, -1);
+  button.label.font = [UIFont systemFontOfSize:10];
+  button.button = buttonMap;
+  if(buttonMap == GP2X_START)
+    button.label.text = @"Start";
+  else if(buttonMap == GP2X_SELECT)
+    button.label.text = @"Select";
+  return [button autorelease];
 }
 
-- (UIButton*)buttonNamed:(NSString*)name
+- (LMButtonView*)buttonWithButton:(int)buttonMap
 {
   int side = 50;
-  UIButton* button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-  [button setTitle:name forState:UIControlStateNormal];
-  //button.titleLabel.font = [UIFont systemFontOfSize:10];
-  button.frame = (CGRect){0,0, side, side};
+  side = 60;
+  LMButtonView* button = [[LMButtonView alloc] initWithFrame:(CGRect){0,0, side,side}];
+  button.button = buttonMap;
+  button.label.font = [UIFont boldSystemFontOfSize:27.0];
+  if(buttonMap == GP2X_A || buttonMap == GP2X_B)
+  {
+    button.image = [UIImage imageNamed:@"ButtonDarkPurple.png"];
+    button.label.textColor = [UIColor colorWithRed:63/255.0 green:32/255.0 blue:127/255.0 alpha:0.75];
+    button.label.shadowColor = [UIColor colorWithWhite:1 alpha:0.25];
+    button.label.shadowOffset = CGSizeMake(0, 1);
+    if(buttonMap == GP2X_A)
+      button.label.text = @"A";
+    else if(buttonMap == GP2X_B)
+      button.label.text = @"B";
+  }
+  else if(buttonMap == GP2X_X || buttonMap == GP2X_Y)
+  {
+    button.image = [UIImage imageNamed:@"ButtonLightPurple.png"];
+    button.label.textColor = [UIColor colorWithRed:122/255.0 green:101/255.0 blue:208/255.0 alpha:0.75];
+    button.label.shadowColor = [UIColor colorWithWhite:1 alpha:0.25];
+    button.label.shadowOffset = CGSizeMake(0, 1);
+    if(buttonMap == GP2X_X)
+      button.label.text = @"X";
+    else if(buttonMap == GP2X_Y)
+      button.label.text = @"Y";
+  }
   button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-  [button addTarget:self action:@selector(buttonDown:) forControlEvents:UIControlEventTouchDown|UIControlEventTouchDragEnter];
-  [button addTarget:self action:@selector(buttonUp:) forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchDragExit];
-  return button;
+  return [button autorelease];
 }
-
-- (UIButton*)dButtonNamed:(NSString*)name
-{
-  int side = 50;
-  UIButton* button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-  [button setTitle:name forState:UIControlStateNormal];
-  //button.titleLabel.font = [UIFont systemFontOfSize:10];
-  button.frame = (CGRect){0,0, side, side};
-  button.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin;
-  [button addTarget:self action:@selector(buttonDown:) forControlEvents:UIControlEventTouchDown|UIControlEventTouchDragEnter];
-  [button addTarget:self action:@selector(buttonUp:) forControlEvents:UIControlEventTouchUpInside|UIControlEventTouchDragExit];
-  return button;
-}
-
 @end
 
 #pragma mark -
@@ -325,13 +294,15 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 - (void)loadView
 {
   [super loadView];
-  self.view.backgroundColor = [UIColor blackColor];
+  //self.view.backgroundColor = [UIColor blackColor];
+  self.view.backgroundColor = [UIColor colorWithRed:195/255.0 green:198/255.0 blue:205/255.0 alpha:1];
   
   self.wantsFullScreenLayout = YES;
   self.view.multipleTouchEnabled = YES;
   
   CGSize size = self.view.bounds.size;
   
+  // screen
   int width = 256;
   int height = 224;
   if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
@@ -345,16 +316,26 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   [self.view addSubview:_screenView];
   
   // start / select buttons
-  _startButton = [[self smallButtonNamed:@"Start"] retain];
+  _startButton = [[self smallButtonWithButton:GP2X_START] retain];
   _startButton.frame = (CGRect){(int)((size.width-_startButton.frame.size.width)/2),height+10, _startButton.frame.size};
   [self.view addSubview:_startButton];
   
-  _selectButton = [[self smallButtonNamed:@"Select"] retain];
-  _selectButton.frame = (CGRect){(int)((size.width-_selectButton.frame.size.width)/2),height+20+_selectButton.frame.size.height, _selectButton.frame.size};
+  _selectButton = [[self smallButtonWithButton:GP2X_SELECT] retain];
+  _selectButton.frame = (CGRect){(int)((size.width-_selectButton.frame.size.width)/2),height+15+_selectButton.frame.size.height, _selectButton.frame.size};
   [self.view addSubview:_selectButton];
   
-  _optionsButton = [[self smallButtonNamed:@"Menu"] retain];
-  _optionsButton.frame = (CGRect){(int)((size.width-_optionsButton.frame.size.width)/2),height+50+_optionsButton.frame.size.height, _optionsButton.frame.size};
+  // menu button
+  int smallButtonWidth = 44;
+  int smallButtonHeight = 24;
+  _optionsButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+  [_optionsButton setBackgroundImage:[UIImage imageNamed:@"ButtonWide.png"] forState:UIControlStateNormal];
+  [_optionsButton setTitle:@"Menu" forState:UIControlStateNormal];
+  [_optionsButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.75] forState:UIControlStateNormal];
+  [_optionsButton setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.35] forState:UIControlStateNormal];
+  _optionsButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
+  _optionsButton.titleLabel.font = [UIFont systemFontOfSize:10];
+  _optionsButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+  _optionsButton.frame = (CGRect){(int)((size.width-smallButtonWidth)/2),height+45+smallButtonHeight, smallButtonWidth, smallButtonHeight};
   [_optionsButton removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
   [_optionsButton addTarget:self action:@selector(options:event:) forControlEvents:UIControlEventTouchUpInside];
   [self.view addSubview:_optionsButton];
@@ -367,24 +348,29 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
     screenBorder = 40;
     buttonSpacing = 15;
   }
+  screenBorder = 0;
+  buttonSpacing = 0;
   int buttonSize = 0;
-  _aButton = [[self buttonNamed:@"A"] retain];
+  _aButton = [[self buttonWithButton:GP2X_A] retain];
   buttonSize = _aButton.frame.size.width;
   _aButton.frame = (CGRect){size.width-buttonSize-screenBorder, size.height-buttonSize-screenBorder, _aButton.frame.size};
   [self.view addSubview:_aButton];
   
-  _bButton = [[self buttonNamed:@"B"] retain];
+  _bButton = [[self buttonWithButton:GP2X_B] retain];
   _bButton.frame = (CGRect){size.width-buttonSize*2-screenBorder-buttonSpacing, size.height-buttonSize-screenBorder, _bButton.frame.size};
   [self.view addSubview:_bButton];
   
-  _xButton = [[self buttonNamed:@"X"] retain];
+  _xButton = [[self buttonWithButton:GP2X_X] retain];
   _xButton.frame = (CGRect){size.width-buttonSize-screenBorder, size.height-buttonSize*2-screenBorder-buttonSpacing, _xButton.frame.size};
   [self.view addSubview:_xButton];
   
-  _yButton = [[self buttonNamed:@"Y"] retain];
+  _yButton = [[self buttonWithButton:GP2X_Y] retain];
   _yButton.frame = (CGRect){size.width-buttonSize*2-screenBorder-buttonSpacing, size.height-buttonSize*2-screenBorder-buttonSpacing, _yButton.frame.size};
   [self.view addSubview:_yButton];
   
+  // TODO: L/R buttons
+  
+  // d-pad
   _dPadView = [[LMDPadView alloc] initWithFrame:(CGRect){screenBorder,size.height-150-screenBorder, 150,150}];
   _dPadView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleRightMargin;
   [self.view addSubview:_dPadView];

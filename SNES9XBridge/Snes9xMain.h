@@ -9,7 +9,7 @@
 #ifndef pixelbuffertest_Snes9xMain_h
 #define pixelbuffertest_Snes9xMain_h
 
-#include "snes9x/port.h"
+#include "../SNES9X/port.h"
 
 typedef struct {
   int playback_rate;

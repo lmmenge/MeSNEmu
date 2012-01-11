@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-#import "SiOS/SIScreenDelegate.h"
+#import "../SNES9XBridge/SIScreenDelegate.h"
 
+@class LMButtonView;
 @class LMDPadView;
 @class LMPixelView;
 
@@ -25,15 +26,15 @@
   NSThread* _emulationThread;
   
   // start / select
-  UIButton* _startButton;
-  UIButton* _selectButton;
+  LMButtonView* _startButton;
+  LMButtonView* _selectButton;
   // buttons
-  UIButton* _aButton;
-  UIButton* _bButton;
-  UIButton* _xButton;
-  UIButton* _yButton;
-  UIButton* _lButton;
-  UIButton* _rButton;
+  LMButtonView* _aButton;
+  LMButtonView* _bButton;
+  LMButtonView* _xButton;
+  LMButtonView* _yButton;
+  LMButtonView* _lButton;
+  LMButtonView* _rButton;
   // directions
   LMDPadView* _dPadView;
   
