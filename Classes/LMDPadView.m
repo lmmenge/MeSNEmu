@@ -50,6 +50,52 @@
       LMSetControllerPushButton(GP2X_UP);
     else if(location.y > 100)
       LMSetControllerPushButton(GP2X_DOWN);
+    else
+    {
+      // inside the middle square things get "tricky"
+      int x = location.x-75;
+      int y = location.y-75;
+      if(x > 0)
+      {
+        // right or up or down
+        if(y > 0)
+        {
+          // right or down
+          if(x > y)
+            LMSetControllerPushButton(GP2X_RIGHT);
+          else
+            LMSetControllerPushButton(GP2X_DOWN);
+        }
+        else
+        {
+          // right or up
+          if(x > -y)
+            LMSetControllerPushButton(GP2X_RIGHT);
+          else
+            LMSetControllerPushButton(GP2X_UP);
+        }
+      }
+      else
+      {
+        // left or up or down
+        if(y > 0)
+        {
+          // left or down
+          if(-x > y)
+            LMSetControllerPushButton(GP2X_LEFT);
+          else
+            LMSetControllerPushButton(GP2X_DOWN);
+        }
+        else
+        {
+          // left or up
+          if(-x > -y)
+            LMSetControllerPushButton(GP2X_LEFT);
+          else
+            LMSetControllerPushButton(GP2X_UP);
+        }
+      }
+    }
   }
   else
   {
