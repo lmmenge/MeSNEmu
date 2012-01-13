@@ -1,6 +1,7 @@
 #include "Snes9xMain.h"
 
 #include <sys/stat.h>
+#include <sys/time.h>
 
 #include "../SNES9X/snes9x.h"
 #include "../SNES9X/memmap.h"
@@ -48,6 +49,8 @@ extern int SI_Frameskip;
 extern volatile int SI_EmulationRun;
 extern volatile int SI_EmulationPaused;
 extern unsigned int *screenPixels;
+
+extern struct timeval SI_NextFrameTime;
 
 #pragma mark - Global Variables
 
@@ -142,6 +145,8 @@ void state_unc_close()
 extern "C" int SIStartWithROM (char* rom_filename)
 {
   // legacy init
+  SI_NextFrameTime = (timeval){0, 0};
+  
   // saves
 	statef_open  = state_unc_open;
 	statef_read  = state_unc_read;

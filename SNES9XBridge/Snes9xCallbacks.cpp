@@ -28,6 +28,10 @@
 
 extern int SI_SoundOn;
 
+#pragma mark - Global Variables
+
+struct timeval SI_NextFrameTime = { 0, 0 };
+
 #pragma mark - SNES9X Callbacks
 
 void S9xExit ()
@@ -220,17 +224,16 @@ void S9xSyncSpeed(void)
 {
   static int debt = 0;
   static bool sleptLast = 0;
-  static struct timeval next_frame_time = { 0, 0 };
   struct timeval now;
   
   // calculate lag
   gettimeofday (&now, NULL);
-  if (next_frame_time.tv_sec == 0)
+  if (SI_NextFrameTime.tv_sec == 0)
   {
-    next_frame_time = now;
-    ++next_frame_time.tv_usec;
+    SI_NextFrameTime = now;
+    ++SI_NextFrameTime.tv_usec;
   }
-  int lag = TIMER_DIFF (now, next_frame_time);
+  int lag = TIMER_DIFF (now, SI_NextFrameTime);
   debt += lag-(int)Settings.FrameTime;
   
   // if we're  going too fast
@@ -284,7 +287,7 @@ void S9xSyncSpeed(void)
     sleptLast = 0;
   
   //next_frame_time = now;
-  gettimeofday (&next_frame_time, NULL);
+  gettimeofday (&SI_NextFrameTime, NULL);
 }
 
 const char *S9xBasename (const char *f)
