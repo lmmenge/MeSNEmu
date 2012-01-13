@@ -15,6 +15,7 @@
 @class LMPixelView;
 
 @interface LMEmulatorController : UIViewController <SIScreenDelegate> {
+  UIActionSheet* _actionSheet;
   LMPixelView* _screenView;
   
   unsigned int _bufferWidth;

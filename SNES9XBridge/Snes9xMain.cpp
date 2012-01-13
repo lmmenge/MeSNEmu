@@ -51,6 +51,8 @@ extern volatile int SI_EmulationPaused;
 extern unsigned int *screenPixels;
 
 extern struct timeval SI_NextFrameTime;
+extern int SI_FrameTimeDebt;
+extern int SI_SleptLastFrame;
 
 #pragma mark - Global Variables
 
@@ -146,6 +148,8 @@ extern "C" int SIStartWithROM (char* rom_filename)
 {
   // legacy init
   SI_NextFrameTime = (timeval){0, 0};
+  SI_FrameTimeDebt = 0;
+  SI_SleptLastFrame = 0;
   
   // saves
 	statef_open  = state_unc_open;

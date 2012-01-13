@@ -261,6 +261,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   LMSetEmulationPaused(1);
   
   UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Back to game" destructiveButtonTitle:@"Exit game" otherButtonTitles:@"Reset", nil];
+  _actionSheet = sheet;
   [sheet showInView:self.view];
   [sheet release];
 }
@@ -286,6 +287,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   }
   else
     LMSetEmulationPaused(0);
+  _actionSheet = nil;
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
@@ -313,12 +315,13 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 
 - (void)didBecomeInactive
 {
-  LMSetEmulationPaused(1);
+  if(_actionSheet == nil)
+    [self options:nil event:nil];
 }
 
 - (void)didBecomeActive
 {
-  LMSetEmulationPaused(0);
+  //LMSetEmulationPaused(0);
 }
 
 #pragma mark UI Creation Shortcuts

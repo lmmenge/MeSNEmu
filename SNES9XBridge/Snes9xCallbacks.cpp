@@ -31,6 +31,8 @@ extern int SI_SoundOn;
 #pragma mark - Global Variables
 
 struct timeval SI_NextFrameTime = { 0, 0 };
+int SI_FrameTimeDebt = 0;
+int SI_SleptLastFrame = 0;
 
 #pragma mark - SNES9X Callbacks
 
@@ -222,8 +224,6 @@ const char * S9xGetFilenameInc (const char *inExt, enum s9x_getdirtype dirtype)
 
 void S9xSyncSpeed(void)
 {
-  static int debt = 0;
-  static bool sleptLast = 0;
   struct timeval now;
   
   // calculate lag
@@ -234,17 +234,17 @@ void S9xSyncSpeed(void)
     ++SI_NextFrameTime.tv_usec;
   }
   int lag = TIMER_DIFF (now, SI_NextFrameTime);
-  debt += lag-(int)Settings.FrameTime;
+  SI_FrameTimeDebt += lag-(int)Settings.FrameTime;
   
   // if we're  going too fast
   // TODO: slow down better when going too fast in a way that we don't frameskip too much
   bool sleptThis = 0;
-  if(debt < 0 && IPPU.SkippedFrames == 0)
+  if(SI_FrameTimeDebt < 0 && IPPU.SkippedFrames == 0)
   //if(debt+(int)Settings.FrameTime < 0 && IPPU.SkippedFrames == 0)
   {
-    usleep(-debt);
+    usleep(-SI_FrameTimeDebt);
     //usleep(-(debt+(int)Settings.FrameTime));
-    debt = 0;
+    SI_FrameTimeDebt = 0;
     sleptThis = 1;
   }
   
@@ -252,10 +252,10 @@ void S9xSyncSpeed(void)
   if (Settings.SkipFrames == AUTO_FRAMERATE && !Settings.SoundSync)
   {
     // auto frameskip
-    if(debt > (int)Settings.FrameTime*10 || IPPU.SkippedFrames >= 2)
-      debt = 0;
+    if(SI_FrameTimeDebt > (int)Settings.FrameTime*10 || IPPU.SkippedFrames >= 2)
+      SI_FrameTimeDebt = 0;
     
-    if(debt > 0 && sleptLast == 0)
+    if(SI_FrameTimeDebt > 0 && SI_SleptLastFrame == 0)
     {
       IPPU.RenderThisFrame = 0;
       IPPU.SkippedFrames++;
@@ -282,9 +282,9 @@ void S9xSyncSpeed(void)
   }
   
   if(sleptThis == 1)
-    sleptLast = 1;
+    SI_SleptLastFrame = 1;
   else
-    sleptLast = 0;
+    SI_SleptLastFrame = 0;
   
   //next_frame_time = now;
   gettimeofday (&SI_NextFrameTime, NULL);

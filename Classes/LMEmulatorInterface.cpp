@@ -23,6 +23,10 @@ volatile int SI_EmulationRun = 0;
 volatile int SI_EmulationSaving = 0;
 volatile int SI_EmulationPaused = 0;
 
+extern struct timeval SI_NextFrameTime;
+extern int SI_FrameTimeDebt;
+extern int SI_SleptLastFrame;
+
 char SI_DocumentsPath[255];
 
 extern "C" void LMSetScreen(unsigned char* screen)
@@ -73,6 +77,12 @@ extern "C" void LMSetEmulationPaused(int value)
     value = 0;
   else if(value > 1)
     value = 1;
+  if(value == 0)
+  {
+    SI_NextFrameTime = (timeval){0,0};
+    SI_FrameTimeDebt = 0;
+    SI_SleptLastFrame = 0;
+  }
   SI_EmulationPaused = value;
 }
 
