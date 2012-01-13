@@ -15,6 +15,10 @@
 
 //unsigned int* screenPixels = 0;
 
+int SI_SoundOn = 1;
+int SI_AutoFrameskip = 1;
+int SI_Frameskip = 0;
+
 volatile int SI_EmulationRun = 0;
 volatile int SI_EmulationSaving = 0;
 volatile int SI_EmulationPaused = 0;
@@ -29,6 +33,29 @@ extern "C" void LMSetScreen(unsigned char* screen)
 extern "C" void LMSetSystemPath(const char* path)
 {
   strcpy(SI_DocumentsPath, path);
+}
+
+extern "C" void LMSetSoundOn(int value)
+{
+  if(value < 0)
+    value = 0;
+  else if(value > 1)
+    value = 1;
+  SI_SoundOn = value;
+}
+
+extern "C" void LMSetAutoFrameskip(int value)
+{
+  if(value < 0)
+    value = 0;
+  else if(value > 1)
+    value = 1;
+  SI_AutoFrameskip = value;
+}
+
+extern "C" void LMSetFrameskip(int value)
+{
+  SI_Frameskip = value;
 }
 
 extern "C" void LMSetEmulationRunning(int value)

@@ -13,6 +13,7 @@
 #include "../SNES9X/snes9x.h"
 #include "../SNES9X/memmap.h"
 #include "../SNES9X/apu/apu.h"
+#include "../SNES9X/conffile.h"
 #include "../SNES9X/controls.h"
 #include "../SNES9X/display.h"
 
@@ -25,12 +26,27 @@
 
 #pragma mark - External Forward Declarations
 
-extern SoundStatus so;
+extern int SI_SoundOn;
 
 #pragma mark - SNES9X Callbacks
 
 void S9xExit ()
 {
+}
+
+void S9xParsePortConfig(ConfigFile &a, int pass)
+{
+  
+}
+
+void S9xExtraUsage (void)
+{
+  
+}
+
+void S9xParseArg (char **a, int &b, int c)
+{
+  
 }
 
 const char * S9xGetDirectory (enum s9x_getdirtype dirtype)
@@ -207,14 +223,13 @@ void S9xSyncSpeed(void)
   static struct timeval next_frame_time = { 0, 0 };
   struct timeval now;
   
+  // calculate lag
   gettimeofday (&now, NULL);
-  
   if (next_frame_time.tv_sec == 0)
   {
     next_frame_time = now;
     ++next_frame_time.tv_usec;
   }
-  
   int lag = TIMER_DIFF (now, next_frame_time);
   debt += lag-(int)Settings.FrameTime;
   
@@ -230,9 +245,10 @@ void S9xSyncSpeed(void)
     sleptThis = 1;
   }
   
-  // if we're going too slow
+  // if we're going too slow or fixed frameskip
   if (Settings.SkipFrames == AUTO_FRAMERATE && !Settings.SoundSync)
-  {    
+  {
+    // auto frameskip
     if(debt > (int)Settings.FrameTime*10 || IPPU.SkippedFrames >= 2)
       debt = 0;
     
@@ -247,6 +263,21 @@ void S9xSyncSpeed(void)
       IPPU.SkippedFrames = 0;
     }
   }
+  else
+  {
+    // frameskip a set number of frames
+    if(IPPU.SkippedFrames < Settings.SkipFrames)
+    {
+      IPPU.RenderThisFrame = 0;
+      IPPU.SkippedFrames++;
+    }
+    else
+    {
+      IPPU.RenderThisFrame = 1;
+      IPPU.SkippedFrames = 0;
+    }
+  }
+  
   if(sleptThis == 1)
     sleptLast = 1;
   else
@@ -270,13 +301,12 @@ const char *S9xBasename (const char *f)
 
 //};
 
-//bool8_32 S9xOpenSoundDevice (int mode, bool8_32 stereo, int buffer_size)
-bool8 S9xOpenSoundDevice (void) // HACK: this is never called, apparently
+bool8 S9xOpenSoundDevice (void)
 {
-  so.sound_switch = 255;
-  //so.playback_rate = mode;
-  so.stereo = FALSE;//stereo;
-  return TRUE;
+  if(SI_SoundOn)
+    return TRUE;
+  else
+    return FALSE;
 }
 
 void S9xAutoSaveSRAM (void)

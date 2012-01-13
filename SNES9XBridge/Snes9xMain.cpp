@@ -20,21 +20,21 @@
 
 enum
 {
-  GP2X_UP=0x1,
-  GP2X_LEFT=0x4,
-  GP2X_DOWN=0x10,
-  GP2X_RIGHT=0x40,
-  GP2X_START=1<<8,
-  GP2X_SELECT=1<<9,
-  GP2X_L=1<<10,
-  GP2X_R=1<<11,
-  GP2X_A=1<<12,
-  GP2X_B=1<<13,
-  GP2X_X=1<<14,
-  GP2X_Y=1<<15,
-  GP2X_VOL_UP=1<<23,
-  GP2X_VOL_DOWN=1<<22,
-  GP2X_PUSH=1<<27
+  SIOS_UP=0x1,
+  SIOS_LEFT=0x4,
+  SIOS_DOWN=0x10,
+  SIOS_RIGHT=0x40,
+  SIOS_START=1<<8,
+  SIOS_SELECT=1<<9,
+  SIOS_L=1<<10,
+  SIOS_R=1<<11,
+  SIOS_A=1<<12,
+  SIOS_B=1<<13,
+  SIOS_X=1<<14,
+  SIOS_Y=1<<15,
+  SIOS_VOL_UP=1<<23,
+  SIOS_VOL_DOWN=1<<22,
+  SIOS_PUSH=1<<27
 };
 
 #pragma mark - External Forward Declarations
@@ -42,6 +42,9 @@ enum
 extern "C" void SIFlipFramebufferClient(void);
 
 extern char SI_DocumentsPath[1024];
+extern int SI_SoundOn;
+extern int SI_AutoFrameskip;
+extern int SI_Frameskip;
 extern volatile int SI_EmulationRun;
 extern volatile int SI_EmulationPaused;
 extern unsigned int *screenPixels;
@@ -50,8 +53,6 @@ extern unsigned int *screenPixels;
 
 char currentWorkingDir[MAX_PATH+1];
 char snesSramDir[MAX_PATH+1];
-
-SoundStatus so;
 
 uint8 *vrambuffer = NULL;
 
@@ -182,7 +183,10 @@ extern "C" int SIStartWithROM (char* rom_filename)
 	Settings.DumpStreamsMaxFrames = -1;
 	Settings.StretchScreenshots = 1;
 	Settings.SnapshotScreenshots = TRUE;
-	Settings.SkipFrames = AUTO_FRAMERATE;
+  if(SI_AutoFrameskip)
+    Settings.SkipFrames = AUTO_FRAMERATE;
+  else
+    Settings.SkipFrames = SI_Frameskip;
   //Settings.SkipFrames = 1;
 	Settings.TurboSkipFrames = 15;
 	Settings.CartAName[0] = 0;
@@ -190,17 +194,6 @@ extern "C" int SIStartWithROM (char* rom_filename)
 #ifdef NETPLAY_SUPPORT
 	Settings.ServerName[0] = 0;
 #endif
-  
-/*#ifdef JOYSTICK_SUPPORT
-	unixSettings.JoystickEnabled = TRUE;
-#else
-	unixSettings.JoystickEnabled = FALSE;
-#endif
-	unixSettings.ThreadSound = TRUE;
-	unixSettings.SoundBufferSize = 100;
-	unixSettings.SoundFragmentSize = 2048;*/
-  
-	ZeroMemory(&so, sizeof(so));
   
 	CPU.Flags = 0;
   
@@ -219,7 +212,7 @@ extern "C" int SIStartWithROM (char* rom_filename)
   
   int samplecount = Settings.SoundPlaybackRate/(Settings.PAL ? 50 : 60);
   int soundBufferSize = samplecount<<(1+(Settings.Stereo?1:0));
-	S9xInitSound(soundBufferSize, 0);
+  S9xInitSound(soundBufferSize, 0);
 	S9xSetSoundMute(TRUE);
   
   S9xReset();
@@ -230,18 +223,18 @@ extern "C" int SIStartWithROM (char* rom_filename)
   
   s9xcommand_t	cmd;
   
-	ASSIGN_BUTTONf(GP2X_X,         "Joypad1 X");
-	ASSIGN_BUTTONf(GP2X_A,         "Joypad1 A");
-	ASSIGN_BUTTONf(GP2X_B,         "Joypad1 B");
-	ASSIGN_BUTTONf(GP2X_Y,         "Joypad1 Y");
-	ASSIGN_BUTTONf(GP2X_L,         "Joypad1 L");
-	ASSIGN_BUTTONf(GP2X_R,         "Joypad1 R");
-	ASSIGN_BUTTONf(GP2X_SELECT,    "Joypad1 Select");
-	ASSIGN_BUTTONf(GP2X_START,     "Joypad1 Start");
-	ASSIGN_BUTTONf(GP2X_UP,        "Joypad1 Up");
-	ASSIGN_BUTTONf(GP2X_DOWN,      "Joypad1 Down");
-	ASSIGN_BUTTONf(GP2X_LEFT,      "Joypad1 Left");
-	ASSIGN_BUTTONf(GP2X_RIGHT,     "Joypad1 Right");
+	ASSIGN_BUTTONf(SIOS_X,         "Joypad1 X");
+	ASSIGN_BUTTONf(SIOS_A,         "Joypad1 A");
+	ASSIGN_BUTTONf(SIOS_B,         "Joypad1 B");
+	ASSIGN_BUTTONf(SIOS_Y,         "Joypad1 Y");
+	ASSIGN_BUTTONf(SIOS_L,         "Joypad1 L");
+	ASSIGN_BUTTONf(SIOS_R,         "Joypad1 R");
+	ASSIGN_BUTTONf(SIOS_SELECT,    "Joypad1 Select");
+	ASSIGN_BUTTONf(SIOS_START,     "Joypad1 Start");
+	ASSIGN_BUTTONf(SIOS_UP,        "Joypad1 Up");
+	ASSIGN_BUTTONf(SIOS_DOWN,      "Joypad1 Down");
+	ASSIGN_BUTTONf(SIOS_LEFT,      "Joypad1 Left");
+	ASSIGN_BUTTONf(SIOS_RIGHT,     "Joypad1 Right");
   
 	S9xReportControllers();
   
@@ -411,6 +404,7 @@ extern "C" int SIStartWithROM (char* rom_filename)
 	uint32	JoypadSkip = 0;
 #endif
   
+  //if(SI_SoundOn)
   SIDemuteSound(soundBufferSize);
 	S9xSetSoundMute(FALSE);
   

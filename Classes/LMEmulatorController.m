@@ -13,6 +13,7 @@
 #import "LMEmulatorInterface.h"
 #import "LMPixelLayer.h"
 #import "LMPixelView.h"
+#import "LMSettingsController.h"
 
 #import "../SNES9XBridge/Snes9xMain.h"
 
@@ -122,13 +123,144 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   [pool release];
 }
 
+- (void)layoutForThisOrientation
+{
+  BOOL fullScreen = [[NSUserDefaults standardUserDefaults] boolForKey:kLMSettingsFullScreen];
+  int originalWidth = 256;
+  int originalHeight = 224;
+  int width = originalWidth;
+  int height = originalHeight;
+  int screenOffsetY = 0;
+  CGSize size = self.view.bounds.size;
+  if(self.navigationController != nil)
+    size = self.navigationController.view.bounds.size;
+  int screenBorder = 0;
+  int buttonSpacing = 0;
+  int smallButtonsOriginX = 0;
+  int smallButtonsOriginY = 0;
+  int smallButtonsSpacing = 5;
+  BOOL smallButtonsVertical = YES;
+  float controlsAlpha = 1;
+  if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    screenBorder = 40;
+
+  if(UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+  {
+    self.view.backgroundColor = [UIColor colorWithRed:195/255.0 green:198/255.0 blue:205/255.0 alpha:1];
+    
+    if(fullScreen)
+    {
+      width = size.width;
+      height = (int)(width/(double)originalWidth*originalHeight);
+      
+      if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+      {
+        smallButtonsVertical = NO;
+        smallButtonsOriginX = (size.width-(_startButton.frame.size.width*3+smallButtonsSpacing*2))/2;
+        smallButtonsOriginY = height+smallButtonsSpacing;
+      }
+      else
+      {
+        smallButtonsVertical = YES;
+        smallButtonsOriginX = (size.width-_startButton.frame.size.width)/2;
+        smallButtonsOriginY = size.height-_dPadView.image.size.height;
+      }
+    }
+    else
+    {
+      if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+      {
+        screenOffsetY = (int)((size.width-width)/2);
+        smallButtonsVertical = NO;
+        smallButtonsOriginX = (size.width-(_startButton.frame.size.width*3+smallButtonsSpacing*2))/2;
+        smallButtonsOriginY = screenOffsetY+height+smallButtonsSpacing;
+      }
+      else
+      {
+        screenOffsetY = -2;
+        smallButtonsVertical = YES;
+        smallButtonsOriginX = (size.width-_startButton.frame.size.width)/2;
+        smallButtonsOriginY = size.height-_dPadView.image.size.height;
+      }
+    }
+  }
+  else
+  {
+    if(fullScreen)
+    {
+      self.view.backgroundColor = [UIColor blackColor];
+      
+      height = size.height;
+      width = (int)(height/(double)originalHeight*originalWidth);
+      
+      smallButtonsVertical = YES;
+      smallButtonsOriginX = ((size.width-width)/2-_startButton.frame.size.width)/2;
+      smallButtonsOriginY = smallButtonsOriginX;
+      
+      controlsAlpha = 0.5;
+    }
+    else
+    {
+      self.view.backgroundColor = [UIColor colorWithRed:195/255.0 green:198/255.0 blue:205/255.0 alpha:1];
+      
+      if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+      {
+        smallButtonsVertical = YES;
+        smallButtonsOriginX = ((size.width-width)/2-_startButton.frame.size.width)/2;
+        smallButtonsOriginY = smallButtonsOriginX;
+      }
+      else
+      {
+        screenOffsetY = -2;
+        smallButtonsVertical = YES;
+        smallButtonsOriginX = (size.width-_startButton.frame.size.width)/2;
+        smallButtonsOriginY = size.height-_dPadView.image.size.height;
+      }
+    }
+  }
+  
+  // layout screen
+  int screenOffsetX = (size.width-width)/2;
+  if(screenOffsetY == -1)
+    screenOffsetY = screenOffsetX;
+  else if(screenOffsetY == -2)
+    screenOffsetY = (size.height-screenBorder-_dPadView.image.size.height-height)/2;
+  _screenView.frame = (CGRect){screenOffsetX,screenOffsetY, width,height};
+  
+  // start, select, menu buttons
+  int xOffset = 0;
+  int yOffset = 0;
+  if(smallButtonsVertical)
+    yOffset = _startButton.frame.size.height+smallButtonsSpacing;
+  else
+    xOffset = _startButton.frame.size.width+smallButtonsSpacing;
+  _startButton.frame = (CGRect){smallButtonsOriginX,smallButtonsOriginY, _startButton.frame.size};
+  _selectButton.frame = (CGRect){smallButtonsOriginX+xOffset,smallButtonsOriginY+yOffset, _selectButton.frame.size};
+  _optionsButton.frame = (CGRect){smallButtonsOriginX+2*xOffset,smallButtonsOriginY+2*yOffset, _selectButton.frame.size};
+  
+  // layout buttons
+  int buttonSize = _aButton.frame.size.width;
+  _aButton.frame = (CGRect){size.width-buttonSize-screenBorder, size.height-buttonSize-screenBorder, _aButton.frame.size};
+  _aButton.alpha = controlsAlpha;
+  _bButton.frame = (CGRect){size.width-buttonSize*2-screenBorder-buttonSpacing, size.height-buttonSize-screenBorder, _bButton.frame.size};
+  _bButton.alpha = controlsAlpha;
+  _xButton.frame = (CGRect){size.width-buttonSize-screenBorder, size.height-buttonSize*2-screenBorder-buttonSpacing, _xButton.frame.size};
+  _xButton.alpha = controlsAlpha;
+  _yButton.frame = (CGRect){size.width-buttonSize*2-screenBorder-buttonSpacing, size.height-buttonSize*2-screenBorder-buttonSpacing, _yButton.frame.size};
+  _yButton.alpha = controlsAlpha;
+  
+  // layout d-pad
+  _dPadView.frame = (CGRect){screenBorder,size.height-_dPadView.image.size.height-screenBorder, _dPadView.image.size};
+  _dPadView.alpha = controlsAlpha;
+}
+
 #pragma mark UI Interaction Handling
 
 - (void)options:(UIButton*)sender event:(UIEvent*)event;
 {
   LMSetEmulationPaused(1);
   
-  UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:@"Options" delegate:self cancelButtonTitle:@"Back to game" destructiveButtonTitle:@"Exit game" otherButtonTitles:@"Reset", nil];
+  UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Back to game" destructiveButtonTitle:@"Exit game" otherButtonTitles:@"Reset", nil];
   [sheet showInView:self.view];
   [sheet release];
 }
@@ -197,16 +329,15 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   int height = 24;
   
   LMButtonView* button = [[LMButtonView alloc] initWithFrame:(CGRect){0,0, width,height}];
-  button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
   button.image = [UIImage imageNamed:@"ButtonWide.png"];
   button.label.textColor = [UIColor colorWithWhite:1 alpha:0.75];
   button.label.shadowColor = [UIColor colorWithWhite:0 alpha:0.35];
   button.label.shadowOffset = CGSizeMake(0, -1);
   button.label.font = [UIFont systemFontOfSize:10];
   button.button = buttonMap;
-  if(buttonMap == GP2X_START)
+  if(buttonMap == SIOS_START)
     button.label.text = @"Start";
-  else if(buttonMap == GP2X_SELECT)
+  else if(buttonMap == SIOS_SELECT)
     button.label.text = @"Select";
   return [button autorelease];
 }
@@ -218,29 +349,28 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   LMButtonView* button = [[LMButtonView alloc] initWithFrame:(CGRect){0,0, side,side}];
   button.button = buttonMap;
   button.label.font = [UIFont boldSystemFontOfSize:27.0];
-  if(buttonMap == GP2X_A || buttonMap == GP2X_B)
+  if(buttonMap == SIOS_A || buttonMap == SIOS_B)
   {
     button.image = [UIImage imageNamed:@"ButtonDarkPurple.png"];
     button.label.textColor = [UIColor colorWithRed:63/255.0 green:32/255.0 blue:127/255.0 alpha:0.75];
     button.label.shadowColor = [UIColor colorWithWhite:1 alpha:0.25];
     button.label.shadowOffset = CGSizeMake(0, 1);
-    if(buttonMap == GP2X_A)
+    if(buttonMap == SIOS_A)
       button.label.text = @"A";
-    else if(buttonMap == GP2X_B)
+    else if(buttonMap == SIOS_B)
       button.label.text = @"B";
   }
-  else if(buttonMap == GP2X_X || buttonMap == GP2X_Y)
+  else if(buttonMap == SIOS_X || buttonMap == SIOS_Y)
   {
     button.image = [UIImage imageNamed:@"ButtonLightPurple.png"];
     button.label.textColor = [UIColor colorWithRed:122/255.0 green:101/255.0 blue:208/255.0 alpha:0.75];
     button.label.shadowColor = [UIColor colorWithWhite:1 alpha:0.25];
     button.label.shadowOffset = CGSizeMake(0, 1);
-    if(buttonMap == GP2X_X)
+    if(buttonMap == SIOS_X)
       button.label.text = @"X";
-    else if(buttonMap == GP2X_Y)
+    else if(buttonMap == SIOS_Y)
       button.label.text = @"Y";
   }
-  button.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
   return [button autorelease];
 }
 @end
@@ -255,6 +385,23 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 {
   if(_emulationThread != nil)
     return;
+  
+  [LMSettingsController setDefaultsIfNotDefined];
+  
+  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+  LMSetSoundOn([defaults boolForKey:kLMSettingsSound]);
+  if([defaults boolForKey:kLMSettingsSmoothScaling] == YES)
+  {
+    _screenView.layer.minificationFilter = kCAFilterLinear;
+    _screenView.layer.magnificationFilter = kCAFilterLinear;
+  }
+  else
+  {
+    _screenView.layer.minificationFilter = kCAFilterNearest;
+    _screenView.layer.magnificationFilter = kCAFilterNearest;
+  }
+  LMSetAutoFrameskip([defaults boolForKey:kLMSettingsAutoFrameskip]);
+  LMSetFrameskip([defaults integerForKey:kLMSettingsFrameskipValue]);
   
   _emulationThread = [NSThread mainThread];
   [NSThread detachNewThreadSelector:@selector(emulationThreadMethod:) toTarget:self withObject:romFileName];
@@ -294,39 +441,23 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 - (void)loadView
 {
   [super loadView];
-  //self.view.backgroundColor = [UIColor blackColor];
-  self.view.backgroundColor = [UIColor colorWithRed:195/255.0 green:198/255.0 blue:205/255.0 alpha:1];
   
   self.wantsFullScreenLayout = YES;
   self.view.multipleTouchEnabled = YES;
   
-  CGSize size = self.view.bounds.size;
-  
   // screen
-  int width = 256;
-  int height = 224;
-  if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-  {
-    width *= 3;
-    height *= 3;
-  }
-  _screenView = [[LMPixelView alloc] initWithFrame:(CGRect){(int)((size.width-width)/2),0,width,height}];
-  _screenView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+  _screenView = [[LMPixelView alloc] initWithFrame:(CGRect){0,0,10,10}];
   _screenView.userInteractionEnabled = NO;
   [self.view addSubview:_screenView];
   
   // start / select buttons
-  _startButton = [[self smallButtonWithButton:GP2X_START] retain];
-  _startButton.frame = (CGRect){(int)((size.width-_startButton.frame.size.width)/2),height+10, _startButton.frame.size};
+  _startButton = [[self smallButtonWithButton:SIOS_START] retain];
   [self.view addSubview:_startButton];
   
-  _selectButton = [[self smallButtonWithButton:GP2X_SELECT] retain];
-  _selectButton.frame = (CGRect){(int)((size.width-_selectButton.frame.size.width)/2),height+15+_selectButton.frame.size.height, _selectButton.frame.size};
+  _selectButton = [[self smallButtonWithButton:SIOS_SELECT] retain];
   [self.view addSubview:_selectButton];
   
   // menu button
-  int smallButtonWidth = 44;
-  int smallButtonHeight = 24;
   _optionsButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
   [_optionsButton setBackgroundImage:[UIImage imageNamed:@"ButtonWide.png"] forState:UIControlStateNormal];
   [_optionsButton setTitle:@"Menu" forState:UIControlStateNormal];
@@ -334,45 +465,27 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   [_optionsButton setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.35] forState:UIControlStateNormal];
   _optionsButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
   _optionsButton.titleLabel.font = [UIFont systemFontOfSize:10];
-  _optionsButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-  _optionsButton.frame = (CGRect){(int)((size.width-smallButtonWidth)/2),height+45+smallButtonHeight, smallButtonWidth, smallButtonHeight};
   [_optionsButton removeTarget:self action:nil forControlEvents:UIControlEventAllEvents];
   [_optionsButton addTarget:self action:@selector(options:event:) forControlEvents:UIControlEventTouchUpInside];
   [self.view addSubview:_optionsButton];
   
   // ABXY buttons
-  int screenBorder = 2;
-  int buttonSpacing = 10;
-  if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-  {
-    screenBorder = 40;
-    buttonSpacing = 15;
-  }
-  screenBorder = 0;
-  buttonSpacing = 0;
-  int buttonSize = 0;
-  _aButton = [[self buttonWithButton:GP2X_A] retain];
-  buttonSize = _aButton.frame.size.width;
-  _aButton.frame = (CGRect){size.width-buttonSize-screenBorder, size.height-buttonSize-screenBorder, _aButton.frame.size};
+  _aButton = [[self buttonWithButton:SIOS_A] retain];
   [self.view addSubview:_aButton];
   
-  _bButton = [[self buttonWithButton:GP2X_B] retain];
-  _bButton.frame = (CGRect){size.width-buttonSize*2-screenBorder-buttonSpacing, size.height-buttonSize-screenBorder, _bButton.frame.size};
+  _bButton = [[self buttonWithButton:SIOS_B] retain];
   [self.view addSubview:_bButton];
   
-  _xButton = [[self buttonWithButton:GP2X_X] retain];
-  _xButton.frame = (CGRect){size.width-buttonSize-screenBorder, size.height-buttonSize*2-screenBorder-buttonSpacing, _xButton.frame.size};
+  _xButton = [[self buttonWithButton:SIOS_X] retain];
   [self.view addSubview:_xButton];
   
-  _yButton = [[self buttonWithButton:GP2X_Y] retain];
-  _yButton.frame = (CGRect){size.width-buttonSize*2-screenBorder-buttonSpacing, size.height-buttonSize*2-screenBorder-buttonSpacing, _yButton.frame.size};
+  _yButton = [[self buttonWithButton:SIOS_Y] retain];
   [self.view addSubview:_yButton];
   
   // TODO: L/R buttons
   
   // d-pad
-  _dPadView = [[LMDPadView alloc] initWithFrame:(CGRect){screenBorder,size.height-150-screenBorder, 150,150}];
-  _dPadView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleRightMargin;
+  _dPadView = [[LMDPadView alloc] initWithFrame:(CGRect){0,0,10,10}];
   [self.view addSubview:_dPadView];
 }
 
@@ -456,11 +569,13 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 }
 
 - (void)viewWillAppear:(BOOL)animated
-{
+{  
   [super viewWillAppear:animated];
   
   [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
   [self.navigationController setNavigationBarHidden:YES animated:YES];
+  
+  [self layoutForThisOrientation];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -496,6 +611,14 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   } else {
       return YES;
   }
+}
+
+//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+  [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+  
+  [self layoutForThisOrientation];
 }
 
 @end

@@ -17,39 +17,39 @@
   UITouch* touch = [touches anyObject];
   if(touch.phase == UITouchPhaseCancelled || touch.phase == UITouchPhaseEnded || touch == nil)
   {
-    LMSetControllerReleaseButton(GP2X_UP);
-    LMSetControllerReleaseButton(GP2X_LEFT);
-    LMSetControllerReleaseButton(GP2X_RIGHT);
-    LMSetControllerReleaseButton(GP2X_DOWN);
+    LMSetControllerReleaseButton(SIOS_UP);
+    LMSetControllerReleaseButton(SIOS_LEFT);
+    LMSetControllerReleaseButton(SIOS_RIGHT);
+    LMSetControllerReleaseButton(SIOS_DOWN);
     return;
   }
-  //LMSetControllerReleaseButton(GP2X_UP|GP2X_LEFT|GP2X_RIGHT|GP2X_DOWN); // TODO: make this atomic
-  LMSetControllerReleaseButton(GP2X_UP);
-  LMSetControllerReleaseButton(GP2X_LEFT);
-  LMSetControllerReleaseButton(GP2X_RIGHT);
-  LMSetControllerReleaseButton(GP2X_DOWN);
+  //LMSetControllerReleaseButton(SIOS_UP|SIOS_LEFT|SIOS_RIGHT|SIOS_DOWN); // TODO: make this atomic
+  LMSetControllerReleaseButton(SIOS_UP);
+  LMSetControllerReleaseButton(SIOS_LEFT);
+  LMSetControllerReleaseButton(SIOS_RIGHT);
+  LMSetControllerReleaseButton(SIOS_DOWN);
   CGPoint location = [touch locationInView:self];
   if(location.x < 50)
   {
     if(location.y < 50)
     {
-      LMSetControllerPushButton(GP2X_UP);
-      LMSetControllerPushButton(GP2X_LEFT);
+      LMSetControllerPushButton(SIOS_UP);
+      LMSetControllerPushButton(SIOS_LEFT);
     }
     else if(location.y < 100)
-      LMSetControllerPushButton(GP2X_LEFT);
+      LMSetControllerPushButton(SIOS_LEFT);
     else
     {
-      LMSetControllerPushButton(GP2X_DOWN);
-      LMSetControllerPushButton(GP2X_LEFT);
+      LMSetControllerPushButton(SIOS_DOWN);
+      LMSetControllerPushButton(SIOS_LEFT);
     }
   }
   else if(location.x < 100)
   {
     if(location.y < 50)
-      LMSetControllerPushButton(GP2X_UP);
+      LMSetControllerPushButton(SIOS_UP);
     else if(location.y > 100)
-      LMSetControllerPushButton(GP2X_DOWN);
+      LMSetControllerPushButton(SIOS_DOWN);
     else
     {
       // inside the middle square things get "tricky"
@@ -62,17 +62,17 @@
         {
           // right or down
           if(x > y)
-            LMSetControllerPushButton(GP2X_RIGHT);
+            LMSetControllerPushButton(SIOS_RIGHT);
           else
-            LMSetControllerPushButton(GP2X_DOWN);
+            LMSetControllerPushButton(SIOS_DOWN);
         }
         else
         {
           // right or up
           if(x > -y)
-            LMSetControllerPushButton(GP2X_RIGHT);
+            LMSetControllerPushButton(SIOS_RIGHT);
           else
-            LMSetControllerPushButton(GP2X_UP);
+            LMSetControllerPushButton(SIOS_UP);
         }
       }
       else
@@ -82,17 +82,17 @@
         {
           // left or down
           if(-x > y)
-            LMSetControllerPushButton(GP2X_LEFT);
+            LMSetControllerPushButton(SIOS_LEFT);
           else
-            LMSetControllerPushButton(GP2X_DOWN);
+            LMSetControllerPushButton(SIOS_DOWN);
         }
         else
         {
           // left or up
           if(-x > -y)
-            LMSetControllerPushButton(GP2X_LEFT);
+            LMSetControllerPushButton(SIOS_LEFT);
           else
-            LMSetControllerPushButton(GP2X_UP);
+            LMSetControllerPushButton(SIOS_UP);
         }
       }
     }
@@ -101,15 +101,15 @@
   {
     if(location.y < 50)
     {
-      LMSetControllerPushButton(GP2X_UP);
-      LMSetControllerPushButton(GP2X_RIGHT);
+      LMSetControllerPushButton(SIOS_UP);
+      LMSetControllerPushButton(SIOS_RIGHT);
     }
     else if(location.y < 100)
-      LMSetControllerPushButton(GP2X_RIGHT);
+      LMSetControllerPushButton(SIOS_RIGHT);
     else
     {
-      LMSetControllerPushButton(GP2X_DOWN);
-      LMSetControllerPushButton(GP2X_RIGHT);
+      LMSetControllerPushButton(SIOS_DOWN);
+      LMSetControllerPushButton(SIOS_RIGHT);
     }
   }
 }

@@ -11,6 +11,7 @@
 @interface LMROMBrowserController : UITableViewController {
   NSString* _romPath;
   NSArray* _romList;
+  NSTimer* _fsTimer;
 }
 
 @end

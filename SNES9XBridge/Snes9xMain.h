@@ -11,15 +11,6 @@
 
 #include "../SNES9X/port.h"
 
-typedef struct {
-  int playback_rate;
-  bool8 stereo;
-  bool8 mute_sound;
-  uint8 sound_switch;
-  int noise_gen;
-	uint32 freqbase; // notaz
-} SoundStatus;
-
 const char *SIGetSnapshotDirectory(void);
 void SILoadSRAM (void);
 void SISaveSRAM (void);

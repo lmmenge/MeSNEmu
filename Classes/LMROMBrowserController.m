@@ -10,6 +10,7 @@
 
 #import "LMEmulatorController.h"
 #import "LMEmulatorInterface.h"
+#import "LMSettingsController.h"
 
 @implementation LMROMBrowserController(Privates)
 
@@ -33,8 +34,36 @@
     }
   }
   
-  _romList = [tempRomList copy];
-  [self.tableView reloadData];
+  BOOL different = ([_romList count] != [tempRomList count]);
+  if(different == NO)
+  {
+    for(int i=0; i<[tempRomList count]; i++)
+    {
+      NSString* romA = [_romList objectAtIndex:i];
+      NSString* romB = [tempRomList objectAtIndex:i];
+      if([romA isEqualToString:romB] == NO)
+      {
+        different = YES;
+        break;
+      }
+    }
+  }
+  if(different)
+  {
+    [_romList release];
+    _romList = [tempRomList copy];
+    [self.tableView reloadData];
+  }
+}
+
+- (void)settings
+{
+  LMSettingsController* c = [[LMSettingsController alloc] init];
+  UINavigationController* n = [[UINavigationController alloc] initWithRootViewController:c];
+  n.modalPresentationStyle = UIModalPresentationFormSheet;
+  [self presentModalViewController:n animated:YES];
+  [c release];
+  [n release];
 }
 
 @end
@@ -117,6 +146,10 @@
   
   self.title = @"ROMs";
   
+  UIBarButtonItem* settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(settings)];
+  self.navigationItem.rightBarButtonItem = settingsButton;
+  [settingsButton release];
+  
   if(_romList != nil)
   {
     [_romList release];
@@ -148,6 +181,9 @@
   
   [self reloadROMList];
   
+  _fsTimer = [[NSTimer timerWithTimeInterval:5 target:self selector:@selector(reloadROMList) userInfo:nil repeats:YES] retain];
+  [[NSRunLoop mainRunLoop] addTimer:_fsTimer forMode:NSDefaultRunLoopMode];
+  
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadROMList) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
@@ -155,17 +191,19 @@
 {
   [super viewWillDisappear:animated];
   
+  [_fsTimer invalidate];
+  _fsTimer = nil;
+  
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
   // Return YES for supported orientations
-  if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+  if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-  } else {
+  else
     return YES;
-  }
 }
 
 @end
@@ -182,6 +220,9 @@
   _romList = nil;
   [_romPath release];
   _romPath = nil;
+  
+  [_fsTimer invalidate];
+  _fsTimer = nil;
   
   [super dealloc];
 }

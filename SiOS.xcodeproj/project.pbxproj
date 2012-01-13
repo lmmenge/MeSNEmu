@@ -77,6 +77,15 @@
 		A00404DD14BE3F1F00FE28CE /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = A00404D914BE3F1F00FE28CE /* unzip.c */; };
 		A00404DE14BE3F1F00FE28CE /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = A00404DB14BE3F1F00FE28CE /* zip.c */; };
 		A00404E014BE41ED00FE28CE /* srtc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00404DF14BE41ED00FE28CE /* srtc.cpp */; };
+		A03C087414BF7AB2003FAEB9 /* LMSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A03C087314BF7AB2003FAEB9 /* LMSettingsController.m */; };
+		A03C087814BF7E43003FAEB9 /* LMTableViewSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A03C087714BF7E43003FAEB9 /* LMTableViewSwitchCell.m */; };
+		A03C087B14BF89CC003FAEB9 /* LMTableViewNumberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A03C087914BF89CC003FAEB9 /* LMTableViewNumberCell.m */; };
+		A03C088314BF8CAE003FAEB9 /* ButtonNumberDefault.png in Resources */ = {isa = PBXBuildFile; fileRef = A03C087D14BF8CAE003FAEB9 /* ButtonNumberDefault.png */; };
+		A03C088414BF8CAE003FAEB9 /* ButtonNumberDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A03C087E14BF8CAE003FAEB9 /* ButtonNumberDefault@2x.png */; };
+		A03C088514BF8CAE003FAEB9 /* ButtonNumberMinus.png in Resources */ = {isa = PBXBuildFile; fileRef = A03C087F14BF8CAE003FAEB9 /* ButtonNumberMinus.png */; };
+		A03C088614BF8CAE003FAEB9 /* ButtonNumberMinus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A03C088014BF8CAE003FAEB9 /* ButtonNumberMinus@2x.png */; };
+		A03C088714BF8CAE003FAEB9 /* ButtonNumberPlus.png in Resources */ = {isa = PBXBuildFile; fileRef = A03C088114BF8CAE003FAEB9 /* ButtonNumberPlus.png */; };
+		A03C088814BF8CAE003FAEB9 /* ButtonNumberPlus@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A03C088214BF8CAE003FAEB9 /* ButtonNumberPlus@2x.png */; };
 		A050660C14B21C7F003E0C5E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A050660B14B21C7F003E0C5E /* UIKit.framework */; };
 		A050660E14B21C7F003E0C5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A050660D14B21C7F003E0C5E /* Foundation.framework */; };
 		A050661014B21C7F003E0C5E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A050660F14B21C7F003E0C5E /* CoreGraphics.framework */; };
@@ -265,6 +274,19 @@
 		A00404DB14BE3F1F00FE28CE /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
 		A00404DC14BE3F1F00FE28CE /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		A00404DF14BE41ED00FE28CE /* srtc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = srtc.cpp; sourceTree = "<group>"; };
+		A03C087214BF7AB2003FAEB9 /* LMSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMSettingsController.h; path = Classes/LMSettingsController.h; sourceTree = SOURCE_ROOT; };
+		A03C087314BF7AB2003FAEB9 /* LMSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMSettingsController.m; path = Classes/LMSettingsController.m; sourceTree = SOURCE_ROOT; };
+		A03C087614BF7E43003FAEB9 /* LMTableViewSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMTableViewSwitchCell.h; path = Classes/LMTableViewSwitchCell.h; sourceTree = SOURCE_ROOT; };
+		A03C087714BF7E43003FAEB9 /* LMTableViewSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMTableViewSwitchCell.m; path = Classes/LMTableViewSwitchCell.m; sourceTree = SOURCE_ROOT; };
+		A03C087914BF89CC003FAEB9 /* LMTableViewNumberCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMTableViewNumberCell.m; path = Classes/LMTableViewNumberCell.m; sourceTree = SOURCE_ROOT; };
+		A03C087A14BF89CC003FAEB9 /* LMTableViewNumberCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMTableViewNumberCell.h; path = Classes/LMTableViewNumberCell.h; sourceTree = SOURCE_ROOT; };
+		A03C087C14BF89E3003FAEB9 /* LMTableViewCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMTableViewCellDelegate.h; path = Classes/LMTableViewCellDelegate.h; sourceTree = SOURCE_ROOT; };
+		A03C087D14BF8CAE003FAEB9 /* ButtonNumberDefault.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonNumberDefault.png; sourceTree = "<group>"; };
+		A03C087E14BF8CAE003FAEB9 /* ButtonNumberDefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonNumberDefault@2x.png"; sourceTree = "<group>"; };
+		A03C087F14BF8CAE003FAEB9 /* ButtonNumberMinus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonNumberMinus.png; sourceTree = "<group>"; };
+		A03C088014BF8CAE003FAEB9 /* ButtonNumberMinus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonNumberMinus@2x.png"; sourceTree = "<group>"; };
+		A03C088114BF8CAE003FAEB9 /* ButtonNumberPlus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonNumberPlus.png; sourceTree = "<group>"; };
+		A03C088214BF8CAE003FAEB9 /* ButtonNumberPlus@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonNumberPlus@2x.png"; sourceTree = "<group>"; };
 		A050660714B21C7F003E0C5E /* SiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A050660B14B21C7F003E0C5E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A050660D14B21C7F003E0C5E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -607,6 +629,12 @@
 				A0B8686314BE2C9E00663EBE /* ButtonWide@2x.png */,
 				A0B8686514BE391300663EBE /* ButtonDPad.png */,
 				A0B8686614BE391300663EBE /* ButtonDPad@2x.png */,
+				A03C087D14BF8CAE003FAEB9 /* ButtonNumberDefault.png */,
+				A03C087E14BF8CAE003FAEB9 /* ButtonNumberDefault@2x.png */,
+				A03C087F14BF8CAE003FAEB9 /* ButtonNumberMinus.png */,
+				A03C088014BF8CAE003FAEB9 /* ButtonNumberMinus@2x.png */,
+				A03C088114BF8CAE003FAEB9 /* ButtonNumberPlus.png */,
+				A03C088214BF8CAE003FAEB9 /* ButtonNumberPlus@2x.png */,
 			);
 			path = Artwork;
 			sourceTree = SOURCE_ROOT;
@@ -622,6 +650,11 @@
 				A0B8687714BE3B6700663EBE /* LMPixelView.m */,
 				A0B8687A14BE3B6700663EBE /* LMPixelLayer.h */,
 				A0B8687914BE3B6700663EBE /* LMPixelLayer.m */,
+				A03C087C14BF89E3003FAEB9 /* LMTableViewCellDelegate.h */,
+				A03C087A14BF89CC003FAEB9 /* LMTableViewNumberCell.h */,
+				A03C087914BF89CC003FAEB9 /* LMTableViewNumberCell.m */,
+				A03C087614BF7E43003FAEB9 /* LMTableViewSwitchCell.h */,
+				A03C087714BF7E43003FAEB9 /* LMTableViewSwitchCell.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -633,6 +666,8 @@
 				A0B8686F14BE3B6600663EBE /* LMEmulatorController.m */,
 				A0B8687614BE3B6700663EBE /* LMROMBrowserController.h */,
 				A0B8687514BE3B6700663EBE /* LMROMBrowserController.m */,
+				A03C087214BF7AB2003FAEB9 /* LMSettingsController.h */,
+				A03C087314BF7AB2003FAEB9 /* LMSettingsController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -697,6 +732,12 @@
 				A0B8686414BE2C9E00663EBE /* ButtonWide@2x.png in Resources */,
 				A0B8686714BE391300663EBE /* ButtonDPad.png in Resources */,
 				A0B8686814BE391300663EBE /* ButtonDPad@2x.png in Resources */,
+				A03C088314BF8CAE003FAEB9 /* ButtonNumberDefault.png in Resources */,
+				A03C088414BF8CAE003FAEB9 /* ButtonNumberDefault@2x.png in Resources */,
+				A03C088514BF8CAE003FAEB9 /* ButtonNumberMinus.png in Resources */,
+				A03C088614BF8CAE003FAEB9 /* ButtonNumberMinus@2x.png in Resources */,
+				A03C088714BF8CAE003FAEB9 /* ButtonNumberPlus.png in Resources */,
+				A03C088814BF8CAE003FAEB9 /* ButtonNumberPlus@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -790,6 +831,9 @@
 				A00404DD14BE3F1F00FE28CE /* unzip.c in Sources */,
 				A00404DE14BE3F1F00FE28CE /* zip.c in Sources */,
 				A00404E014BE41ED00FE28CE /* srtc.cpp in Sources */,
+				A03C087414BF7AB2003FAEB9 /* LMSettingsController.m in Sources */,
+				A03C087814BF7E43003FAEB9 /* LMTableViewSwitchCell.m in Sources */,
+				A03C087B14BF89CC003FAEB9 /* LMTableViewNumberCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
