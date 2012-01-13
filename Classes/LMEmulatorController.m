@@ -91,7 +91,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 
 #pragma mark -
 
-@interface LMEmulatorController(Privates) <UIActionSheetDelegate, UIAlertViewDelegate>
+@interface LMEmulatorController(Privates) <UIActionSheetDelegate, UIAlertViewDelegate, LMSettingsControllerDelegate>
 @end
 
 #pragma mark -
@@ -142,7 +142,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   BOOL smallButtonsVertical = YES;
   float controlsAlpha = 1;
   if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    screenBorder = 40;
+    screenBorder = 60;
 
   if(UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
   {
@@ -260,7 +260,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 {
   LMSetEmulationPaused(1);
   
-  UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Back to game" destructiveButtonTitle:@"Exit game" otherButtonTitles:@"Reset", nil];
+  UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Back to game" destructiveButtonTitle:@"Exit game" otherButtonTitles:@"Reset", @"Settings", nil];
   _actionSheet = sheet;
   [sheet showInView:self.view];
   [sheet release];
@@ -284,6 +284,17 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
     alert.tag = LMEmulatorAlertReset;
     [alert show];
     [alert release];
+  }
+  else if(buttonIndex == 2)
+  {
+    LMSettingsController* c = [[LMSettingsController alloc] init];
+    [c hideSettingsThatRequireReset];
+    c.delegate = self;
+    UINavigationController* n = [[UINavigationController alloc] initWithRootViewController:c];
+    n.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentModalViewController:n animated:YES];
+    [c release];
+    [n release];
   }
   else
     LMSetEmulationPaused(0);
@@ -311,6 +322,11 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   }
 }
 
+- (void)settingsDidDismiss:(LMSettingsController*)settingsController
+{
+  [self options:nil event:nil];
+}
+
 #pragma mark Notifications
 
 - (void)didBecomeInactive
@@ -322,6 +338,30 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 - (void)didBecomeActive
 {
   //LMSetEmulationPaused(0);
+}
+
+- (void)settingsChanged
+{
+  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+  LMSetSoundOn([defaults boolForKey:kLMSettingsSound]);
+  if([defaults boolForKey:kLMSettingsSmoothScaling] == YES)
+  {
+    _screenView.layer.minificationFilter = kCAFilterLinear;
+    _screenView.layer.magnificationFilter = kCAFilterLinear;
+  }
+  else
+  {
+    _screenView.layer.minificationFilter = kCAFilterNearest;
+    _screenView.layer.magnificationFilter = kCAFilterNearest;
+  }
+  LMSetAutoFrameskip([defaults boolForKey:kLMSettingsAutoFrameskip]);
+  LMSetFrameskip([defaults integerForKey:kLMSettingsFrameskipValue]);
+  
+  LMSettingsUpdated();
+  
+  [UIView animateWithDuration:0.3 animations:^{
+    [self layoutForThisOrientation];
+  }];
 }
 
 #pragma mark UI Creation Shortcuts
@@ -391,20 +431,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   
   [LMSettingsController setDefaultsIfNotDefined];
   
-  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  LMSetSoundOn([defaults boolForKey:kLMSettingsSound]);
-  if([defaults boolForKey:kLMSettingsSmoothScaling] == YES)
-  {
-    _screenView.layer.minificationFilter = kCAFilterLinear;
-    _screenView.layer.magnificationFilter = kCAFilterLinear;
-  }
-  else
-  {
-    _screenView.layer.minificationFilter = kCAFilterNearest;
-    _screenView.layer.magnificationFilter = kCAFilterNearest;
-  }
-  LMSetAutoFrameskip([defaults boolForKey:kLMSettingsAutoFrameskip]);
-  LMSetFrameskip([defaults integerForKey:kLMSettingsFrameskipValue]);
+  [self settingsChanged];
   
   _emulationThread = [NSThread mainThread];
   [NSThread detachNewThreadSelector:@selector(emulationThreadMethod:) toTarget:self withObject:romFileName];
@@ -592,8 +619,8 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   
   //screenPixels = (unsigned int*)_565ImageBuffer;
   LMSetScreen(_imageBuffer);
-  
-  [self startWithROM:_romFileName];
+  if(_emulationThread == nil)
+    [self startWithROM:_romFileName];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -602,17 +629,15 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
-  
-  LMSetEmulationRunning(0);
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
   // Return YES for supported orientations
   if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-      return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
   } else {
-      return YES;
+    return YES;
   }
 }
 
@@ -629,6 +654,16 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 #pragma mark -
 
 @implementation LMEmulatorController(NSObject)
+
+- (id)init
+{
+  self = [super init];
+  if(self)
+  {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:kLMSettingsChangedNotification object:nil];
+  }
+  return self;
+}
 
 - (void)dealloc
 {

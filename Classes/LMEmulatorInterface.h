@@ -22,6 +22,8 @@ void LMSetSoundOn(int value);
 void LMSetAutoFrameskip(int value);
 void LMSetFrameskip(int value);
 
+void LMSettingsUpdated();
+
 void LMSetEmulationRunning(int value);
 void LMSetEmulationPaused(int value);
 void LMReset();

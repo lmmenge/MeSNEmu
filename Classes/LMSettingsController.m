@@ -13,6 +13,8 @@
 #import "LMTableViewNumberCell.h"
 #import "LMTableViewSwitchCell.h"
 
+NSString* const kLMSettingsChangedNotification = @"SettingsChanged";
+
 NSString* const kLMSettingsSmoothScaling = @"SmoothScaling";
 NSString* const kLMSettingsFullScreen = @"FullScreen";
 
@@ -27,31 +29,40 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
 
 - (void)done
 {
-  [self.presentingViewController dismissModalViewControllerAnimated:YES];
+  if(_changed)
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLMSettingsChangedNotification object:nil userInfo:nil];
+  [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
+    [_delegate settingsDidDismiss:self];
+  }];
 }
 
 - (void)toggleSmoothScaling:(UISwitch*)sender
 {
+  _changed = YES;
   [[NSUserDefaults standardUserDefaults] setBool:sender.on forKey:kLMSettingsSmoothScaling];
 }
 
 - (void)toggleFullScreen:(UISwitch*)sender
 {
+  _changed = YES;
   [[NSUserDefaults standardUserDefaults] setBool:sender.on forKey:kLMSettingsFullScreen];
 }
 
 - (void)toggleSound:(UISwitch*)sender
 {
+  _changed = YES;
   [[NSUserDefaults standardUserDefaults] setBool:sender.on forKey:kLMSettingsSound];
 }
 
 - (void)toggleAutoFrameskip:(UISwitch*)sender
 {
+  _changed = YES;
   [[NSUserDefaults standardUserDefaults] setBool:sender.on forKey:kLMSettingsAutoFrameskip];
 }
 
 - (void)cellValueChanged:(UITableViewCell*)cell
 {
+  _changed = YES;
   if([[self.tableView indexPathForCell:cell] compare:_frameskipValueIndexPath] == NSOrderedSame)
     [[NSUserDefaults standardUserDefaults] setInteger:((LMTableViewNumberCell*)cell).value forKey:kLMSettingsFrameskipValue];
 }
@@ -79,6 +90,19 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
 #pragma mark -
 
 @implementation LMSettingsController
+
+@synthesize delegate = _delegate;
+
+- (void)hideSettingsThatRequireReset
+{
+  _hideSettingsThatRequireReset = YES;
+  if(_soundIndexPath != nil)
+  {
+    [_soundIndexPath release];
+    _soundIndexPath = nil;
+    [self.tableView reloadData];
+  }
+}
 
 + (void)setDefaultsIfNotDefined
 {
@@ -126,7 +150,12 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
   if(section == 0)
     return 2;
   else if(section == 1)
-    return 3;
+  {
+    if(_soundIndexPath == nil)
+      return 2;
+    else
+      return 3;
+  }
   return 0;
 }
 
@@ -190,14 +219,6 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  // Navigation logic may go here. Create and push another view controller.
-  /*
-   <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-   // ...
-   // Pass the selected object to the new view controller.
-   [self.navigationController pushViewController:detailViewController animated:YES];
-   [detailViewController release];
-   */
 }
 
 @end
@@ -215,7 +236,7 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
 }
 
 - (void)viewDidLoad
-{
+{  
   [super viewDidLoad];
   
   self.title = @"Settings";
@@ -226,10 +247,18 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
   
   _smoothScalingIndexPath = [[NSIndexPath indexPathForRow:0 inSection:0] retain];
   _fullScreenIndexPath = [[NSIndexPath indexPathForRow:1 inSection:0] retain];
-
-  _soundIndexPath = [[NSIndexPath indexPathForRow:0 inSection:1] retain];
-  _autoFrameskipIndexPath = [[NSIndexPath indexPathForRow:1 inSection:1] retain];
-  _frameskipValueIndexPath = [[NSIndexPath indexPathForRow:2 inSection:1] retain];
+  
+  if(_hideSettingsThatRequireReset == NO)
+  {
+    _soundIndexPath = [[NSIndexPath indexPathForRow:0 inSection:1] retain];
+    _autoFrameskipIndexPath = [[NSIndexPath indexPathForRow:1 inSection:1] retain];
+    _frameskipValueIndexPath = [[NSIndexPath indexPathForRow:2 inSection:1] retain];
+  }
+  else
+  {
+    _autoFrameskipIndexPath = [[NSIndexPath indexPathForRow:0 inSection:1] retain];
+    _frameskipValueIndexPath = [[NSIndexPath indexPathForRow:1 inSection:1] retain];
+  }
 }
 
 - (void)viewDidUnload
@@ -238,8 +267,11 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
 }
 
 - (void)viewWillAppear:(BOOL)animated
-{
+{  
   [super viewWillAppear:animated];
+  
+  //if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    //[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
 }
 
 - (void)viewDidAppear:(BOOL)animated

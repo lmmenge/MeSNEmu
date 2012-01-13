@@ -19,7 +19,8 @@ void SIFlipFramebuffer(int flip, int sync);
 #ifdef __cplusplus
 extern "C" {
 #endif
-  
+
+void SIUpdateSettings ();
 int SIStartWithROM (char* rom_filename);
   
 #ifdef __cplusplus

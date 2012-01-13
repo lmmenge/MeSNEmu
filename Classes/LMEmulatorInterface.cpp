@@ -62,6 +62,11 @@ extern "C" void LMSetFrameskip(int value)
   SI_Frameskip = value;
 }
 
+extern "C" void LMSettingsUpdated()
+{
+  SIUpdateSettings();
+}
+
 extern "C" void LMSetEmulationRunning(int value)
 {
   if(value < 0)

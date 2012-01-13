@@ -144,6 +144,14 @@ void state_unc_close()
 
 #pragma mark - Start Up and Tear Down
 
+extern "C" void SIUpdateSettings ()
+{
+  if(SI_AutoFrameskip)
+    Settings.SkipFrames = AUTO_FRAMERATE;
+  else
+    Settings.SkipFrames = SI_Frameskip;
+}
+
 extern "C" int SIStartWithROM (char* rom_filename)
 {
   // legacy init
