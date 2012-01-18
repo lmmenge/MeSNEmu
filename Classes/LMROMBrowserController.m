@@ -144,9 +144,9 @@
 {
   [super viewDidLoad];
   
-  self.title = @"ROMs";
+  self.title = NSLocalizedString(@"ROMS", nil);
   
-  UIBarButtonItem* settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(settings)];
+  UIBarButtonItem* settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"SETTINGS", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(settings)];
   self.navigationItem.rightBarButtonItem = settingsButton;
   [settingsButton release];
   

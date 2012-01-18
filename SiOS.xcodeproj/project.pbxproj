@@ -77,6 +77,7 @@
 		A00404DD14BE3F1F00FE28CE /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = A00404D914BE3F1F00FE28CE /* unzip.c */; };
 		A00404DE14BE3F1F00FE28CE /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = A00404DB14BE3F1F00FE28CE /* zip.c */; };
 		A00404E014BE41ED00FE28CE /* srtc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00404DF14BE41ED00FE28CE /* srtc.cpp */; };
+		A027AC1614C74F6C00F177F7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A027AC1514C74F6C00F177F7 /* Localizable.strings */; };
 		A03C087414BF7AB2003FAEB9 /* LMSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A03C087314BF7AB2003FAEB9 /* LMSettingsController.m */; };
 		A03C087814BF7E43003FAEB9 /* LMTableViewSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A03C087714BF7E43003FAEB9 /* LMTableViewSwitchCell.m */; };
 		A03C087B14BF89CC003FAEB9 /* LMTableViewNumberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A03C087914BF89CC003FAEB9 /* LMTableViewNumberCell.m */; };
@@ -274,6 +275,7 @@
 		A00404DB14BE3F1F00FE28CE /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
 		A00404DC14BE3F1F00FE28CE /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		A00404DF14BE41ED00FE28CE /* srtc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = srtc.cpp; sourceTree = "<group>"; };
+		A027AC1514C74F6C00F177F7 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = SOURCE_ROOT; };
 		A03C087214BF7AB2003FAEB9 /* LMSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMSettingsController.h; path = Classes/LMSettingsController.h; sourceTree = SOURCE_ROOT; };
 		A03C087314BF7AB2003FAEB9 /* LMSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMSettingsController.m; path = Classes/LMSettingsController.m; sourceTree = SOURCE_ROOT; };
 		A03C087614BF7E43003FAEB9 /* LMTableViewSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMTableViewSwitchCell.h; path = Classes/LMTableViewSwitchCell.h; sourceTree = SOURCE_ROOT; };
@@ -599,6 +601,7 @@
 				A0B8688914BE3BE300663EBE /* Info.plist */,
 				A0B8686914BE3B3100663EBE /* main.m */,
 				A0B8686A14BE3B3100663EBE /* Prefix.pch */,
+				A027AC1514C74F6C00F177F7 /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -738,6 +741,7 @@
 				A03C088614BF8CAE003FAEB9 /* ButtonNumberMinus@2x.png in Resources */,
 				A03C088714BF8CAE003FAEB9 /* ButtonNumberPlus.png in Resources */,
 				A03C088814BF8CAE003FAEB9 /* ButtonNumberPlus@2x.png in Resources */,
+				A027AC1614C74F6C00F177F7 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,0 +1,33 @@
+/* 
+  Localized.strings
+  SiOS
+
+  Created by Lucas Menge on 1/18/12.
+  Copyright (c) 2012 Lucas Menge. All rights reserved.
+*/
+
+// LMROMBrowserController
+"ROMS" = "ROMs";
+
+// LMSettingsController
+"SMOOTH_SCALING" = "Smooth Scaling";
+"FULL_SCREEN" = "Full screen";
+"SOUND" = "Sound";
+"AUTO_FRAMESKIP" = "Auto-frameskip";
+"SKIP_EVERY" = "Skip every";
+"FRAMES" = "frames";
+"SETTINGS" = "Settings";
+"FULL_SCREEN_EXPLANATION" = "Full screen makes better use of the screen, but controls will be on top of the game.";
+"AUTO_FRAMESKIP_EXPLANATION" = "Auto-frameskip may appear slower due to a more inconsistent skip rate.";
+
+// LMEmulatorController
+"BACK_TO_GAME" = "Back to game";
+"EXIT_GAME" = "Exit game";
+"RESET" = "Reset";
+"EXIT_GAME?" = "Exit game?";
+"EXIT_CONSEQUENCES" = "Any unsaved progress will be lost.";
+"EXIT" = "Exit";
+"CANCEL" = "Cancel";
+"RESET_GAME?" = "Reset game?";
+"RESET_CONSEQUENCES" = "Any unsaved progress will be lost.";
+"MENU" = "Menu";

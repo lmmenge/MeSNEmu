@@ -260,7 +260,11 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 {
   LMSetEmulationPaused(1);
   
-  UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Back to game" destructiveButtonTitle:@"Exit game" otherButtonTitles:@"Reset", @"Settings", nil];
+  UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                     delegate:self
+                                            cancelButtonTitle:NSLocalizedString(@"BACK_TO_GAME", nil)
+                                       destructiveButtonTitle:NSLocalizedString(@"EXIT_GAME", nil)
+                                            otherButtonTitles:NSLocalizedString(@"RESET", nil), NSLocalizedString(@"SETTINGS", nil), nil];
   _actionSheet = sheet;
   [sheet showInView:self.view];
   [sheet release];
@@ -273,14 +277,22 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   NSLog(@"%i", buttonIndex);
   if(buttonIndex == actionSheet.destructiveButtonIndex)
   {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Exit game?" message:@"Any unsaved progress will be lost." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Exit", nil];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXIT_GAME?", nil)
+                                                    message:NSLocalizedString(@"EXIT_CONSEQUENCES", nil)
+                                                   delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"CANCEL", nil)
+                                          otherButtonTitles:@"EXIT", nil];
     alert.tag = LMEmulatorAlertExit;
     [alert show];
     [alert release];
   }
   else if(buttonIndex == 1)
   {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Reset game?" message:@"Any unsaved progress will be lost." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Reset", nil];
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"RESET_GAME?", nil)
+                                                    message:NSLocalizedString(@"RESET_CONSEQUENCES", nil)
+                                                   delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"CANCEL", nil)
+                                          otherButtonTitles:NSLocalizedString(@"RESET", nil), nil];
     alert.tag = LMEmulatorAlertReset;
     [alert show];
     [alert release];
@@ -490,7 +502,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   // menu button
   _optionsButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
   [_optionsButton setBackgroundImage:[UIImage imageNamed:@"ButtonWide.png"] forState:UIControlStateNormal];
-  [_optionsButton setTitle:@"Menu" forState:UIControlStateNormal];
+  [_optionsButton setTitle:NSLocalizedString(@"MENU", nil) forState:UIControlStateNormal];
   [_optionsButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.75] forState:UIControlStateNormal];
   [_optionsButton setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.35] forState:UIControlStateNormal];
   _optionsButton.titleLabel.shadowOffset = CGSizeMake(0, -1);

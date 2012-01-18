@@ -28,12 +28,79 @@
     [defaultButton setTitle:[NSString stringWithFormat:@"%i %@", value, suffix] forState:UIControlStateNormal];
 }
 
+- (void)setup
+{
+  delegate = nil;
+  
+  self.accessoryType = UITableViewCellAccessoryNone;
+  self.selectionStyle = UITableViewCellSelectionStyleNone;
+}
+
 @end
 
 #pragma mark -
 
 @implementation LMTableViewNumberCell
 
+- (UIView*)plusMinusAccessoryView
+{
+  if(_plusMinusAccessoryView == nil)
+  {
+    UIImage* plusImage = [UIImage imageNamed:@"ButtonNumberPlus.png"];
+    UIImage* minusImage = [UIImage imageNamed:@"ButtonNumberMinus.png"];
+    UIImage* defaultImage = [UIImage imageNamed:@"ButtonNumberDefault.png"];
+    
+    _plusMinusAccessoryView = [[UIView alloc] initWithFrame:(CGRect){0,0,plusImage.size.width+minusImage.size.width+defaultImage.size.width,defaultImage.size.height}];
+    
+    if(minusButton != nil)
+    {
+      [minusButton removeFromSuperview];
+      [minusButton release];
+    }
+    minusButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+    [minusButton setBackgroundImage:minusImage forState:UIControlStateNormal];
+    minusButton.bounds = (CGRect){0,0, minusImage.size};
+    minusButton.frame = (CGRect){0,0, minusImage.size};
+    [minusButton addTarget:self action:@selector(minus:) forControlEvents:UIControlEventTouchUpInside];
+    [_plusMinusAccessoryView addSubview:minusButton];
+    
+    if(defaultButton != nil)
+    {
+      [defaultButton removeFromSuperview];
+      [defaultButton release];
+    }
+    defaultButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+    [defaultButton setBackgroundImage:defaultImage forState:UIControlStateNormal];
+    defaultButton.bounds = (CGRect){0,0, defaultImage.size};
+    defaultButton.frame = (CGRect){minusImage.size.width, 0, defaultImage.size};
+    [defaultButton setTitleColor:self.detailTextLabel.textColor forState:UIControlStateNormal];
+    [defaultButton setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [defaultButton setTitleShadowColor:[UIColor colorWithWhite:1 alpha:0.25] forState:UIControlStateHighlighted];
+    defaultButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
+    defaultButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    defaultButton.titleLabel.minimumFontSize = 8;
+    defaultButton.adjustsImageWhenDisabled = NO;
+    defaultButton.titleEdgeInsets = UIEdgeInsetsMake(0, 4, 0, 4);
+    [defaultButton addTarget:self action:@selector(toggleDefault:) forControlEvents:UIControlEventTouchUpInside];
+    [_plusMinusAccessoryView addSubview:defaultButton];
+    
+    if(plusButton != nil)
+    {
+      [plusButton removeFromSuperview];
+      [plusButton release];
+    }
+    plusButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+    [plusButton setBackgroundImage:plusImage forState:UIControlStateNormal];
+    plusButton.bounds = (CGRect){0,0, plusImage.size};
+    plusButton.frame = (CGRect){minusImage.size.width+defaultImage.size.width,0, plusImage.size};
+    [plusButton addTarget:self action:@selector(plus:) forControlEvents:UIControlEventTouchUpInside];
+    [_plusMinusAccessoryView addSubview:plusButton];
+    
+    self.accessoryView = _plusMinusAccessoryView;
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+  }
+  return _plusMinusAccessoryView;
+}
 @synthesize value;
 - (void)setValue:(int)i
 {
@@ -74,14 +141,6 @@
 }
 
 @synthesize delegate;
-
-- (void)setup
-{  
-  delegate = nil;
-  
-  self.accessoryType = UITableViewCellAccessoryNone;
-  self.selectionStyle = UITableViewCellSelectionStyleNone;
-}
 
 - (void)plus:(id)sender
 {
@@ -126,35 +185,7 @@
   self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
   if(self)
   {
-    self.detailTextLabel.text = @" ";
-    UIImage* plusImage = [UIImage imageNamed:@"ButtonNumberPlus.png"];
-    UIImage* minusImage = [UIImage imageNamed:@"ButtonNumberMinus.png"];
-    UIImage* defaultImage = [UIImage imageNamed:@"ButtonNumberDefault.png"];
-
-    plusButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    [plusButton setBackgroundImage:plusImage forState:UIControlStateNormal];
-    plusButton.bounds = (CGRect){0,0, plusImage.size};
-    [plusButton addTarget:self action:@selector(plus:) forControlEvents:UIControlEventTouchUpInside];
-    [self.contentView addSubview:plusButton];
-    
-    minusButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    [minusButton setBackgroundImage:minusImage forState:UIControlStateNormal];
-    minusButton.bounds = (CGRect){0,0, minusImage.size};
-    [minusButton addTarget:self action:@selector(minus:) forControlEvents:UIControlEventTouchUpInside];
-    [self.contentView addSubview:minusButton];
-    
-    defaultButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    [defaultButton setBackgroundImage:defaultImage forState:UIControlStateNormal];
-    defaultButton.bounds = (CGRect){0,0, defaultImage.size};
-    [defaultButton setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [defaultButton setTitleShadowColor:[UIColor colorWithWhite:1 alpha:0.25] forState:UIControlStateHighlighted];
-    defaultButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
-    defaultButton.titleLabel.adjustsFontSizeToFitWidth = YES;
-    defaultButton.titleLabel.minimumFontSize = 8;
-    defaultButton.adjustsImageWhenDisabled = NO;
-    defaultButton.titleEdgeInsets = UIEdgeInsetsMake(0, 4, 0, 4);
-    [defaultButton addTarget:self action:@selector(toggleDefault:) forControlEvents:UIControlEventTouchUpInside];
-    [self.contentView addSubview:defaultButton];
+    [self plusMinusAccessoryView];
     
     usesDefaultValue = NO;
     allowsDefault = YES;
@@ -175,27 +206,6 @@
   [self setup];
 }
 
-- (void)layoutSubviews
-{
-  [super layoutSubviews];
-  
-  CGSize backSize = self.backgroundView.bounds.size;
-  if(backSize.width > 0 && backSize.height > 0)
-  {
-    CGSize plusButtonSize = plusButton.bounds.size;
-    CGSize defaultButtonSize = defaultButton.bounds.size;
-    float y = (int)((backSize.height-1.5)/2)+0.5;
-    float xPadding = y+(plusButtonSize.width-plusButtonSize.height)-2;
-    plusButton.center = CGPointMake(backSize.width-xPadding, y);
-    
-    defaultButton.center = CGPointMake(plusButton.center.x-plusButtonSize.width/2-defaultButtonSize.width/2, y);
-    defaultButton.titleLabel.font = self.detailTextLabel.font;
-    [defaultButton setTitleColor:self.detailTextLabel.textColor forState:UIControlStateNormal];
-    
-    minusButton.center = CGPointMake(defaultButton.center.x-defaultButtonSize.width/2-minusButton.bounds.size.width/2, y);
-  }
-}
-
 @end
 
 #pragma mark -
@@ -204,6 +214,8 @@
 
 - (void)dealloc
 {
+  [_plusMinusAccessoryView release];
+  _plusMinusAccessoryView = nil;
   [plusButton release];
   plusButton = nil;
   [minusButton release];

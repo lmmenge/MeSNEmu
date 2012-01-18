@@ -162,9 +162,9 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
   if(section == 0)
-    return @"Full screen makes better use of the screen, but controls will be on top of the game.";
+    return NSLocalizedString(@"FULL_SCREEN_EXPLANATION", nil);
   else if(section == 1)
-    return @"Auto-frameskip may appear slower due to a more inconsistent skip rate.";
+    return NSLocalizedString(@"AUTO_FRAMESKIP_EXPLANATION", nil);
   return nil;
 }
 
@@ -178,7 +178,7 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
     
     c.switchView.on = [[NSUserDefaults standardUserDefaults] boolForKey:kLMSettingsSmoothScaling];
     [c.switchView addTarget:self action:@selector(toggleSmoothScaling:) forControlEvents:UIControlEventValueChanged];
-    c.textLabel.text = @"Smooth scaling";
+    c.textLabel.text = NSLocalizedString(@"SMOOTH_SCALING", nil);
   }
   else if([indexPath compare:_fullScreenIndexPath] == NSOrderedSame)
   {
@@ -186,29 +186,29 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
     
     c.switchView.on = [[NSUserDefaults standardUserDefaults] boolForKey:kLMSettingsFullScreen];
     [c.switchView addTarget:self action:@selector(toggleFullScreen:) forControlEvents:UIControlEventValueChanged];
-    c.textLabel.text = @"Full screen";
+    c.textLabel.text = NSLocalizedString(@"FULL_SCREEN", nil);
   }
   else if([indexPath compare:_soundIndexPath] == NSOrderedSame)
   {
     LMTableViewSwitchCell* c = (LMTableViewSwitchCell*)(cell = [self switchCell]);
-    c.textLabel.text = @"Sound";
+    c.textLabel.text = NSLocalizedString(@"SOUND", nil);
     c.switchView.on = [[NSUserDefaults standardUserDefaults] boolForKey:kLMSettingsSound];
     [c.switchView addTarget:self action:@selector(toggleSound:) forControlEvents:UIControlEventValueChanged];
   }
   else if([indexPath compare:_autoFrameskipIndexPath] == NSOrderedSame)
   {
     LMTableViewSwitchCell* c = (LMTableViewSwitchCell*)(cell = [self switchCell]);
-    c.textLabel.text = @"Auto-frameskip";
+    c.textLabel.text = NSLocalizedString(@"AUTO_FRAMESKIP", nil);
     c.switchView.on = [[NSUserDefaults standardUserDefaults] boolForKey:kLMSettingsAutoFrameskip];
     [c.switchView addTarget:self action:@selector(toggleAutoFrameskip:) forControlEvents:UIControlEventValueChanged];
   }
   else if([indexPath compare:_frameskipValueIndexPath] == NSOrderedSame)
   {
     LMTableViewNumberCell* c = (LMTableViewNumberCell*)(cell = [self numberCell]);
-    c.textLabel.text = @"Skip every";
+    c.textLabel.text = NSLocalizedString(@"SKIP_EVERY", nil);
     c.minimumValue = 0;
     c.maximumValue = 10;
-    c.suffix = @"frames";
+    c.suffix = NSLocalizedString(@"FRAMES", nil);
     c.allowsDefault = NO;
     c.value = [[NSUserDefaults standardUserDefaults] integerForKey:kLMSettingsFrameskipValue];
     c.delegate = self;
@@ -239,7 +239,7 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
 {  
   [super viewDidLoad];
   
-  self.title = @"Settings";
+  self.title = NSLocalizedString(@"Settings", nil);
   
   UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)];
   self.navigationItem.rightBarButtonItem = doneButton;

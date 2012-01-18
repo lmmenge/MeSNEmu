@@ -18,6 +18,7 @@
   BOOL usesDefaultValue;
   BOOL allowsDefault;
   
+  UIView* _plusMinusAccessoryView;
   UIButton* plusButton;
   UIButton* minusButton;
   UIButton* defaultButton;
@@ -25,6 +26,7 @@
   id<LMTableViewCellDelegate> delegate;
 }
 
+@property (readonly) UIView* plusMinusAccessoryView;
 @property (nonatomic) int value;
 @property int minimumValue;
 @property int maximumValue;

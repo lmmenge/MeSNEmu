@@ -31,7 +31,6 @@
 {
   if(_switch == nil)
   {
-    [self textLabel];
     _switch = [[UISwitch alloc] initWithFrame:(CGRect){0,0, 0,0}];
     self.accessoryView = _switch;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
