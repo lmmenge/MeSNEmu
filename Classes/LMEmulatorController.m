@@ -146,7 +146,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   BOOL smallButtonsVertical = YES;
   float controlsAlpha = 1;
   if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    screenBorder = 60;
+    screenBorder = 90;
 
   if(UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
   {
@@ -433,6 +433,8 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 {
   int side = 50;
   side = 60;
+  if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+    side = 70;
   LMButtonView* button = [[LMButtonView alloc] initWithFrame:(CGRect){0,0, side,side}];
   button.button = buttonMap;
   button.label.font = [UIFont boldSystemFontOfSize:27.0];
