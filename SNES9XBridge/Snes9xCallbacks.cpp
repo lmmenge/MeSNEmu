@@ -158,18 +158,16 @@ bool8 S9xOpenSnapshotFile (const char *fname, bool8 read_only, STREAM *file)
 {
   if (read_only)
   {
-    *file = OPEN_STREAM(fname,"rb");
-    if (*file) 
-      return(TRUE);
+		if (0 != (*file = OPEN_STREAM(fname, "rb")))
+      return (true);
   }
   else
   {
-    *file = OPEN_STREAM(fname,"w+b");
-    if (*file) 
-      return(TRUE);
+		if (0 != (*file = OPEN_STREAM(fname, "wb")))
+      return (true);
   }
   
-  return (FALSE);	
+  return (false);
 }
 
 void S9xCloseSnapshotFile (STREAM file)
@@ -207,7 +205,8 @@ const char *S9xGetFilename (const char *ex, enum s9x_getdirtype dirtype)
   char ext [_MAX_EXT + 1];
   
   _splitpath (Memory.ROMFilename, drive, dir, fname, ext);
-  strcpy (filename, SIGetSnapshotDirectory());
+  //strcpy (filename, SIGetSnapshotDirectory());
+  strcpy (filename, "");
   strcat (filename, SLASH_STR);
   strcat (filename, fname);
   strcat (filename, ex);

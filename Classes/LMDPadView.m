@@ -9,6 +9,7 @@
 #import "LMDPadView.h"
 
 #import "LMEmulatorInterface.h"
+#import "../SNES9XBridge/Snes9xMain.h"
 
 @implementation LMDPadView(Privates)
 

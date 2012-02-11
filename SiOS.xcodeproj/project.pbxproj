@@ -78,6 +78,8 @@
 		A00404DE14BE3F1F00FE28CE /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = A00404DB14BE3F1F00FE28CE /* zip.c */; };
 		A00404E014BE41ED00FE28CE /* srtc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00404DF14BE41ED00FE28CE /* srtc.cpp */; };
 		A027AC1614C74F6C00F177F7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A027AC1514C74F6C00F177F7 /* Localizable.strings */; };
+		A027AC1914C78F3D00F177F7 /* LMSaveManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = A027AC1814C78F3C00F177F7 /* LMSaveManager.mm */; };
+		A027AC2F14C8456D00F177F7 /* SISaveDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A027AC2E14C8456D00F177F7 /* SISaveDelegate.m */; };
 		A03C087414BF7AB2003FAEB9 /* LMSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A03C087314BF7AB2003FAEB9 /* LMSettingsController.m */; };
 		A03C087814BF7E43003FAEB9 /* LMTableViewSwitchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A03C087714BF7E43003FAEB9 /* LMTableViewSwitchCell.m */; };
 		A03C087B14BF89CC003FAEB9 /* LMTableViewNumberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A03C087914BF89CC003FAEB9 /* LMTableViewNumberCell.m */; };
@@ -276,6 +278,10 @@
 		A00404DC14BE3F1F00FE28CE /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		A00404DF14BE41ED00FE28CE /* srtc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = srtc.cpp; sourceTree = "<group>"; };
 		A027AC1514C74F6C00F177F7 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = SOURCE_ROOT; };
+		A027AC1714C78F3B00F177F7 /* LMSaveManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMSaveManager.h; path = Classes/LMSaveManager.h; sourceTree = SOURCE_ROOT; };
+		A027AC1814C78F3C00F177F7 /* LMSaveManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LMSaveManager.mm; path = Classes/LMSaveManager.mm; sourceTree = SOURCE_ROOT; };
+		A027AC2D14C8456D00F177F7 /* SISaveDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SISaveDelegate.h; path = SNES9XBridge/SISaveDelegate.h; sourceTree = SOURCE_ROOT; };
+		A027AC2E14C8456D00F177F7 /* SISaveDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SISaveDelegate.m; path = SNES9XBridge/SISaveDelegate.m; sourceTree = SOURCE_ROOT; };
 		A03C087214BF7AB2003FAEB9 /* LMSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMSettingsController.h; path = Classes/LMSettingsController.h; sourceTree = SOURCE_ROOT; };
 		A03C087314BF7AB2003FAEB9 /* LMSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMSettingsController.m; path = Classes/LMSettingsController.m; sourceTree = SOURCE_ROOT; };
 		A03C087614BF7E43003FAEB9 /* LMTableViewSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMTableViewSwitchCell.h; path = Classes/LMTableViewSwitchCell.h; sourceTree = SOURCE_ROOT; };
@@ -586,6 +592,8 @@
 				A0B8688614BE3B7100663EBE /* Views */,
 				A0B8687314BE3B6600663EBE /* LMEmulatorInterface.h */,
 				A0B8687414BE3B6700663EBE /* LMEmulatorInterface.cpp */,
+				A027AC1714C78F3B00F177F7 /* LMSaveManager.h */,
+				A027AC1814C78F3C00F177F7 /* LMSaveManager.mm */,
 				A050661214B21C7F003E0C5E /* Supporting Files */,
 				A0B8685814BE25F900663EBE /* Artwork */,
 				A0995BCF14B5087600F7C44F /* SNES9XBridge */,
@@ -611,6 +619,8 @@
 			children = (
 				A0995F8314B67E2100F7C44F /* iOSAudio.h */,
 				A0995BD314B508AC00F7C44F /* iOSAudio.cpp */,
+				A027AC2D14C8456D00F177F7 /* SISaveDelegate.h */,
+				A027AC2E14C8456D00F177F7 /* SISaveDelegate.m */,
 				A0995F8414B6883200F7C44F /* SIScreenDelegate.h */,
 				A0995F8514B6883E00F7C44F /* SIScreenDelegate.m */,
 				A0995F8114B67AAB00F7C44F /* Snes9xCallbacks.h */,
@@ -838,6 +848,8 @@
 				A03C087414BF7AB2003FAEB9 /* LMSettingsController.m in Sources */,
 				A03C087814BF7E43003FAEB9 /* LMTableViewSwitchCell.m in Sources */,
 				A03C087B14BF89CC003FAEB9 /* LMTableViewNumberCell.m in Sources */,
+				A027AC1914C78F3D00F177F7 /* LMSaveManager.mm in Sources */,
+				A027AC2F14C8456D00F177F7 /* SISaveDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

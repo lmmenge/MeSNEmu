@@ -16,6 +16,7 @@ extern bool8 S9xMixSamples (uint8 *buffer, int sample_count);
 
 extern volatile int SI_EmulationPaused;
 extern volatile int SI_EmulationRun;
+extern volatile int SI_SoundOn;
 
 #pragma mark - Private Structures
 
@@ -46,7 +47,7 @@ static void AQBufferCallback(
 	outQB->mAudioDataByteSize = SI_SoundBufferSizeBytes;
   AudioQueueSetParameter(outQ, kAudioQueueParam_Volume, SI_AudioVolume);
 
-	if(SI_EmulationPaused || !SI_EmulationRun)
+	if(SI_EmulationPaused || !SI_EmulationRun || !SI_SoundIsInit)
     memset(outQB->mAudioData, 0, SI_SoundBufferSizeBytes);
 	else
     S9xMixSamples((unsigned char*)outQB->mAudioData, (SI_SoundBufferSizeBytes)/2);

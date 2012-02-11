@@ -15,32 +15,15 @@
 
 #define MAX_PATH 255
 #define DIR_SEPERATOR	"/"
-#define SNES_SRAM_DIR "sram"
+#define SNES_SRAM_DIR "SRAM"
 
 #define	ASSIGN_BUTTONf(n, s)	S9xMapButton (n, cmd = S9xGetCommandT(s), false)
 
-enum
-{
-  SIOS_UP=0x1,
-  SIOS_LEFT=0x4,
-  SIOS_DOWN=0x10,
-  SIOS_RIGHT=0x40,
-  SIOS_START=1<<8,
-  SIOS_SELECT=1<<9,
-  SIOS_L=1<<10,
-  SIOS_R=1<<11,
-  SIOS_A=1<<12,
-  SIOS_B=1<<13,
-  SIOS_X=1<<14,
-  SIOS_Y=1<<15,
-  SIOS_VOL_UP=1<<23,
-  SIOS_VOL_DOWN=1<<22,
-  SIOS_PUSH=1<<27
-};
-
 #pragma mark - External Forward Declarations
 
-extern "C" void SIFlipFramebufferClient(void);
+extern "C" void SIFlipFramebufferClient();
+extern "C" void SILoadRunningStateForGameNamed(const char* romFileName);
+extern "C" void SISaveRunningStateForGameNamed(const char* romFileName);
 
 extern char SI_DocumentsPath[1024];
 extern int SI_SoundOn;
@@ -48,6 +31,7 @@ extern int SI_AutoFrameskip;
 extern int SI_Frameskip;
 extern volatile int SI_EmulationRun;
 extern volatile int SI_EmulationPaused;
+extern volatile int SI_EmulationDidPause;
 extern unsigned int *screenPixels;
 
 extern struct timeval SI_NextFrameTime;
@@ -69,13 +53,7 @@ void SIFlipFramebuffer(int flip, int sync)
   SIFlipFramebufferClient();
 }
 
-const char* SIGetSnapshotDirectory(void)
-{
-  S9xMessage (0,0,"get snapshot dir");
-  return "";
-}
-
-const char *SIGetFilename (const char *ex)
+const char *SIGetFilename(const char *ex)
 {
   static char filename [PATH_MAX + 1];
   char drive [_MAX_DRIVE + 1];
@@ -84,14 +62,15 @@ const char *SIGetFilename (const char *ex)
   char ext [_MAX_EXT + 1];
   
   _splitpath (Memory.ROMFilename, drive, dir, fname, ext);
-  strcpy (filename, SIGetSnapshotDirectory());
+  //strcpy (filename, SIGetSnapshotDirectory());
+  strcpy (filename, "");
   strcat (filename, SLASH_STR);
   strcat (filename, fname);
   strcat (filename, ex);
   return (filename);
 }
 
-void SILoadSRAM (void)
+void SILoadSRAM()
 {
 	char path[MAX_PATH];
 	
@@ -99,7 +78,7 @@ void SILoadSRAM (void)
 	Memory.LoadSRAM (path);
 }
 
-void SISaveSRAM (void)
+void SISaveSRAM()
 {
 	char path[MAX_PATH];
 #if 0	
@@ -144,7 +123,7 @@ void state_unc_close()
 
 #pragma mark - Start Up and Tear Down
 
-extern "C" void SIUpdateSettings ()
+extern "C" void SIUpdateSettings()
 {
   if(SI_AutoFrameskip)
     Settings.SkipFrames = AUTO_FRAMERATE;
@@ -152,7 +131,7 @@ extern "C" void SIUpdateSettings ()
     Settings.SkipFrames = SI_Frameskip;
 }
 
-extern "C" int SIStartWithROM (char* rom_filename)
+extern "C" int SIStartWithROM(char* rom_filename)
 {
   // legacy init
   SI_NextFrameTime = (timeval){0, 0};
@@ -421,6 +400,9 @@ extern "C" int SIStartWithROM (char* rom_filename)
 	uint32	JoypadSkip = 0;
 #endif
   
+  SILoadRunningStateForGameNamed(rom_filename);
+  SI_EmulationPaused = 0;
+  
   //if(SI_SoundOn)
   SIDemuteSound(soundBufferSize);
 	S9xSetSoundMute(FALSE);
@@ -493,6 +475,7 @@ extern "C" int SIStartWithROM (char* rom_filename)
       if (Settings.Paused || SI_EmulationPaused || !SI_EmulationRun)
       {
         SISaveSRAM();
+        SI_EmulationDidPause = 1;
         
         do {
           //S9xProcessEvents(FALSE);
@@ -504,6 +487,7 @@ extern "C" int SIStartWithROM (char* rom_filename)
         if(!SI_EmulationRun)
         {
           SISaveSRAM();
+          SISaveRunningStateForGameNamed(rom_filename);
           
           SIMuteSound();
           if(vrambuffer != NULL)

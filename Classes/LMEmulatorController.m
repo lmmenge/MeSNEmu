@@ -13,9 +13,13 @@
 #import "LMEmulatorInterface.h"
 #import "LMPixelLayer.h"
 #import "LMPixelView.h"
+#ifdef SI_ENABLE_SAVES
+#import "LMSaveManager.h"
+#endif
 #import "LMSettingsController.h"
 
 #import "../SNES9XBridge/Snes9xMain.h"
+#import "../SNES9XBridge/SISaveDelegate.h"
 
 typedef enum _LMEmulatorAlert
 {
@@ -91,7 +95,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 
 #pragma mark -
 
-@interface LMEmulatorController(Privates) <UIActionSheetDelegate, UIAlertViewDelegate, LMSettingsControllerDelegate>
+@interface LMEmulatorController(Privates) <UIActionSheetDelegate, UIAlertViewDelegate, LMSettingsControllerDelegate, SISaveDelegate>
 @end
 
 #pragma mark -
@@ -156,7 +160,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
       if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
       {
         smallButtonsVertical = NO;
-        smallButtonsOriginX = (size.width-(_startButton.frame.size.width*3+smallButtonsSpacing*2))/2;
+        smallButtonsOriginX = smallButtonsSpacing;
         smallButtonsOriginY = height+smallButtonsSpacing;
       }
       else
@@ -249,6 +253,11 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   _yButton.frame = (CGRect){size.width-buttonSize*2-screenBorder-buttonSpacing, size.height-buttonSize*2-screenBorder-buttonSpacing, _yButton.frame.size};
   _yButton.alpha = controlsAlpha;
   
+  _lButton.alpha = controlsAlpha;
+  _lButton.frame = (CGRect){size.width-buttonSize*2-screenBorder-buttonSpacing, size.height-buttonSize*3-screenBorder-buttonSpacing, _yButton.frame.size};
+  _rButton.alpha = controlsAlpha;
+  _rButton.frame = (CGRect){size.width-buttonSize-screenBorder, size.height-buttonSize*3-screenBorder-buttonSpacing, _xButton.frame.size};
+  
   // layout d-pad
   _dPadView.frame = (CGRect){screenBorder,size.height-_dPadView.image.size.height-screenBorder, _dPadView.image.size};
   _dPadView.alpha = controlsAlpha;
@@ -281,13 +290,20 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
                                                     message:NSLocalizedString(@"EXIT_CONSEQUENCES", nil)
                                                    delegate:self
                                           cancelButtonTitle:NSLocalizedString(@"CANCEL", nil)
-                                          otherButtonTitles:@"EXIT", nil];
+                                          otherButtonTitles:NSLocalizedString(@"EXIT", nil), nil];
     alert.tag = LMEmulatorAlertExit;
     [alert show];
     [alert release];
   }
   else if(buttonIndex == 1)
   {
+    LMSetEmulationPaused(1);
+    LMWaitForPause();
+#ifdef SI_ENABLE_SAVES
+    [LMSaveManager loadRunningStateForROMNamed:_romFileName];
+#endif
+    LMSetEmulationPaused(0);
+    /*
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"RESET_GAME?", nil)
                                                     message:NSLocalizedString(@"RESET_CONSEQUENCES", nil)
                                                    delegate:self
@@ -296,6 +312,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
     alert.tag = LMEmulatorAlertReset;
     [alert show];
     [alert release];
+     */
   }
   else if(buttonIndex == 2)
   {
@@ -376,6 +393,21 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   }];
 }
 
+- (void)loadROMRunningState
+{
+#ifdef SI_ENABLE_SAVES
+  NSLog(@"loading state");
+  [LMSaveManager loadRunningStateForROMNamed:_romFileName];
+  NSLog(@"loaded state");
+#endif
+}
+- (void)saveROMRunningState
+{
+#ifdef SI_ENABLE_SAVES
+  //[LMSaveManager saveRunningStateForROMNamed:_romFileName];
+#endif
+}
+
 #pragma mark UI Creation Shortcuts
 
 - (LMButtonView*)smallButtonWithButton:(int)buttonMap
@@ -425,6 +457,17 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
       button.label.text = @"X";
     else if(buttonMap == SIOS_Y)
       button.label.text = @"Y";
+  }
+  else if(buttonMap == SIOS_L || buttonMap == SIOS_R)
+  {
+    button.image = [UIImage imageNamed:@"ButtonLightPurple.png"];
+    button.label.textColor = [UIColor colorWithRed:122/255.0 green:101/255.0 blue:208/255.0 alpha:0.75];
+    button.label.shadowColor = [UIColor colorWithWhite:1 alpha:0.25];
+    button.label.shadowOffset = CGSizeMake(0, 1);
+    if(buttonMap == SIOS_L)
+      button.label.text = @"L";
+    else if(buttonMap == SIOS_R)
+      button.label.text = @"R";
   }
   return [button autorelease];
 }
@@ -525,6 +568,11 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   [self.view addSubview:_yButton];
   
   // TODO: L/R buttons
+  _lButton = [[self buttonWithButton:SIOS_L] retain];
+  [self.view addSubview:_lButton];
+  
+  _rButton = [[self buttonWithButton:SIOS_R] retain];
+  [self.view addSubview:_rButton];
   
   // d-pad
   _dPadView = [[LMDPadView alloc] initWithFrame:(CGRect){0,0,10,10}];
@@ -626,8 +674,11 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeInactive) name:UIApplicationWillResignActiveNotification object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveROMRunningState:) name:SISaveRunningStateNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadROMRunningState:) name:SILoadRunningStateNotification object:nil];
   
   SISetScreenDelegate(self);
+  SISetSaveDelegate(self);
   
   //screenPixels = (unsigned int*)_565ImageBuffer;
   LMSetScreen(_imageBuffer);
@@ -641,6 +692,8 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:SISaveRunningStateNotification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:SILoadRunningStateNotification object:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -709,6 +762,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   _optionsButton = nil;
   
   SISetScreenDelegate(nil);
+  SISetSaveDelegate(nil);
   
   if(_imageBuffer != nil)
     free(_imageBuffer);

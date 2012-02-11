@@ -1,5 +1,5 @@
 //
-//  LMViewController.m
+//  SIScreenDelegate.m
 //  SiOS
 //
 //  Created by Lucas Menge on 1/2/12.

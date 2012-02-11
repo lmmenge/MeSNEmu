@@ -13,8 +13,6 @@
 
 #import "../SNES9XBridge/Snes9xMain.h"
 
-//unsigned int* screenPixels = 0;
-
 int SI_SoundOn = 1;
 int SI_AutoFrameskip = 1;
 int SI_Frameskip = 0;
@@ -22,12 +20,14 @@ int SI_Frameskip = 0;
 volatile int SI_EmulationRun = 0;
 volatile int SI_EmulationSaving = 0;
 volatile int SI_EmulationPaused = 0;
+volatile int SI_EmulationDidPause = 1;
 
 extern struct timeval SI_NextFrameTime;
 extern int SI_FrameTimeDebt;
 extern int SI_SleptLastFrame;
 
-char SI_DocumentsPath[255];
+char SI_DocumentsPath[1024];
+char SI_RunningStatesPath[1024];
 
 extern "C" void LMSetScreen(unsigned char* screen)
 {
@@ -37,6 +37,11 @@ extern "C" void LMSetScreen(unsigned char* screen)
 extern "C" void LMSetSystemPath(const char* path)
 {
   strcpy(SI_DocumentsPath, path);
+}
+
+extern "C" void LMSetRunningStatesPath(const char* path)
+{
+  strcpy(SI_RunningStatesPath, path);
 }
 
 extern "C" void LMSetSoundOn(int value)
@@ -82,13 +87,27 @@ extern "C" void LMSetEmulationPaused(int value)
     value = 0;
   else if(value > 1)
     value = 1;
-  if(value == 0)
+  if(SI_EmulationPaused != value)
   {
-    SI_NextFrameTime = (timeval){0,0};
-    SI_FrameTimeDebt = 0;
-    SI_SleptLastFrame = 0;
+    if(value == 0)
+    {
+      // we're unpausing. Reset the frameskip metrics
+      SI_NextFrameTime = (timeval){0,0};
+      SI_FrameTimeDebt = 0;
+      SI_SleptLastFrame = 0;
+    }
+    else
+      SI_EmulationDidPause = 0;
+    
+    SI_EmulationPaused = value;
   }
-  SI_EmulationPaused = value;
+}
+
+extern "C" void LMWaitForPause()
+{
+  if(SI_EmulationPaused == 1)
+    // wait for the pause to conclude
+    while(SI_EmulationDidPause == 0){}
 }
 
 extern "C" void LMReset()
