@@ -26,6 +26,8 @@
 
 #pragma mark - External Forward Declarations
 
+extern void SIFlipFramebuffer(int flip, int sync);
+
 extern int SI_SoundOn;
 
 #pragma mark - Global Variables
@@ -236,7 +238,6 @@ void S9xSyncSpeed(void)
   SI_FrameTimeDebt += lag-(int)Settings.FrameTime;
   
   // if we're  going too fast
-  // TODO: slow down better when going too fast in a way that we don't frameskip too much
   bool sleptThis = 0;
   if(SI_FrameTimeDebt < 0 && IPPU.SkippedFrames == 0)
   //if(debt+(int)Settings.FrameTime < 0 && IPPU.SkippedFrames == 0)

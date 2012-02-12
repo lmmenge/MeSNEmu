@@ -10,6 +10,8 @@
 
 #import "LMTableViewCellDelegate.h"
 
+// TODO: make instance variables begin with "_"
+
 @interface LMTableViewNumberCell : UITableViewCell {
   int value;
   int minimumValue;

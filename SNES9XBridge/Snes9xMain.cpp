@@ -21,31 +21,39 @@
 
 #pragma mark - External Forward Declarations
 
+// client-implemented functions called up by the emulator
 extern "C" void SIFlipFramebufferClient();
 extern "C" void SILoadRunningStateForGameNamed(const char* romFileName);
 extern "C" void SISaveRunningStateForGameNamed(const char* romFileName);
 
-extern char SI_DocumentsPath[1024];
-extern int SI_SoundOn;
-extern int SI_AutoFrameskip;
-extern int SI_Frameskip;
-extern volatile int SI_EmulationRun;
-extern volatile int SI_EmulationPaused;
-extern volatile int SI_EmulationDidPause;
-extern unsigned int *screenPixels;
-
+// these are reset when stopping/resetting to make sure the auto-frameskip works
 extern struct timeval SI_NextFrameTime;
 extern int SI_FrameTimeDebt;
 extern int SI_SleptLastFrame;
 
 #pragma mark - Global Variables
 
-char currentWorkingDir[MAX_PATH+1];
-char snesSramDir[MAX_PATH+1];
+// initial flags set by the UI
+int SI_SoundOn = 1;
+int SI_AutoFrameskip = 1;
+int SI_Frameskip = 0;
 
+// run management flags which are set by the UI
+volatile int SI_EmulationRun = 0;
+volatile int SI_EmulationSaving = 0;
+volatile int SI_EmulationPaused = 0;
+// run management flags which are set by the emulator to notify of status
+volatile int SI_EmulationDidPause = 1;
+
+// internal paths
+char SI_DocumentsPath[1024];
+char SI_RunningStatesPath[1024];
+char SI_SRAMPath[1024];
+
+// the screen buffer
 uint8 *vrambuffer = NULL;
 
-#pragma mark - Utility Functions
+#pragma mark - Emulator-Client internal interfaces
 
 void SIFlipFramebuffer(int flip, int sync)
 {
@@ -70,12 +78,122 @@ const char *SIGetFilename(const char *ex)
   return (filename);
 }
 
+#pragma mark - Path management
+
+extern "C" void SISetSystemPath(const char* path)
+{
+  strcpy(SI_DocumentsPath, path);
+}
+
+extern "C" void SISetRunningStatesPath(const char* path)
+{
+  strcpy(SI_RunningStatesPath, path);
+}
+
+extern "C" void SISetSRAMPath(const char* path)
+{
+  strcpy(SI_SRAMPath, path);
+}
+
+#pragma mark - Emulated hardware management
+
+extern "C" void SISetScreen(unsigned char* screen)
+{
+  GFX.Screen = (uint16*)screen;
+}
+
+extern "C" void SISetSoundOn(int value)
+{
+  if(value < 0)
+    value = 0;
+  else if(value > 1)
+    value = 1;
+  SI_SoundOn = value;
+}
+
+extern "C" void SISetAutoFrameskip(int value)
+{
+  if(value < 0)
+    value = 0;
+  else if(value > 1)
+    value = 1;
+  SI_AutoFrameskip = value;
+}
+
+extern "C" void SISetFrameskip(int value)
+{
+  SI_Frameskip = value;
+}
+
+#pragma mark - Run-state management
+
+extern "C" void SISetEmulationRunning(int value)
+{
+  if(value < 0)
+    value = 0;
+  else if(value > 1)
+    value = 1;
+  SI_EmulationRun = value;
+}
+
+extern "C" void SISetEmulationPaused(int value)
+{
+  if(value < 0)
+    value = 0;
+  else if(value > 1)
+    value = 1;
+  if(SI_EmulationPaused != value)
+  {
+    if(value == 0)
+    {
+      // we're unpausing. Reset the frameskip metrics
+      SI_NextFrameTime = (timeval){0,0};
+      SI_FrameTimeDebt = 0;
+      SI_SleptLastFrame = 0;
+    }
+    else
+      SI_EmulationDidPause = 0;
+    
+    SI_EmulationPaused = value;
+  }
+}
+
+extern "C" void SIWaitForPause()
+{
+  if(SI_EmulationPaused == 1)
+    // wait for the pause to conclude
+    while(SI_EmulationDidPause == 0){}
+}
+
+extern "C" void SIReset()
+{
+  SI_EmulationPaused = 1;
+  SISaveSRAM();
+  S9xReset();
+  SILoadSRAM();
+  SI_EmulationPaused = 0;
+}
+
+#pragma mark - Controller updates
+
+extern "C" void SISetControllerPushButton(unsigned long button)
+{
+  S9xReportButton((uint32)button, (bool)1);
+}
+
+extern "C" void SISetControllerReleaseButton(unsigned long button)
+{
+  S9xReportButton((uint32)button, (bool)0);
+}
+
+#pragma mark - SRAM Management
+
 void SILoadSRAM()
 {
 	char path[MAX_PATH];
 	
-	sprintf(path,"%s%s%s",snesSramDir,DIR_SEPERATOR,SIGetFilename (".srm"));
-	Memory.LoadSRAM (path);
+	sprintf(path, "%s%s%s", SI_SRAMPath, DIR_SEPERATOR, SIGetFilename(".srm"));
+	Memory.LoadSRAM(path);
 }
 
 void SISaveSRAM()
@@ -85,43 +203,13 @@ void SISaveSRAM()
 	if (CPU.SRAMModified)
 #endif
 	{
-		sprintf(path,"%s%s%s",snesSramDir,DIR_SEPERATOR,SIGetFilename (".srm"));
-		Memory.SaveSRAM (path);
+		sprintf(path, "%s%s%s", SI_SRAMPath, DIR_SEPERATOR, SIGetFilename(".srm"));
+		Memory.SaveSRAM(path);
 		sync();
 	}
 }
 
-#pragma mark - Save State I/O
-
-// save state file I/O
-int  (*statef_open)(const char *fname, const char *mode);
-int  (*statef_read)(void *p, int l);
-int  (*statef_write)(void *p, int l);
-void (*statef_close)();
-static FILE  *state_file = 0;
-
-int state_unc_open(const char *fname, const char *mode)
-{
-	state_file = fopen(fname, mode);
-	return (int) state_file;
-}
-
-int state_unc_read(void *p, int l)
-{
-	return fread(p, 1, l, state_file);
-}
-
-int state_unc_write(void *p, int l)
-{
-	return fwrite(p, 1, l, state_file);
-}
-
-void state_unc_close()
-{
-	fclose(state_file);
-}
-
-#pragma mark - Start Up and Tear Down
+#pragma mark - Notifications to the emulator
 
 extern "C" void SIUpdateSettings()
 {
@@ -131,6 +219,8 @@ extern "C" void SIUpdateSettings()
     Settings.SkipFrames = SI_Frameskip;
 }
 
+#pragma mark - Main starting point
+
 extern "C" int SIStartWithROM(char* rom_filename)
 {
   // legacy init
@@ -138,19 +228,9 @@ extern "C" int SIStartWithROM(char* rom_filename)
   SI_FrameTimeDebt = 0;
   SI_SleptLastFrame = 0;
   
-  // saves
-	statef_open  = state_unc_open;
-	statef_read  = state_unc_read;
-	statef_write = state_unc_write;
-	statef_close = state_unc_close;
-  
-  // paths
-  sprintf(currentWorkingDir, "%s", SI_DocumentsPath);
-	sprintf(snesSramDir,"%s%s%s",currentWorkingDir,DIR_SEPERATOR,SNES_SRAM_DIR);
-  
   // ensure dirs exist
   mode_t dir_mode = S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH;
-	mkdir(snesSramDir,dir_mode);
+	mkdir(SI_SRAMPath, dir_mode);
   
   // unix init
 	ZeroMemory(&Settings, sizeof(Settings));

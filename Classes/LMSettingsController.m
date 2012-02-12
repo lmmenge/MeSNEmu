@@ -8,7 +8,8 @@
 
 #import "LMSettingsController.h"
 
-#import "LMEmulatorInterface.h"
+#import "../SNES9X/snes9x.h"
+
 #import "LMTableViewCellDelegate.h"
 #import "LMTableViewNumberCell.h"
 #import "LMTableViewSwitchCell.h"
@@ -141,7 +142,7 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
   // Return the number of sections.
-  return 2;
+  return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -156,6 +157,8 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
     else
       return 3;
   }
+  else if(section == 2)
+    return 3;
   return 0;
 }
 
@@ -165,6 +168,8 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
     return NSLocalizedString(@"FULL_SCREEN_EXPLANATION", nil);
   else if(section == 1)
     return NSLocalizedString(@"AUTO_FRAMESKIP_EXPLANATION", nil);
+  //else if(section == 2)
+    //return NSLocalizedString(@"ABOUT", nil);
   return nil;
 }
 
@@ -212,6 +217,33 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
     c.allowsDefault = NO;
     c.value = [[NSUserDefaults standardUserDefaults] integerForKey:kLMSettingsFrameskipValue];
     c.delegate = self;
+  }
+  else
+  {
+    static NSString* identifier = @"AboutCell";
+    cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+    if (cell == nil)
+      cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier] autorelease];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+   
+    int row = indexPath.row;
+    if(row == 0)
+    {
+      cell.textLabel.text = NSLocalizedString(@"VERSION", nil);
+      cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",
+                                   [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleNameKey],
+                                   [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey]];
+    }
+    else if(row == 1)
+    {
+      cell.textLabel.text = NSLocalizedString(@"PORT_OF", nil);
+      cell.detailTextLabel.text = [NSString stringWithFormat:@"SNES9X %@", [NSString stringWithCString:VERSION encoding:NSUTF8StringEncoding]];
+    }
+    else if(row == 2)
+    {
+      cell.textLabel.text = NSLocalizedString(@"BY", nil);
+      cell.detailTextLabel.text = @"Lucas Mendes Menge";
+    }
   }
   
   return cell;

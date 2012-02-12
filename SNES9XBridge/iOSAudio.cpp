@@ -50,7 +50,10 @@ static void AQBufferCallback(
 	if(SI_EmulationPaused || !SI_EmulationRun || !SI_SoundIsInit)
     memset(outQB->mAudioData, 0, SI_SoundBufferSizeBytes);
 	else
+  {
+    memset(outQB->mAudioData, 0, SI_SoundBufferSizeBytes);
     S9xMixSamples((unsigned char*)outQB->mAudioData, (SI_SoundBufferSizeBytes)/2);
+  }
 
 	AudioQueueEnqueueBuffer(outQ, outQB, 0, NULL);
 }
@@ -65,7 +68,7 @@ int SIOpenSound(int buffersize)
   SI_AQCallbackCount = 0;
   memset(&SI_AQCallbackStruct, 0, sizeof(AQCallbackStruct));
   
-  Float64 sampleRate = 22050.0;	
+  Float64 sampleRate = 22050.0;
   sampleRate = 32000.0;
 	SI_SoundBufferSizeBytes = buffersize;
 	

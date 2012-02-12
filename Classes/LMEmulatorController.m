@@ -10,7 +10,6 @@
 
 #import "LMButtonView.h"
 #import "LMDPadView.h"
-#import "LMEmulatorInterface.h"
 #import "LMPixelLayer.h"
 #import "LMPixelView.h"
 #ifdef SI_ENABLE_SAVES
@@ -114,10 +113,10 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   strcpy(romFileNameCString, originalString);
   originalString = nil;
 
-  LMSetEmulationPaused(0);
-  LMSetEmulationRunning(1);
+  SISetEmulationPaused(0);
+  SISetEmulationRunning(1);
   SIStartWithROM(romFileNameCString);
-  LMSetEmulationRunning(0);
+  SISetEmulationRunning(0);
   
   free(romFileNameCString);
   
@@ -267,7 +266,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 
 - (void)options:(UIButton*)sender event:(UIEvent*)event;
 {
-  LMSetEmulationPaused(1);
+  SISetEmulationPaused(1);
   
   UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:nil
                                                      delegate:self
@@ -297,12 +296,12 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   }
   else if(buttonIndex == 1)
   {
-    LMSetEmulationPaused(1);
-    LMWaitForPause();
+    SISetEmulationPaused(1);
+    SIWaitForPause();
 #ifdef SI_ENABLE_SAVES
     [LMSaveManager loadRunningStateForROMNamed:_romFileName];
 #endif
-    LMSetEmulationPaused(0);
+    SISetEmulationPaused(0);
     /*
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"RESET_GAME?", nil)
                                                     message:NSLocalizedString(@"RESET_CONSEQUENCES", nil)
@@ -326,7 +325,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
     [n release];
   }
   else
-    LMSetEmulationPaused(0);
+    SISetEmulationPaused(0);
   _actionSheet = nil;
 }
 
@@ -335,17 +334,17 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   if(alertView.tag == LMEmulatorAlertReset)
   {
     if(buttonIndex == alertView.cancelButtonIndex)
-      LMSetEmulationPaused(0);
+      SISetEmulationPaused(0);
     else
-      LMReset();
+      SIReset();
   }
   else if(alertView.tag == LMEmulatorAlertExit)
   {
     if(buttonIndex == alertView.cancelButtonIndex)
-      LMSetEmulationPaused(0);
+      SISetEmulationPaused(0);
     else
     {
-      LMSetEmulationRunning(0);
+      SISetEmulationRunning(0);
       [self.navigationController popViewControllerAnimated:YES];
     }
   }
@@ -372,7 +371,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 - (void)settingsChanged
 {
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  LMSetSoundOn([defaults boolForKey:kLMSettingsSound]);
+  SISetSoundOn([defaults boolForKey:kLMSettingsSound]);
   if([defaults boolForKey:kLMSettingsSmoothScaling] == YES)
   {
     _screenView.layer.minificationFilter = kCAFilterLinear;
@@ -383,10 +382,10 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
     _screenView.layer.minificationFilter = kCAFilterNearest;
     _screenView.layer.magnificationFilter = kCAFilterNearest;
   }
-  LMSetAutoFrameskip([defaults boolForKey:kLMSettingsAutoFrameskip]);
-  LMSetFrameskip([defaults integerForKey:kLMSettingsFrameskipValue]);
+  SISetAutoFrameskip([defaults boolForKey:kLMSettingsAutoFrameskip]);
+  SISetFrameskip([defaults integerForKey:kLMSettingsFrameskipValue]);
   
-  LMSettingsUpdated();
+  SIUpdateSettings();
   
   [UIView animateWithDuration:0.3 animations:^{
     [self layoutForThisOrientation];
@@ -502,7 +501,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   if(((LMPixelLayer*)_screenView.layer).displayMainBuffer == YES)
   {
     //convert565ToARGB((unsigned int*)_imageBuffer, (unsigned short*)_565ImageBuffer, _bufferWidth, _bufferHeight);
-    LMSetScreen(_imageBufferAlt);
+    SISetScreen(_imageBufferAlt);
   
     [_screenView setNeedsDisplay];
     
@@ -511,7 +510,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   else
   {
     //convert565ToARGB((unsigned int*)_imageBufferAlt, (unsigned short*)_565ImageBuffer, _bufferWidth, _bufferHeight);
-    LMSetScreen(_imageBuffer);
+    SISetScreen(_imageBuffer);
     
     [_screenView setNeedsDisplay];
     
@@ -569,7 +568,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   _yButton = [[self buttonWithButton:SIOS_Y] retain];
   [self.view addSubview:_yButton];
   
-  // TODO: L/R buttons
+  // L/R buttons
   _lButton = [[self buttonWithButton:SIOS_L] retain];
   [self.view addSubview:_lButton];
   
@@ -682,8 +681,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   SISetScreenDelegate(self);
   SISetSaveDelegate(self);
   
-  //screenPixels = (unsigned int*)_565ImageBuffer;
-  LMSetScreen(_imageBuffer);
+  SISetScreen(_imageBuffer);
   if(_emulationThread == nil)
     [self startWithROM:_romFileName];
 }
@@ -736,7 +734,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   
-  LMSetEmulationRunning(0);
+  SISetEmulationRunning(0);
   
   [_screenView release];
   _screenView = nil;

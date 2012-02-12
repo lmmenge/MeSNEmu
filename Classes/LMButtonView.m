@@ -8,7 +8,7 @@
 
 #import "LMButtonView.h"
 
-#import "LMEmulatorInterface.h"
+#import "../SNES9XBridge/Snes9xMain.h"
 
 @implementation LMButtonView(Privates)
 
@@ -16,9 +16,9 @@
 {
   UITouch* touch = [touches anyObject];
   if(touch.phase == UITouchPhaseCancelled || touch.phase == UITouchPhaseEnded || touch == nil)
-    LMSetControllerReleaseButton(_button);
+    SISetControllerReleaseButton(_button);
   else
-    LMSetControllerPushButton(_button);
+    SISetControllerPushButton(_button);
 }
 
 @end

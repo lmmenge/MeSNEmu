@@ -8,7 +8,6 @@
 
 #import "LMDPadView.h"
 
-#import "LMEmulatorInterface.h"
 #import "../SNES9XBridge/Snes9xMain.h"
 
 @implementation LMDPadView(Privates)
@@ -18,39 +17,38 @@
   UITouch* touch = [touches anyObject];
   if(touch.phase == UITouchPhaseCancelled || touch.phase == UITouchPhaseEnded || touch == nil)
   {
-    LMSetControllerReleaseButton(SIOS_UP);
-    LMSetControllerReleaseButton(SIOS_LEFT);
-    LMSetControllerReleaseButton(SIOS_RIGHT);
-    LMSetControllerReleaseButton(SIOS_DOWN);
+    SISetControllerReleaseButton(SIOS_UP);
+    SISetControllerReleaseButton(SIOS_LEFT);
+    SISetControllerReleaseButton(SIOS_RIGHT);
+    SISetControllerReleaseButton(SIOS_DOWN);
     return;
   }
-  //LMSetControllerReleaseButton(SIOS_UP|SIOS_LEFT|SIOS_RIGHT|SIOS_DOWN); // TODO: make this atomic
-  LMSetControllerReleaseButton(SIOS_UP);
-  LMSetControllerReleaseButton(SIOS_LEFT);
-  LMSetControllerReleaseButton(SIOS_RIGHT);
-  LMSetControllerReleaseButton(SIOS_DOWN);
+  SISetControllerReleaseButton(SIOS_UP);
+  SISetControllerReleaseButton(SIOS_LEFT);
+  SISetControllerReleaseButton(SIOS_RIGHT);
+  SISetControllerReleaseButton(SIOS_DOWN);
   CGPoint location = [touch locationInView:self];
   if(location.x < 50)
   {
     if(location.y < 50)
     {
-      LMSetControllerPushButton(SIOS_UP);
-      LMSetControllerPushButton(SIOS_LEFT);
+      SISetControllerPushButton(SIOS_UP);
+      SISetControllerPushButton(SIOS_LEFT);
     }
     else if(location.y < 100)
-      LMSetControllerPushButton(SIOS_LEFT);
+      SISetControllerPushButton(SIOS_LEFT);
     else
     {
-      LMSetControllerPushButton(SIOS_DOWN);
-      LMSetControllerPushButton(SIOS_LEFT);
+      SISetControllerPushButton(SIOS_DOWN);
+      SISetControllerPushButton(SIOS_LEFT);
     }
   }
   else if(location.x < 100)
   {
     if(location.y < 50)
-      LMSetControllerPushButton(SIOS_UP);
+      SISetControllerPushButton(SIOS_UP);
     else if(location.y > 100)
-      LMSetControllerPushButton(SIOS_DOWN);
+      SISetControllerPushButton(SIOS_DOWN);
     else
     {
       // inside the middle square things get "tricky"
@@ -63,17 +61,17 @@
         {
           // right or down
           if(x > y)
-            LMSetControllerPushButton(SIOS_RIGHT);
+            SISetControllerPushButton(SIOS_RIGHT);
           else
-            LMSetControllerPushButton(SIOS_DOWN);
+            SISetControllerPushButton(SIOS_DOWN);
         }
         else
         {
           // right or up
           if(x > -y)
-            LMSetControllerPushButton(SIOS_RIGHT);
+            SISetControllerPushButton(SIOS_RIGHT);
           else
-            LMSetControllerPushButton(SIOS_UP);
+            SISetControllerPushButton(SIOS_UP);
         }
       }
       else
@@ -83,17 +81,17 @@
         {
           // left or down
           if(-x > y)
-            LMSetControllerPushButton(SIOS_LEFT);
+            SISetControllerPushButton(SIOS_LEFT);
           else
-            LMSetControllerPushButton(SIOS_DOWN);
+            SISetControllerPushButton(SIOS_DOWN);
         }
         else
         {
           // left or up
           if(-x > -y)
-            LMSetControllerPushButton(SIOS_LEFT);
+            SISetControllerPushButton(SIOS_LEFT);
           else
-            LMSetControllerPushButton(SIOS_UP);
+            SISetControllerPushButton(SIOS_UP);
         }
       }
     }
@@ -102,15 +100,15 @@
   {
     if(location.y < 50)
     {
-      LMSetControllerPushButton(SIOS_UP);
-      LMSetControllerPushButton(SIOS_RIGHT);
+      SISetControllerPushButton(SIOS_UP);
+      SISetControllerPushButton(SIOS_RIGHT);
     }
     else if(location.y < 100)
-      LMSetControllerPushButton(SIOS_RIGHT);
+      SISetControllerPushButton(SIOS_RIGHT);
     else
     {
-      LMSetControllerPushButton(SIOS_DOWN);
-      LMSetControllerPushButton(SIOS_RIGHT);
+      SISetControllerPushButton(SIOS_DOWN);
+      SISetControllerPushButton(SIOS_RIGHT);
     }
   }
 }

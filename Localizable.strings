@@ -19,6 +19,9 @@
 "SETTINGS" = "Settings";
 "FULL_SCREEN_EXPLANATION" = "Full screen makes better use of the screen, but controls will be on top of the game.";
 "AUTO_FRAMESKIP_EXPLANATION" = "Auto-frameskip may appear slower due to a more inconsistent skip rate.";
+"VERSION" = "About";
+"PORT_OF" = "Based on";
+"BY" = "Developer";
 
 // LMEmulatorController
 "BACK_TO_GAME" = "Back to game";

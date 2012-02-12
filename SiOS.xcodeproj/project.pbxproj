@@ -111,7 +111,6 @@
 		A0B8687E14BE3B6800663EBE /* LMDPadView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B8686E14BE3B6600663EBE /* LMDPadView.m */; };
 		A0B8687F14BE3B6800663EBE /* LMEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B8686F14BE3B6600663EBE /* LMEmulatorController.m */; };
 		A0B8688014BE3B6800663EBE /* LMButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B8687014BE3B6600663EBE /* LMButtonView.m */; };
-		A0B8688114BE3B6800663EBE /* LMEmulatorInterface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0B8687414BE3B6700663EBE /* LMEmulatorInterface.cpp */; };
 		A0B8688214BE3B6800663EBE /* LMROMBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B8687514BE3B6700663EBE /* LMROMBrowserController.m */; };
 		A0B8688314BE3B6800663EBE /* LMPixelView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B8687714BE3B6700663EBE /* LMPixelView.m */; };
 		A0B8688414BE3B6800663EBE /* LMPixelLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B8687914BE3B6700663EBE /* LMPixelLayer.m */; };
@@ -325,8 +324,6 @@
 		A0B8687014BE3B6600663EBE /* LMButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMButtonView.m; path = Classes/LMButtonView.m; sourceTree = SOURCE_ROOT; };
 		A0B8687114BE3B6600663EBE /* LMButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMButtonView.h; path = Classes/LMButtonView.h; sourceTree = SOURCE_ROOT; };
 		A0B8687214BE3B6600663EBE /* LMEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMEmulatorController.h; path = Classes/LMEmulatorController.h; sourceTree = SOURCE_ROOT; };
-		A0B8687314BE3B6600663EBE /* LMEmulatorInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMEmulatorInterface.h; path = Classes/LMEmulatorInterface.h; sourceTree = SOURCE_ROOT; };
-		A0B8687414BE3B6700663EBE /* LMEmulatorInterface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LMEmulatorInterface.cpp; path = Classes/LMEmulatorInterface.cpp; sourceTree = SOURCE_ROOT; };
 		A0B8687514BE3B6700663EBE /* LMROMBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMROMBrowserController.m; path = Classes/LMROMBrowserController.m; sourceTree = SOURCE_ROOT; };
 		A0B8687614BE3B6700663EBE /* LMROMBrowserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMROMBrowserController.h; path = Classes/LMROMBrowserController.h; sourceTree = SOURCE_ROOT; };
 		A0B8687714BE3B6700663EBE /* LMPixelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMPixelView.m; path = Classes/LMPixelView.m; sourceTree = SOURCE_ROOT; };
@@ -590,8 +587,6 @@
 				A0B8687C14BE3B6800663EBE /* LMAppDelegate.m */,
 				A0B8688714BE3B8B00663EBE /* Controllers */,
 				A0B8688614BE3B7100663EBE /* Views */,
-				A0B8687314BE3B6600663EBE /* LMEmulatorInterface.h */,
-				A0B8687414BE3B6700663EBE /* LMEmulatorInterface.cpp */,
 				A027AC1714C78F3B00F177F7 /* LMSaveManager.h */,
 				A027AC1814C78F3C00F177F7 /* LMSaveManager.mm */,
 				A050661214B21C7F003E0C5E /* Supporting Files */,
@@ -770,7 +765,6 @@
 				A0B8687E14BE3B6800663EBE /* LMDPadView.m in Sources */,
 				A0B8687F14BE3B6800663EBE /* LMEmulatorController.m in Sources */,
 				A0B8688014BE3B6800663EBE /* LMButtonView.m in Sources */,
-				A0B8688114BE3B6800663EBE /* LMEmulatorInterface.cpp in Sources */,
 				A0B8688214BE3B6800663EBE /* LMROMBrowserController.m in Sources */,
 				A0B8688314BE3B6800663EBE /* LMPixelView.m in Sources */,
 				A0B8688414BE3B6800663EBE /* LMPixelLayer.m in Sources */,

@@ -8,26 +8,44 @@
 
 #import "LMROMBrowserController.h"
 
+#import "../SNES9XBridge/Snes9xMain.h"
+
 #import "LMEmulatorController.h"
-#import "LMEmulatorInterface.h"
 #import "LMSettingsController.h"
 
 @implementation LMROMBrowserController(Privates)
 
 - (void)reloadROMList
 {
+  NSFileManager* fm = [NSFileManager defaultManager];
+  
   // copy all ROMs from the Inbox to the documents folder
-  // TODO: import the ROMs
-  [[NSFileManager defaultManager] removeItemAtPath:[_romPath stringByAppendingPathComponent:@"Inbox"] error:nil];
+  NSString* inboxPath = [_romPath stringByAppendingPathComponent:@"Inbox"];
+  NSArray* filesInInbox = [fm contentsOfDirectoryAtPath:inboxPath error:nil];
+  for(NSString* file in filesInInbox)
+  {
+    NSString* sourcePath = [inboxPath stringByAppendingPathComponent:file];
+    NSString* targetPath = [_romPath stringByAppendingPathComponent:file];
+    // avoid overwriting existing files
+    int i = 1;
+    while([fm fileExistsAtPath:targetPath] == YES)
+    {
+      targetPath = [[[targetPath stringByDeletingPathExtension] stringByAppendingFormat:@" %i", i] stringByAppendingPathExtension:[sourcePath pathExtension]];
+      i++;
+    }
+    // actually move item
+    [fm moveItemAtPath:sourcePath toPath:targetPath error:nil];
+  }
+  [fm removeItemAtPath:inboxPath error:nil];
   
   // list all ROMs in the documents folder
   NSMutableArray* tempRomList = [NSMutableArray array];
-  NSArray* proposedFileList = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_romPath error:nil];
+  NSArray* proposedFileList = [fm contentsOfDirectoryAtPath:_romPath error:nil];
   
   for(NSString* file in proposedFileList)
   {
     BOOL isDirectory = NO;
-    if([[NSFileManager defaultManager] fileExistsAtPath:[_romPath stringByAppendingPathComponent:file] isDirectory:&isDirectory])
+    if([fm fileExistsAtPath:[_romPath stringByAppendingPathComponent:file] isDirectory:&isDirectory])
     {
       if(isDirectory == NO)
         [tempRomList addObject:file];
@@ -160,8 +178,10 @@
   NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
   NSString *documentsPath = [paths objectAtIndex:0];
   
-  // set it as the system dir
-  LMSetSystemPath([documentsPath UTF8String]);
+  // set it for the ROMs
+  SISetSystemPath([documentsPath UTF8String]);
+  // and set it+sram for SRAM
+  SISetSRAMPath([[documentsPath stringByAppendingPathComponent:@"sram"] UTF8String]);
   
   _romPath = [documentsPath copy];
   [self reloadROMList];

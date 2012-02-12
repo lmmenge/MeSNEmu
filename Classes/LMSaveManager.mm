@@ -14,7 +14,6 @@
 
 #import "../SNES9XBridge/iOSAudio.h"
 
-#import "LMEmulatorInterface.h"
 
 @implementation LMSaveManager(Privates)
 
