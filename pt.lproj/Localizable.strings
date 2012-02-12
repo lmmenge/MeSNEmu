@@ -1,0 +1,36 @@
+/* 
+  Localized.strings
+  SiOS
+
+  Created by Lucas Menge on 1/18/12.
+  Copyright (c) 2012 Lucas Menge. All rights reserved.
+*/
+
+// LMROMBrowserController
+"ROMS" = "ROMs";
+
+// LMSettingsController
+"SMOOTH_SCALING" = "Tratar imagem";
+"FULL_SCREEN" = "Tela cheia";
+"SOUND" = "Som";
+"AUTO_FRAMESKIP" = "Auto-velocidade";
+"SKIP_EVERY" = "Pular a cada";
+"FRAMES" = "quadros";
+"SETTINGS" = "Ajustes";
+"FULL_SCREEN_EXPLANATION" = "Tela cheia usa melhor a tela, mas os controles vão ficar em cima do jogo.";
+"AUTO_FRAMESKIP_EXPLANATION" = "Auto-velocidade pode parecer mais lento devido a pulos de quadros inconsistentes.";
+"VERSION" = "Sobre";
+"PORT_OF" = "Baseado em";
+"BY" = "Desenvolvedor";
+
+// LMEmulatorController
+"BACK_TO_GAME" = "Voltar ao jogo";
+"EXIT_GAME" = "Sair do jogo";
+"RESET" = "Reiniciar";
+"EXIT_GAME?" = "Sair do jogo?";
+"EXIT_CONSEQUENCES" = "Todo o progresso não salvo será perdido.";
+"EXIT" = "Sair";
+"CANCEL" = "Cancelar";
+"RESET_GAME?" = "Reiniciar o jogo?";
+"RESET_CONSEQUENCES" = "Todo o progresso não salvo será perdido.";
+"MENU" = "Menu";

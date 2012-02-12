@@ -296,13 +296,13 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   }
   else if(buttonIndex == 1)
   {
+#ifdef SI_ENABLE_SAVES
+    // TODO: remove this save test code
     SISetEmulationPaused(1);
     SIWaitForPause();
-#ifdef SI_ENABLE_SAVES
     [LMSaveManager loadRunningStateForROMNamed:_romFileName];
-#endif
     SISetEmulationPaused(0);
-    /*
+#else
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"RESET_GAME?", nil)
                                                     message:NSLocalizedString(@"RESET_CONSEQUENCES", nil)
                                                    delegate:self
@@ -311,7 +311,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
     alert.tag = LMEmulatorAlertReset;
     [alert show];
     [alert release];
-     */
+#endif
   }
   else if(buttonIndex == 2)
   {

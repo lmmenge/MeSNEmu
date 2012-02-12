@@ -77,7 +77,6 @@
 		A00404DD14BE3F1F00FE28CE /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = A00404D914BE3F1F00FE28CE /* unzip.c */; };
 		A00404DE14BE3F1F00FE28CE /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = A00404DB14BE3F1F00FE28CE /* zip.c */; };
 		A00404E014BE41ED00FE28CE /* srtc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00404DF14BE41ED00FE28CE /* srtc.cpp */; };
-		A027AC1614C74F6C00F177F7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A027AC1514C74F6C00F177F7 /* Localizable.strings */; };
 		A027AC1914C78F3D00F177F7 /* LMSaveManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = A027AC1814C78F3C00F177F7 /* LMSaveManager.mm */; };
 		A027AC2F14C8456D00F177F7 /* SISaveDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A027AC2E14C8456D00F177F7 /* SISaveDelegate.m */; };
 		A03C087414BF7AB2003FAEB9 /* LMSettingsController.m in Sources */ = {isa = PBXBuildFile; fileRef = A03C087314BF7AB2003FAEB9 /* LMSettingsController.m */; };
@@ -115,6 +114,7 @@
 		A0B8688314BE3B6800663EBE /* LMPixelView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B8687714BE3B6700663EBE /* LMPixelView.m */; };
 		A0B8688414BE3B6800663EBE /* LMPixelLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B8687914BE3B6700663EBE /* LMPixelLayer.m */; };
 		A0B8688514BE3B6800663EBE /* LMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B8687C14BE3B6800663EBE /* LMAppDelegate.m */; };
+		A0BB592614E84BC000D12F97 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0BB592814E84BC000D12F97 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -276,7 +276,6 @@
 		A00404DB14BE3F1F00FE28CE /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
 		A00404DC14BE3F1F00FE28CE /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		A00404DF14BE41ED00FE28CE /* srtc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = srtc.cpp; sourceTree = "<group>"; };
-		A027AC1514C74F6C00F177F7 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = SOURCE_ROOT; };
 		A027AC1714C78F3B00F177F7 /* LMSaveManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMSaveManager.h; path = Classes/LMSaveManager.h; sourceTree = SOURCE_ROOT; };
 		A027AC1814C78F3C00F177F7 /* LMSaveManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LMSaveManager.mm; path = Classes/LMSaveManager.mm; sourceTree = SOURCE_ROOT; };
 		A027AC2D14C8456D00F177F7 /* SISaveDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SISaveDelegate.h; path = SNES9XBridge/SISaveDelegate.h; sourceTree = SOURCE_ROOT; };
@@ -334,6 +333,8 @@
 		A0B8687C14BE3B6800663EBE /* LMAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMAppDelegate.m; path = Classes/LMAppDelegate.m; sourceTree = SOURCE_ROOT; };
 		A0B8687D14BE3B6800663EBE /* LMAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMAppDelegate.h; path = Classes/LMAppDelegate.h; sourceTree = SOURCE_ROOT; };
 		A0B8688914BE3BE300663EBE /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
+		A0BB592714E84BC000D12F97 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A0BB592914E84BD100D12F97 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -604,7 +605,7 @@
 				A0B8688914BE3BE300663EBE /* Info.plist */,
 				A0B8686914BE3B3100663EBE /* main.m */,
 				A0B8686A14BE3B3100663EBE /* Prefix.pch */,
-				A027AC1514C74F6C00F177F7 /* Localizable.strings */,
+				A0BB592814E84BC000D12F97 /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -716,6 +717,7 @@
 			knownRegions = (
 				en,
 				English,
+				pt,
 			);
 			mainGroup = A05065FC14B21C7E003E0C5E;
 			productRefGroup = A050660814B21C7F003E0C5E /* Products */;
@@ -746,7 +748,7 @@
 				A03C088614BF8CAE003FAEB9 /* ButtonNumberMinus@2x.png in Resources */,
 				A03C088714BF8CAE003FAEB9 /* ButtonNumberPlus.png in Resources */,
 				A03C088814BF8CAE003FAEB9 /* ButtonNumberPlus@2x.png in Resources */,
-				A027AC1614C74F6C00F177F7 /* Localizable.strings in Resources */,
+				A0BB592614E84BC000D12F97 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -848,6 +850,18 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		A0BB592814E84BC000D12F97 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A0BB592714E84BC000D12F97 /* en */,
+				A0BB592914E84BD100D12F97 /* pt */,
+			);
+			name = Localizable.strings;
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		A050662614B21C7F003E0C5E /* Debug */ = {

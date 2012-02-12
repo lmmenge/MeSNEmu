@@ -171,6 +171,11 @@ extern "C" void SIReset()
   SISaveSRAM();
   S9xReset();
   SILoadSRAM();
+  
+  SI_NextFrameTime = (timeval){0,0};
+  SI_FrameTimeDebt = 0;
+  SI_SleptLastFrame = 0;
+  
   SI_EmulationPaused = 0;
 }
 
