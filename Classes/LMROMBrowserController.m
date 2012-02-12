@@ -15,7 +15,7 @@
 
 @implementation LMROMBrowserController(Privates)
 
-- (void)reloadROMList
+- (void)reloadROMList:(BOOL)updateTable
 {
   NSFileManager* fm = [NSFileManager defaultManager];
   
@@ -70,8 +70,13 @@
   {
     [_romList release];
     _romList = [tempRomList copy];
-    [self.tableView reloadData];
+    if(updateTable == YES)
+      [self.tableView reloadData];
   }
+}
+- (void)reloadROMList
+{
+  [self reloadROMList:YES];
 }
 
 - (void)settings
@@ -133,6 +138,17 @@
   emulator.romFileName = romName;
   [self.navigationController pushViewController:emulator animated:YES];
   [emulator release];
+}
+
+- (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath
+{
+  if(editingStyle == UITableViewCellEditingStyleDelete)
+  {
+    // Delete the row from the data source
+    [[NSFileManager defaultManager] removeItemAtPath:[_romPath stringByAppendingPathComponent:[_romList objectAtIndex:indexPath.row]] error:nil];
+    [self reloadROMList:NO];
+    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+  }
 }
 
 @end
