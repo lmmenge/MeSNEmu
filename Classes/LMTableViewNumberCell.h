@@ -13,19 +13,19 @@
 // TODO: make instance variables begin with "_"
 
 @interface LMTableViewNumberCell : UITableViewCell {
-  int value;
-  int minimumValue;
-  int maximumValue;
-  NSString* suffix;
-  BOOL usesDefaultValue;
-  BOOL allowsDefault;
+  int _value;
+  int _minimumValue;
+  int _maximumValue;
+  NSString* _suffix;
+  BOOL _usesDefaultValue;
+  BOOL _allowsDefault;
   
   UIView* _plusMinusAccessoryView;
-  UIButton* plusButton;
-  UIButton* minusButton;
-  UIButton* defaultButton;
+  UIButton* _plusButton;
+  UIButton* _minusButton;
+  UIButton* _defaultButton;
   
-  id<LMTableViewCellDelegate> delegate;
+  id<LMTableViewCellDelegate> _delegate;
 }
 
 @property (readonly) UIView* plusMinusAccessoryView;

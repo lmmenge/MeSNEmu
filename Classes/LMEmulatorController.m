@@ -282,7 +282,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-  NSLog(@"%i", buttonIndex);
+  //NSLog(@"%i", buttonIndex);
   if(buttonIndex == actionSheet.destructiveButtonIndex)
   {
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXIT_GAME?", nil)
@@ -297,7 +297,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   else if(buttonIndex == 1)
   {
 #ifdef SI_ENABLE_SAVES
-    // TODO: remove this save test code
+    // TODO: remove this save test code once we get save states working
     SISetEmulationPaused(1);
     SIWaitForPause();
     [LMSaveManager loadRunningStateForROMNamed:_romFileName];
@@ -365,7 +365,6 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 
 - (void)didBecomeActive
 {
-  //LMSetEmulationPaused(0);
 }
 
 - (void)settingsChanged
@@ -500,7 +499,6 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   
   if(((LMPixelLayer*)_screenView.layer).displayMainBuffer == YES)
   {
-    //convert565ToARGB((unsigned int*)_imageBuffer, (unsigned short*)_565ImageBuffer, _bufferWidth, _bufferHeight);
     SISetScreen(_imageBufferAlt);
   
     [_screenView setNeedsDisplay];
@@ -509,7 +507,6 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   }
   else
   {
-    //convert565ToARGB((unsigned int*)_imageBufferAlt, (unsigned short*)_565ImageBuffer, _bufferWidth, _bufferHeight);
     SISetScreen(_imageBuffer);
     
     [_screenView setNeedsDisplay];
@@ -583,9 +580,6 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  
-  // size of _imageBuffer in Bytes MUST BE at least 256*224*2
-  NSLog(@"Want buffer of size %i", 256*224*2);
 
   _bufferWidth = 256;
   _bufferHeight = 224;
@@ -609,9 +603,6 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   if(_imageBuffer == nil)
   {
     _imageBuffer = (unsigned char*)calloc(_bufferWidth*_bufferHeight, pixelSizeBytes);
-    NSLog(@"Got buffer of size %i", _bufferWidth*_bufferHeight*pixelSizeBytes);
-    /*for(int i=0; i<_bufferWidth*_bufferHeight; i++)
-      ((uint32_t*)_imageBuffer)[i] = 0xFFFFFFFF;*/
   }
   if(_imageBufferAlt == nil)
   {
@@ -706,7 +697,6 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   }
 }
 
-//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
   [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];

@@ -168,8 +168,6 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
     return NSLocalizedString(@"FULL_SCREEN_EXPLANATION", nil);
   else if(section == 1)
     return NSLocalizedString(@"AUTO_FRAMESKIP_EXPLANATION", nil);
-  //else if(section == 2)
-    //return NSLocalizedString(@"ABOUT", nil);
   return nil;
 }
 
@@ -271,7 +269,7 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
 {  
   [super viewDidLoad];
   
-  self.title = NSLocalizedString(@"Settings", nil);
+  self.title = NSLocalizedString(@"SETTINGS", nil);
   
   UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)];
   self.navigationItem.rightBarButtonItem = doneButton;
