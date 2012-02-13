@@ -115,6 +115,8 @@
 		A0B8688414BE3B6800663EBE /* LMPixelLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B8687914BE3B6700663EBE /* LMPixelLayer.m */; };
 		A0B8688514BE3B6800663EBE /* LMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B8687C14BE3B6800663EBE /* LMAppDelegate.m */; };
 		A0BB592614E84BC000D12F97 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0BB592814E84BC000D12F97 /* Localizable.strings */; };
+		A0BF018E14E98A19006534F2 /* ButtonGrey.png in Resources */ = {isa = PBXBuildFile; fileRef = A0BF018C14E98A19006534F2 /* ButtonGrey.png */; };
+		A0BF018F14E98A19006534F2 /* ButtonGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0BF018D14E98A19006534F2 /* ButtonGrey@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -335,6 +337,8 @@
 		A0B8688914BE3BE300663EBE /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
 		A0BB592714E84BC000D12F97 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A0BB592914E84BD100D12F97 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A0BF018C14E98A19006534F2 /* ButtonGrey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonGrey.png; sourceTree = "<group>"; };
+		A0BF018D14E98A19006534F2 /* ButtonGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonGrey@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -630,6 +634,8 @@
 		A0B8685814BE25F900663EBE /* Artwork */ = {
 			isa = PBXGroup;
 			children = (
+				A0BF018C14E98A19006534F2 /* ButtonGrey.png */,
+				A0BF018D14E98A19006534F2 /* ButtonGrey@2x.png */,
 				A0B8685914BE25F900663EBE /* ButtonDarkPurple.png */,
 				A0B8685F14BE2C9500663EBE /* ButtonDarkPurple@2x.png */,
 				A0B8685A14BE25F900663EBE /* ButtonLightPurple.png */,
@@ -749,6 +755,8 @@
 				A03C088714BF8CAE003FAEB9 /* ButtonNumberPlus.png in Resources */,
 				A03C088814BF8CAE003FAEB9 /* ButtonNumberPlus@2x.png in Resources */,
 				A0BB592614E84BC000D12F97 /* Localizable.strings in Resources */,
+				A0BF018E14E98A19006534F2 /* ButtonGrey.png in Resources */,
+				A0BF018F14E98A19006534F2 /* ButtonGrey@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

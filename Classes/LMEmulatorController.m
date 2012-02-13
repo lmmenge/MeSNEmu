@@ -461,8 +461,8 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   }
   else if(buttonMap == SIOS_L || buttonMap == SIOS_R)
   {
-    button.image = [UIImage imageNamed:@"ButtonLightPurple.png"];
-    button.label.textColor = [UIColor colorWithRed:122/255.0 green:101/255.0 blue:208/255.0 alpha:0.75];
+    button.image = [UIImage imageNamed:@"ButtonGrey.png"];
+    button.label.textColor = [UIColor colorWithRed:136/255.0 green:140/255.0 blue:148/255.0 alpha:0.75];
     button.label.shadowColor = [UIColor colorWithWhite:1 alpha:0.25];
     button.label.shadowOffset = CGSizeMake(0, 1);
     if(buttonMap == SIOS_L)

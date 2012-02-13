@@ -11,7 +11,6 @@
 #import "LMROMBrowserController.h"
 
 // TODO: LM: Application icon
-// TODO: LM: L/R Button graphics
 // TODO: LM: Open SMC, SFC, ZIP files from other iOS apps
 // TODO: LM: License
 // TODO: LM: Save states
