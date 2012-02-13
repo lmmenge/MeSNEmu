@@ -24,7 +24,7 @@
   unsigned char* _imageBufferAlt;
   unsigned char* _565ImageBuffer;
   
-  NSThread* _emulationThread;
+  volatile NSThread* _emulationThread;
   
   // start / select
   LMButtonView* _startButton;

@@ -345,6 +345,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
     else
     {
       SISetEmulationRunning(0);
+      while(_emulationThread != nil) {sleep(0);}
       [self.navigationController popViewControllerAnimated:YES];
     }
   }
