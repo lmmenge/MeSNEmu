@@ -13,10 +13,19 @@
 #import "LMEmulatorController.h"
 #import "LMSettingsController.h"
 
+@interface LMROMBrowserController(Privates) <UISearchDisplayDelegate>
+
+@end
+
+#pragma mark -
+
 @implementation LMROMBrowserController(Privates)
 
 - (void)reloadROMList:(BOOL)updateTable
 {
+  BOOL searching = self.searchDisplayController.isActive;
+  NSString* filterString = self.searchDisplayController.searchBar.text;
+  
   NSFileManager* fm = [NSFileManager defaultManager];
   
   // copy all ROMs from the Inbox to the documents folder
@@ -52,6 +61,9 @@
     {
       if(isDirectory == NO)
       {
+        if(searching == YES && [file rangeOfString:filterString options:NSCaseInsensitiveSearch].location == NSNotFound)
+          continue;
+          
         unichar firstLetter = [[file uppercaseString] characterAtIndex:0];
         if(firstLetter >= '0' && firstLetter <= '9')
           firstLetter = '#';
@@ -66,12 +78,21 @@
     }
   }
   
-  BOOL different = ([_romList count] != [tempRomList count]);
+  BOOL different = NO;
+  if(searching == YES)
+    different = ([_filteredRomList count] != [tempRomList count]);
+  else
+    different = ([_romList count] != [tempRomList count]);
+  
   if(different == NO)
   {
     for(int i=0; i<[tempRomList count]; i++)
     {
-      NSString* romA = [_romList objectAtIndex:i];
+      NSString* romA = nil;
+      if(searching == YES)
+        romA = [_filteredRomList objectAtIndex:i];
+      else
+        romA = [_romList objectAtIndex:i];
       NSString* romB = [tempRomList objectAtIndex:i];
       if([romA isEqualToString:romB] == NO)
       {
@@ -82,19 +103,32 @@
   }
   if(different)
   {
-    [_romList release];
-    _romList = [tempRomList copy];
-    [_sectionTitles release];
-    _sectionTitles = [tempSectionTitles copy];
-    [_sectionMarkers release];
-    _sectionMarkers = [tempSectionMarkers copy];
-    if(updateTable == YES)
-      [self.tableView reloadData];
+    if(searching == YES)
+    {
+      [_filteredRomList release];
+      _filteredRomList = [tempRomList copy];
+      [_filteredSectionTitles release];
+      _filteredSectionTitles = [tempSectionTitles copy];
+      [_filteredSectionMarkers release];
+      _filteredSectionMarkers = [tempSectionMarkers copy];
+    }
+    else
+    {
+      [_romList release];
+      _romList = [tempRomList copy];
+      [_sectionTitles release];
+      _sectionTitles = [tempSectionTitles copy];
+      [_sectionMarkers release];
+      _sectionMarkers = [tempSectionMarkers copy];
+      if(updateTable == YES)
+        [self.tableView reloadData];
+    }
   }
 }
 - (void)reloadROMList
 {
-  [self reloadROMList:YES];
+  if(self.searchDisplayController.isActive == NO)
+    [self reloadROMList:YES];
 }
 
 - (void)settings
@@ -105,6 +139,27 @@
   [self presentModalViewController:n animated:YES];
   [c release];
   [n release];
+}
+
+- (NSString*)romNameForTableView:(UITableView*)tableView indexPath:(NSIndexPath*)indexPath
+{
+  int index = indexPath.row;
+  if(tableView == self.searchDisplayController.searchResultsTableView)
+  {
+    index += [[_filteredSectionMarkers objectAtIndex:indexPath.section] intValue];
+    return [_filteredRomList objectAtIndex:index];
+  }
+  else
+  {
+    index += [[_sectionMarkers objectAtIndex:indexPath.section] intValue];
+    return [_romList objectAtIndex:index];
+  }
+}
+
+- (BOOL)searchDisplayController:(UISearchDisplayController*)controller shouldReloadTableForSearchString:(NSString*)searchString
+{
+  [self reloadROMList:NO];
+  return YES;
 }
 
 @end
@@ -123,7 +178,10 @@
 
 - (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
-  return _sectionTitles;
+  if(tableView == self.searchDisplayController.searchResultsTableView)
+    return _filteredSectionTitles;
+  else
+    return _sectionTitles;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString*)title atIndex:(NSInteger)index
@@ -134,21 +192,39 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
   // Return the number of sections.
-  return [_sectionTitles count];
+  if(tableView == self.searchDisplayController.searchResultsTableView)
+    return [_filteredSectionTitles count];
+  else
+    return [_sectionTitles count];
 }
 
 - (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-  return [_sectionTitles objectAtIndex:section];
+  if(tableView == self.searchDisplayController.searchResultsTableView)
+    return [_filteredSectionTitles objectAtIndex:section];
+  else
+    return [_sectionTitles objectAtIndex:section];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   // Return the number of rows in the section.
-  int sectionStart = [[_sectionMarkers objectAtIndex:section] intValue];
-  int sectionEnd = [_romList count];
-  if(section < [_sectionMarkers count]-1)
-    sectionEnd = [[_sectionMarkers objectAtIndex:(section+1)] intValue];
+  int sectionStart, sectionEnd;
+  if(tableView == self.searchDisplayController.searchResultsTableView)
+  {
+    sectionStart = [[_filteredSectionMarkers objectAtIndex:section] intValue];
+    sectionEnd = [_filteredRomList count];
+    if(section < [_filteredSectionMarkers count]-1)
+      sectionEnd = [[_filteredSectionMarkers objectAtIndex:(section+1)] intValue];
+  }
+  else
+  {
+    sectionStart = [[_sectionMarkers objectAtIndex:section] intValue];
+    sectionEnd = [_romList count];
+    if(section < [_sectionMarkers count]-1)
+      sectionEnd = [[_sectionMarkers objectAtIndex:(section+1)] intValue];
+  }
+  
   return sectionEnd-sectionStart;
 }
 
@@ -160,34 +236,26 @@
   if(cell == nil)
     cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
   
-  int index = indexPath.row;
-  index += [[_sectionMarkers objectAtIndex:indexPath.section] intValue];
-  
-  cell.textLabel.text = [_romList objectAtIndex:index];
+  cell.textLabel.text = [self romNameForTableView:tableView indexPath:indexPath];
   
   return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  int index = indexPath.row;
-  index += [[_sectionMarkers objectAtIndex:indexPath.section] intValue];
-  NSString* romName = [_romList objectAtIndex:index];
-  
   LMEmulatorController* emulator = [[LMEmulatorController alloc] init];
-  emulator.romFileName = romName;
+  emulator.romFileName = [self romNameForTableView:tableView indexPath:indexPath];
+  [self.searchDisplayController setActive:NO];
   [self.navigationController pushViewController:emulator animated:YES];
   [emulator release];
 }
 
 - (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath
 {
-  int index = indexPath.row;
-  index += [[_sectionMarkers objectAtIndex:indexPath.section] intValue];
   if(editingStyle == UITableViewCellEditingStyleDelete)
   {
     // Delete the row from the data source
-    [[NSFileManager defaultManager] removeItemAtPath:[_romPath stringByAppendingPathComponent:[_romList objectAtIndex:index]] error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:[_romPath stringByAppendingPathComponent:[self romNameForTableView:tableView indexPath:indexPath]] error:nil];
     [self reloadROMList:NO];
     [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
   }
@@ -221,6 +289,15 @@
   [super viewDidLoad];
   
   self.title = NSLocalizedString(@"ROMS", nil);
+  
+  UISearchBar* searchbar = [[UISearchBar alloc] init];
+  [searchbar sizeToFit];
+  self.tableView.tableHeaderView = searchbar;
+  [searchbar release];
+  UISearchDisplayController* searchController = [[UISearchDisplayController alloc] initWithSearchBar:searchbar contentsController:self];
+  searchController.delegate = self;
+  searchController.searchResultsDataSource = self;
+  searchController.searchResultsDelegate = self;
   
   UIBarButtonItem* settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"SETTINGS", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(settings)];
   self.navigationItem.rightBarButtonItem = settingsButton;
@@ -259,8 +336,8 @@
   
   [self reloadROMList];
   
-  _fsTimer = [[NSTimer timerWithTimeInterval:5 target:self selector:@selector(reloadROMList) userInfo:nil repeats:YES] retain];
-  [[NSRunLoop mainRunLoop] addTimer:_fsTimer forMode:NSDefaultRunLoopMode];
+  //_fsTimer = [[NSTimer timerWithTimeInterval:5 target:self selector:@selector(reloadROMList) userInfo:nil repeats:YES] retain];
+  //[[NSRunLoop mainRunLoop] addTimer:_fsTimer forMode:NSDefaultRunLoopMode];
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadROMList) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
@@ -294,12 +371,22 @@
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   
+  [self.searchDisplayController release];
+  
   [_romList release];
   _romList = nil;
   [_sectionTitles release];
   _sectionTitles = nil;
   [_sectionMarkers release];
   _sectionMarkers = nil;
+  
+  [_filteredRomList release];
+  _filteredRomList = nil;
+  [_filteredSectionTitles release];
+  _filteredSectionTitles = nil;
+  [_filteredSectionMarkers release];
+  _filteredSectionMarkers = nil;
+  
   [_romPath release];
   _romPath = nil;
   
