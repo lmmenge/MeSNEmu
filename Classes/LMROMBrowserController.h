@@ -11,6 +11,8 @@
 @interface LMROMBrowserController : UITableViewController {
   NSString* _romPath;
   NSArray* _romList;
+  NSArray* _sectionTitles;
+  NSArray* _sectionMarkers;
   NSTimer* _fsTimer;
 }
 

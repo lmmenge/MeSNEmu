@@ -40,15 +40,29 @@
   
   // list all ROMs in the documents folder
   NSMutableArray* tempRomList = [NSMutableArray array];
+  NSMutableArray* tempSectionTitles = [NSMutableArray array];
+  NSMutableArray* tempSectionMarkers = [NSMutableArray array];
   NSArray* proposedFileList = [fm contentsOfDirectoryAtPath:_romPath error:nil];
   
+  unichar lastChar = '\0';
   for(NSString* file in proposedFileList)
   {
     BOOL isDirectory = NO;
     if([fm fileExistsAtPath:[_romPath stringByAppendingPathComponent:file] isDirectory:&isDirectory])
     {
       if(isDirectory == NO)
+      {
+        unichar firstLetter = [[file uppercaseString] characterAtIndex:0];
+        if(firstLetter >= '0' && firstLetter <= '9')
+          firstLetter = '#';
+        if(firstLetter != lastChar)
+        {
+          lastChar = firstLetter;
+          [tempSectionTitles addObject:[NSString stringWithCharacters:&lastChar length:1]];
+          [tempSectionMarkers addObject:[NSNumber numberWithInt:[tempRomList count]]];
+        }
         [tempRomList addObject:file];
+      }
     }
   }
   
@@ -70,6 +84,10 @@
   {
     [_romList release];
     _romList = [tempRomList copy];
+    [_sectionTitles release];
+    _sectionTitles = [tempSectionTitles copy];
+    [_sectionMarkers release];
+    _sectionMarkers = [tempSectionMarkers copy];
     if(updateTable == YES)
       [self.tableView reloadData];
   }
@@ -103,16 +121,35 @@
 
 @implementation LMROMBrowserController(UITableViewController)
 
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+  return _sectionTitles;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString*)title atIndex:(NSInteger)index
+{
+  return index;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
   // Return the number of sections.
-  return 1;
+  return [_sectionTitles count];
+}
+
+- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+  return [_sectionTitles objectAtIndex:section];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   // Return the number of rows in the section.
-  return [_romList count];
+  int sectionStart = [[_sectionMarkers objectAtIndex:section] intValue];
+  int sectionEnd = [_romList count];
+  if(section < [_sectionMarkers count]-1)
+    sectionEnd = [[_sectionMarkers objectAtIndex:(section+1)] intValue];
+  return sectionEnd-sectionStart;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -124,6 +161,7 @@
     cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
   
   int index = indexPath.row;
+  index += [[_sectionMarkers objectAtIndex:indexPath.section] intValue];
   
   cell.textLabel.text = [_romList objectAtIndex:index];
   
@@ -132,7 +170,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-  NSString* romName = [_romList objectAtIndex:indexPath.row];
+  int index = indexPath.row;
+  index += [[_sectionMarkers objectAtIndex:indexPath.section] intValue];
+  NSString* romName = [_romList objectAtIndex:index];
   
   LMEmulatorController* emulator = [[LMEmulatorController alloc] init];
   emulator.romFileName = romName;
@@ -142,10 +182,12 @@
 
 - (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath
 {
+  int index = indexPath.row;
+  index += [[_sectionMarkers objectAtIndex:indexPath.section] intValue];
   if(editingStyle == UITableViewCellEditingStyleDelete)
   {
     // Delete the row from the data source
-    [[NSFileManager defaultManager] removeItemAtPath:[_romPath stringByAppendingPathComponent:[_romList objectAtIndex:indexPath.row]] error:nil];
+    [[NSFileManager defaultManager] removeItemAtPath:[_romPath stringByAppendingPathComponent:[_romList objectAtIndex:index]] error:nil];
     [self reloadROMList:NO];
     [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
   }
@@ -254,6 +296,10 @@
   
   [_romList release];
   _romList = nil;
+  [_sectionTitles release];
+  _sectionTitles = nil;
+  [_sectionMarkers release];
+  _sectionMarkers = nil;
   [_romPath release];
   _romPath = nil;
   

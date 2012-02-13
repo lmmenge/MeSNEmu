@@ -10,6 +10,13 @@
 
 #import "LMROMBrowserController.h"
 
+// TODO: LM: Application icon
+// TODO: LM: L/R Button graphics
+// TODO: LM: Search ROM list
+// TODO: LM: Open SMC, SFC, ZIP files from other iOS apps
+// TODO: LM: License
+// TODO: LM: Save states
+
 @implementation LMAppDelegate
 
 @synthesize window = _window;

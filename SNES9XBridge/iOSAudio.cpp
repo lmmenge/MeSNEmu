@@ -51,7 +51,7 @@ static void AQBufferCallback(
     memset(outQB->mAudioData, 0, SI_SoundBufferSizeBytes);
 	else
   {
-    memset(outQB->mAudioData, 0, SI_SoundBufferSizeBytes);
+    //memset(outQB->mAudioData, 0, SI_SoundBufferSizeBytes);
     S9xMixSamples((unsigned char*)outQB->mAudioData, (SI_SoundBufferSizeBytes)/2);
   }
 
