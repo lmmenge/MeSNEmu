@@ -11,6 +11,7 @@
 #import "LMROMBrowserController.h"
 
 // TODO: LM: Application icon
+// TODO: LM: Adjust the alert boxes in LMEmulatorController
 // TODO: LM: Open SMC, SFC, FIG, ZIP files from other iOS apps
 // TODO: LM: License
 

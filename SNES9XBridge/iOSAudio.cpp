@@ -3,6 +3,7 @@
 #import <AudioToolbox/AudioQueue.h>
 
 #include "../SNES9X/port.h"
+#include "../SNES9X/apu/apu.h"
 
 #pragma mark Defines
 
@@ -57,8 +58,14 @@ static void AQBufferCallback(
 	else
   {
     SI_AudioIsOnHold = 0;
-    //memset(outQB->mAudioData, 0, SI_SoundBufferSizeBytes);
-    S9xMixSamples((unsigned char*)outQB->mAudioData, (SI_SoundBufferSizeBytes)/2);
+
+    int available = S9xGetSampleCount();
+    if(available > SI_SoundBufferSizeBytes/2)
+      available = SI_SoundBufferSizeBytes/2;
+    else
+      memset(outQB->mAudioData, 0, SI_SoundBufferSizeBytes);
+    
+    S9xMixSamples((unsigned char*)outQB->mAudioData, available);
   }
 
 	AudioQueueEnqueueBuffer(outQ, outQB, 0, NULL);
