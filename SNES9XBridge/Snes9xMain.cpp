@@ -31,6 +31,9 @@ extern struct timeval SI_NextFrameTime;
 extern int SI_FrameTimeDebt;
 extern int SI_SleptLastFrame;
 
+// audio tracking
+extern volatile int SI_AudioIsOnHold;
+
 #pragma mark - Global Variables
 
 // initial flags set by the UI
@@ -44,14 +47,12 @@ volatile int SI_EmulationSaving = 0;
 volatile int SI_EmulationPaused = 0;
 // run management flags which are set by the emulator to notify of status
 volatile int SI_EmulationDidPause = 1;
+volatile int SI_EmulationIsRunning = 0;
 
 // internal paths
 char SI_DocumentsPath[1024];
 char SI_RunningStatesPath[1024];
 char SI_SRAMPath[1024];
-
-// the screen buffer
-uint8 *vrambuffer = NULL;
 
 #pragma mark - Emulator-Client internal interfaces
 
@@ -156,13 +157,20 @@ extern "C" void SISetEmulationPaused(int value)
     
     SI_EmulationPaused = value;
   }
+  else if(SI_EmulationPaused == 1)
+    SI_EmulationDidPause = 1;
 }
 
 extern "C" void SIWaitForPause()
 {
-  if(SI_EmulationPaused == 1)
+  if(SI_EmulationPaused == 1 && SI_EmulationIsRunning == 1)
     // wait for the pause to conclude
-    while(SI_EmulationDidPause == 0){}
+    while((SI_EmulationDidPause == 0 || SI_AudioIsOnHold == 0) && SI_EmulationIsRunning == 1){}
+}
+
+extern "C" void SIWaitForEmulationEnd()
+{
+  while(SI_EmulationIsRunning == 1){}
 }
 
 extern "C" void SIReset()
@@ -228,7 +236,10 @@ extern "C" void SIUpdateSettings()
 
 extern "C" int SIStartWithROM(char* rom_filename)
 {
-  // legacy init
+  // notify that we're running
+  SI_EmulationIsRunning = 1;
+  
+  // frameskip settings reset
   SI_NextFrameTime = (timeval){0, 0};
   SI_FrameTimeDebt = 0;
   SI_SleptLastFrame = 0;
@@ -560,6 +571,7 @@ extern "C" int SIStartWithROM(char* rom_filename)
       if (Settings.Paused || SI_EmulationPaused || !SI_EmulationRun)
       {
         SISaveSRAM();
+        SISaveRunningStateForGameNamed(rom_filename);
         SI_EmulationDidPause = 1;
         
         do {
@@ -575,9 +587,6 @@ extern "C" int SIStartWithROM(char* rom_filename)
           SISaveRunningStateForGameNamed(rom_filename);
           
           SIMuteSound();
-          if(vrambuffer != NULL)
-            free(vrambuffer);
-          vrambuffer = NULL;
           
           S9xGraphicsDeinit();
           Memory.Deinit();
@@ -600,6 +609,7 @@ extern "C" int SIStartWithROM(char* rom_filename)
 #endif
         S9xSetSoundMute(FALSE);
 	}
+  SI_EmulationIsRunning = 0;
   
 	return (0);
 }

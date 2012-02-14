@@ -272,17 +272,34 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
                                                      delegate:self
                                             cancelButtonTitle:NSLocalizedString(@"BACK_TO_GAME", nil)
                                        destructiveButtonTitle:NSLocalizedString(@"EXIT_GAME", nil)
-                                            otherButtonTitles:NSLocalizedString(@"RESET", nil), NSLocalizedString(@"SETTINGS", nil), nil];
+                                            otherButtonTitles:
+                          NSLocalizedString(@"RESET", nil),
+#ifdef SI_ENABLE_SAVES
+                          NSLocalizedString(@"LOAD_STATE", nil),
+                          NSLocalizedString(@"SAVE_STATE", nil),
+#endif
+                          NSLocalizedString(@"SETTINGS", nil),
+                          nil];
   _actionSheet = sheet;
   [sheet showInView:self.view];
-  [sheet release];
+  [sheet autorelease];
 }
 
 #pragma mark Delegates
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-  //NSLog(@"%i", buttonIndex);
+  NSLog(@"%i", buttonIndex);
+  int resetIndex = 1;
+#ifdef SI_ENABLE_SAVES
+  int loadIndex = 2;
+  int saveIndex = 3;
+  int settingsIndex = 4;
+#else
+  int loadIndex = -1
+  int saveIndex = -1;
+  int settingsIndex = 2;
+#endif
   if(buttonIndex == actionSheet.destructiveButtonIndex)
   {
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXIT_GAME?", nil)
@@ -294,15 +311,8 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
     [alert show];
     [alert release];
   }
-  else if(buttonIndex == 1)
+  else if(buttonIndex == resetIndex)
   {
-#ifdef SI_ENABLE_SAVES
-    // TODO: remove this save test code once we get save states working
-    SISetEmulationPaused(1);
-    SIWaitForPause();
-    [LMSaveManager loadRunningStateForROMNamed:_romFileName];
-    SISetEmulationPaused(0);
-#else
     UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"RESET_GAME?", nil)
                                                     message:NSLocalizedString(@"RESET_CONSEQUENCES", nil)
                                                    delegate:self
@@ -311,9 +321,22 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
     alert.tag = LMEmulatorAlertReset;
     [alert show];
     [alert release];
-#endif
   }
-  else if(buttonIndex == 2)
+  else if(buttonIndex == loadIndex)
+  {
+    SISetEmulationPaused(1);
+    SIWaitForPause();
+    [LMSaveManager loadStateForROMNamed:_romFileName slot:1];
+    SISetEmulationPaused(0);
+  }
+  else if(buttonIndex == saveIndex)
+  {
+    SISetEmulationPaused(1);
+    SIWaitForPause();
+    [LMSaveManager saveStateForROMNamed:_romFileName slot:1];
+    SISetEmulationPaused(0);
+  }
+  else if(buttonIndex == settingsIndex)
   {
     LMSettingsController* c = [[LMSettingsController alloc] init];
     [c hideSettingsThatRequireReset];
@@ -345,7 +368,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
     else
     {
       SISetEmulationRunning(0);
-      while(_emulationThread != nil) {sleep(0);}
+      SIWaitForEmulationEnd();
       [self.navigationController popViewControllerAnimated:YES];
     }
   }
@@ -360,12 +383,18 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 
 - (void)didBecomeInactive
 {
-  if(_actionSheet == nil)
-    [self options:nil event:nil];
+  UIBackgroundTaskIdentifier identifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+    [[UIApplication sharedApplication] endBackgroundTask:identifier];
+  }];
+  SISetEmulationPaused(1);
+  SIWaitForPause();
+  [[UIApplication sharedApplication] endBackgroundTask:identifier];
 }
 
 - (void)didBecomeActive
 {
+  if(_actionSheet == nil)
+    [self options:nil event:nil];
 }
 
 - (void)settingsChanged
@@ -394,16 +423,18 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 
 - (void)loadROMRunningState
 {
-#ifdef SI_ENABLE_SAVES
-  NSLog(@"loading state");
+#ifdef SI_ENABLE_RUNNING_SAVES
+  NSLog(@"Loading running state...");
   [LMSaveManager loadRunningStateForROMNamed:_romFileName];
-  NSLog(@"loaded state");
+  NSLog(@"Loaded!");
 #endif
 }
 - (void)saveROMRunningState
 {
-#ifdef SI_ENABLE_SAVES
-  //[LMSaveManager saveRunningStateForROMNamed:_romFileName];
+#ifdef SI_ENABLE_RUNNING_SAVES
+  NSLog(@"Saving running state...");
+  [LMSaveManager saveRunningStateForROMNamed:_romFileName];
+  NSLog(@"Saved!");
 #endif
 }
 
@@ -498,6 +529,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   if(_imageBuffer == nil || _565ImageBuffer == nil)
     return;
   
+  // we use two framebuffers to avoid copy-on-write due to us using UIImage. Little memory overhead, no speed overhead at all compared to that nasty IOSurface and SDK-safe, to boot
   if(((LMPixelLayer*)_screenView.layer).displayMainBuffer == YES)
   {
     SISetScreen(_imageBufferAlt);
@@ -584,6 +616,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 
   _bufferWidth = 256;
   _bufferHeight = 224;
+  _bufferHeightExtended = 239*2; // we're using double the extended height because the screenshot loading writes black to a MUCH larger portion of data in the screen variable. Wondering if I should fix the SNES9X code...
   
   // RGBA888 format
   unsigned short defaultComponentCount = 4;
@@ -603,14 +636,14 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   
   if(_imageBuffer == nil)
   {
-    _imageBuffer = (unsigned char*)calloc(_bufferWidth*_bufferHeight, pixelSizeBytes);
+    _imageBuffer = (unsigned char*)calloc(_bufferWidth*_bufferHeightExtended, pixelSizeBytes);
   }
   if(_imageBufferAlt == nil)
   {
-    _imageBufferAlt = (unsigned char*)calloc(_bufferWidth*_bufferHeight, pixelSizeBytes);
+    _imageBufferAlt = (unsigned char*)calloc(_bufferWidth*_bufferHeightExtended, pixelSizeBytes);
   }
   if(_565ImageBuffer == nil)
-    _565ImageBuffer = (unsigned char*)calloc(_bufferWidth*_bufferHeight, 2);
+    _565ImageBuffer = (unsigned char*)calloc(_bufferWidth*_bufferHeightExtended, 2);
   
   [(LMPixelLayer*)_screenView.layer setImageBuffer:_imageBuffer
                                            width:_bufferWidth
@@ -726,9 +759,27 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   
   SISetEmulationRunning(0);
+  SIWaitForEmulationEnd();
+  SISetScreenDelegate(nil);
+  SISetSaveDelegate(nil);
+  
+  // this is released upon showing
+  _actionSheet = nil;
   
   [_screenView release];
   _screenView = nil;
+  
+  if(_imageBuffer != nil)
+    free(_imageBuffer);
+  _imageBuffer = nil;
+  
+  if(_imageBufferAlt != nil)
+    free(_imageBufferAlt);
+  _imageBufferAlt = nil;
+  
+  if(_565ImageBuffer != nil)
+    free(_565ImageBuffer);
+  _565ImageBuffer = nil;
   
   [_startButton release];
   _startButton = nil;
@@ -751,21 +802,6 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   
   [_optionsButton release];
   _optionsButton = nil;
-  
-  SISetScreenDelegate(nil);
-  SISetSaveDelegate(nil);
-  
-  if(_imageBuffer != nil)
-    free(_imageBuffer);
-  _imageBuffer = nil;
-  
-  if(_imageBufferAlt != nil)
-    free(_imageBufferAlt);
-  _imageBufferAlt = nil;
-  
-  if(_565ImageBuffer != nil)
-    free(_565ImageBuffer);
-  _565ImageBuffer = nil;
   
   self.romFileName = nil;
   

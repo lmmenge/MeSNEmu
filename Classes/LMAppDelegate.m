@@ -11,9 +11,8 @@
 #import "LMROMBrowserController.h"
 
 // TODO: LM: Application icon
-// TODO: LM: Open SMC, SFC, ZIP files from other iOS apps
+// TODO: LM: Open SMC, SFC, FIG, ZIP files from other iOS apps
 // TODO: LM: License
-// TODO: LM: Save states
 
 @implementation LMAppDelegate
 
@@ -30,7 +29,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-
+  
   LMROMBrowserController* romBrowser = [[LMROMBrowserController alloc] init];
   UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:romBrowser];
   self.viewController = nav;

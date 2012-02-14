@@ -27,6 +27,8 @@
 "BACK_TO_GAME" = "Voltar ao jogo";
 "EXIT_GAME" = "Sair do jogo";
 "RESET" = "Reiniciar";
+"LOAD_STATE" = "Ler estado";
+"SAVE_STATE" = "Salvar estado";
 "EXIT_GAME?" = "Sair do jogo?";
 "EXIT_CONSEQUENCES" = "Todo o progresso não salvo será perdido.";
 "EXIT" = "Sair";

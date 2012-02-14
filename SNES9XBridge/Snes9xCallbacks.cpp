@@ -9,6 +9,7 @@
 #include "Snes9xCallbacks.h"
 
 #include <sys/time.h>
+#include <libgen.h>
 
 #include "../SNES9X/snes9x.h"
 #include "../SNES9X/memmap.h"
@@ -290,16 +291,31 @@ void S9xSyncSpeed(void)
   gettimeofday (&SI_NextFrameTime, NULL);
 }
 
-const char *S9xBasename (const char *f)
+const char *S9xBasename (const char *in)
 {
-  const char *p;
+  /*const char *p;
   
   S9xMessage (0,0,"s9x base name");
   
   if ((p = strrchr (f, '/')) != NULL || (p = strrchr (f, '\\')) != NULL)
     return (p + 1);
   
-  return (f);
+  return (f);*/
+  
+  static char	s[PATH_MAX + 1];
+  
+	strncpy(s, in, PATH_MAX + 1);
+	s[PATH_MAX] = 0;
+  
+	size_t	l = strlen(s);
+  
+	for (unsigned int i = 0; i < l; i++)
+  {
+		if (s[i] < 32 || s[i] >= 127)
+			s[i] = '_';
+	}
+  
+	return (basename(s));
 }
 
 //};

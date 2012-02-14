@@ -13,4 +13,5 @@
   #import <Foundation/Foundation.h>
 #endif
 
-//#define SI_ENABLE_SAVES
+#define SI_ENABLE_SAVES
+#define SI_ENABLE_RUNNING_SAVES

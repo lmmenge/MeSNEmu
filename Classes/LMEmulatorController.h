@@ -20,6 +20,7 @@
   
   unsigned int _bufferWidth;
   unsigned int _bufferHeight;
+  unsigned int _bufferHeightExtended;
   unsigned char* _imageBuffer;
   unsigned char* _imageBufferAlt;
   unsigned char* _565ImageBuffer;

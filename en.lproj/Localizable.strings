@@ -27,6 +27,8 @@
 "BACK_TO_GAME" = "Back to game";
 "EXIT_GAME" = "Exit game";
 "RESET" = "Reset";
+"LOAD_STATE" = "Load state";
+"SAVE_STATE" = "Save state";
 "EXIT_GAME?" = "Exit game?";
 "EXIT_CONSEQUENCES" = "Any unsaved progress will be lost.";
 "EXIT" = "Exit";

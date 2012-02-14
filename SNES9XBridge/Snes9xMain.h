@@ -58,6 +58,7 @@ void SISetFrameskip(int value);
 void SISetEmulationRunning(int value);
 void SISetEmulationPaused(int value);
 void SIWaitForPause();
+void SIWaitForEmulationEnd();
 void SIReset();
 
 // Controller updates

@@ -44,21 +44,27 @@
   return [[saveFolderPath stringByAppendingPathComponent:romFileNameWithoutExtension] stringByAppendingPathExtension:[NSString stringWithFormat:@"%03d", slot]];
 }
 
+extern "C" volatile int SI_EmulationDidPause;
+extern "C" volatile int SI_AudioIsOnHold;
+
 + (void)LM_saveStateForROMName:(NSString*)romFileName inSlot:(int)slot
 {
+  NSLog(@"EmulationDidPause %i", SI_EmulationDidPause);
+  NSLog(@"AudioIsOnHold %i", SI_AudioIsOnHold);
+  
   NSString* savePath = [LMSaveManager pathForSaveOfROMName:romFileName slot:slot];
   
   if(S9xFreezeGame([savePath UTF8String]))
     NSLog(@"Saved to %@", savePath);
   else
     NSLog(@"Failed to save to %@", savePath);
-  
-  //LMSetEmulationPaused(0);
 }
 
 + (void)LM_loadStateForROMName:(NSString*)romFileName inSlot:(int)slot
 {
-  SIMuteSound();
+  NSLog(@"EmulationDidPause %i", SI_EmulationDidPause);
+  NSLog(@"AudioIsOnHold %i", SI_AudioIsOnHold);
+  
   NSString* savePath = [LMSaveManager pathForSaveOfROMName:romFileName slot:slot];
   
   if([[NSFileManager defaultManager] fileExistsAtPath:savePath] == NO)
@@ -71,10 +77,6 @@
     NSLog(@"Loaded from %@", savePath);
   else
     NSLog(@"Failed to load from %@", savePath);
-  
-  /*int samplecount = Settings.SoundPlaybackRate/(Settings.PAL ? 50 : 60);
-  int soundBufferSize = samplecount<<(1+(Settings.Stereo?1:0));
-  SIDemuteSound(soundBufferSize);*/
 }
 
 @end

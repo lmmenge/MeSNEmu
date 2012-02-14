@@ -37,6 +37,8 @@ int SI_SoundIsInit = 0;
 float SI_AudioVolume = 1.0;
 float SI_AQCallbackCount = 0;
 
+volatile int SI_AudioIsOnHold = 1;
+
 #pragma mark - Audio Queue Management
 
 static void AQBufferCallback(
@@ -48,9 +50,13 @@ static void AQBufferCallback(
   AudioQueueSetParameter(outQ, kAudioQueueParam_Volume, SI_AudioVolume);
 
 	if(SI_EmulationPaused || !SI_EmulationRun || !SI_SoundIsInit)
+  {
+    SI_AudioIsOnHold = 1;
     memset(outQB->mAudioData, 0, SI_SoundBufferSizeBytes);
+  }
 	else
   {
+    SI_AudioIsOnHold = 0;
     //memset(outQB->mAudioData, 0, SI_SoundBufferSizeBytes);
     S9xMixSamples((unsigned char*)outQB->mAudioData, (SI_SoundBufferSizeBytes)/2);
   }
@@ -112,6 +118,7 @@ void SICloseSound(void)
 	{
 		AudioQueueDispose(SI_AQCallbackStruct.queue, true);
 		SI_SoundIsInit = 0;
+    SI_AudioIsOnHold = 1;
 	}
 }
 

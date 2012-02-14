@@ -371,7 +371,7 @@
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   
-  [self.searchDisplayController release];
+  //[self.searchDisplayController release];
   
   [_romList release];
   _romList = nil;
