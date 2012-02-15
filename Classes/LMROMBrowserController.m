@@ -255,9 +255,13 @@
   if(editingStyle == UITableViewCellEditingStyleDelete)
   {
     // Delete the row from the data source
+    int amount = [self tableView:tableView numberOfRowsInSection:indexPath.section];
     [[NSFileManager defaultManager] removeItemAtPath:[_romPath stringByAppendingPathComponent:[self romNameForTableView:tableView indexPath:indexPath]] error:nil];
     [self reloadROMList:NO];
-    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    if(amount == 1)
+      [tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
+    else
+      [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
   }
 }
 
