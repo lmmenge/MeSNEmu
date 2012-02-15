@@ -15,7 +15,6 @@
 
 #define MAX_PATH 255
 #define DIR_SEPERATOR	"/"
-#define SNES_SRAM_DIR "SRAM"
 
 #define	ASSIGN_BUTTONf(n, s)	S9xMapButton (n, cmd = S9xGetCommandT(s), false)
 

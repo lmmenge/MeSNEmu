@@ -320,7 +320,7 @@
   // set it for the ROMs
   SISetSystemPath([documentsPath UTF8String]);
   // and set it+sram for SRAM
-  SISetSRAMPath([[documentsPath stringByAppendingPathComponent:@"sram"] UTF8String]);
+  SISetSRAMPath([[documentsPath stringByAppendingPathComponent:@"SRAM"] UTF8String]);
   
   _romPath = [documentsPath copy];
   [self reloadROMList];
