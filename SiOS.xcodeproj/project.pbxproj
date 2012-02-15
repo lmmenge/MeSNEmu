@@ -791,7 +791,6 @@
 				A0995C1214B525D200F7C44F /* Snes9xMain.cpp in Sources */,
 				A0995F8014B679FF00F7C44F /* Snes9xCallbacks.cpp in Sources */,
 				A0995F8614B6884F00F7C44F /* SIScreenDelegate.m in Sources */,
-				A0B8686B14BE3B3100663EBE /* main.m in Sources */,
 				A0B8687E14BE3B6800663EBE /* LMDPadView.m in Sources */,
 				A0B8687F14BE3B6800663EBE /* LMEmulatorController.m in Sources */,
 				A0B8688014BE3B6800663EBE /* LMButtonView.m in Sources */,
@@ -874,6 +873,7 @@
 				A03C087B14BF89CC003FAEB9 /* LMTableViewNumberCell.m in Sources */,
 				A027AC1914C78F3D00F177F7 /* LMSaveManager.mm in Sources */,
 				A027AC2F14C8456D00F177F7 /* SISaveDelegate.m in Sources */,
+				A0B8686B14BE3B3100663EBE /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -967,6 +967,7 @@
 					"\"$(SRCROOT)/SNES9X/macosx\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SNES_CFLAGS = "-funsigned-char -ffast-math -fexpensive-optimizations -mstructure-size-boundary=32 -falign-functions=32 -falign-loops -falign-labels -falign-jumps -finline -finline-functions -fno-builtin -fno-common -fomit-frame-pointer -fpeel-loops -fstrength-reduce -funroll-loops -fstrict-aliasing";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -983,6 +984,7 @@
 					"\"$(SRCROOT)/SNES9X/macosx\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SNES_CFLAGS = "-funsigned-char -ffast-math -fexpensive-optimizations -mstructure-size-boundary=32 -falign-functions=32 -falign-loops -falign-labels -falign-jumps -finline -finline-functions -fno-builtin -fno-common -fomit-frame-pointer -fpeel-loops -fstrength-reduce -funroll-loops -fstrict-aliasing";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
