@@ -177,10 +177,10 @@
 
 
 #include <math.h>
-#include "../snes9x.h"
+#include "snes9x.h"
 #include "apu.h"
-#include "../snapshot.h"
-#include "../display.h"
+#include "snapshot.h"
+#include "display.h"
 #include "linear_resampler.h"
 #include "hermite_resampler.h"
 
@@ -292,7 +292,7 @@ bool8 S9xMixSamples (uint8 *buffer, int sample_count)
 			sample_count <<= 1;
 
 		/* We still have to generate 16-bit samples for bit-dropping, too */
-		if (shrink_buffer_size < (sample_count << 1) || spc::shrink_buffer == NULL)
+		if (shrink_buffer_size < (sample_count << 1))
 		{
 			delete[] spc::shrink_buffer;
 			spc::shrink_buffer = new uint8[sample_count << 1];

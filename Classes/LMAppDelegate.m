@@ -10,6 +10,7 @@
 
 #import "LMROMBrowserController.h"
 
+// TODO: LM: Crash when deleting the last file in a "Section" in LMROMBrowserController
 // TODO: LM: Open SMC, SFC, FIG, ZIP files from other iOS apps
 // TODO: LM: License
 

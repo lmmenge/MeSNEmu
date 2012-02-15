@@ -13,7 +13,7 @@
 #include <errno.h>
 #include <fcntl.h>
 
-#if defined(unix) || defined(__IPHONE__)
+#ifdef unix
 # include <unistd.h>
 # include <utime.h>
 #else

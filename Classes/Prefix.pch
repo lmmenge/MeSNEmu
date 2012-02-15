@@ -20,18 +20,29 @@
 #define __IPHONE__
 #define ZLIB
 #define UNZIP_SUPPORT
-#define LSB_FIRST 
+#define LSB_FIRST
 
-// "fixing" port.h so we don't have to modify the original SNES9X source
-#if defined(__i386__) || defined(__i486__) || defined(__i586__) || defined(__i686__) || defined(__x86_64__) || defined(__alpha__) || defined(__MIPSEL__) || defined(_M_IX86) || defined(_M_X64)
-#undef LSB_FIRST
-#endif
-
+// "Fixing" SNES9X Source when updated
+// ===================================
 // IMPORTANT: if you crash on S9xFixColour* when porting updated SNES9X sources, modify port.h to have these, after "#define GFX_MULTI_FORMAT"
 #ifdef __IPHONE__
 #undef GFX_MULTI_FORMAT
 #define PIXEL_FORMAT RGB555
 #endif
+
+// IMPORTANT: there was another fix that was applied some time ago, but it seems not to matter now. In apu.cpp, replace:
+// -               if (shrink_buffer_size < (sample_count << 1))
+// with
+// +               if (shrink_buffer_size < (sample_count << 1) || spc::shrink_buff
+
+
+// "fixing" port.h so we don't have to further modify the original SNES9X source
+#if defined(__i386__) || defined(__i486__) || defined(__i586__) || defined(__i686__) || defined(__x86_64__) || defined(__alpha__) || defined(__MIPSEL__) || defined(_M_IX86) || defined(_M_X64)
+#undef LSB_FIRST
+#endif
+
+// "fixing" uint8_t error in spc7110dec.cpp
+#import <stdint.h>
 
 
 // "Fixing" unzip
