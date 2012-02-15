@@ -117,6 +117,9 @@
 		A0BB592614E84BC000D12F97 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0BB592814E84BC000D12F97 /* Localizable.strings */; };
 		A0BF018E14E98A19006534F2 /* ButtonGrey.png in Resources */ = {isa = PBXBuildFile; fileRef = A0BF018C14E98A19006534F2 /* ButtonGrey.png */; };
 		A0BF018F14E98A19006534F2 /* ButtonGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0BF018D14E98A19006534F2 /* ButtonGrey@2x.png */; };
+		A0BF01AA14EC42C8006534F2 /* Icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = A0BF01A714EC42C8006534F2 /* Icon-114.png */; };
+		A0BF01AB14EC42C8006534F2 /* Icon-57.png in Resources */ = {isa = PBXBuildFile; fileRef = A0BF01A814EC42C8006534F2 /* Icon-57.png */; };
+		A0BF01AC14EC42C8006534F2 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = A0BF01A914EC42C8006534F2 /* Icon-72.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -339,6 +342,9 @@
 		A0BB592914E84BD100D12F97 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A0BF018C14E98A19006534F2 /* ButtonGrey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonGrey.png; sourceTree = "<group>"; };
 		A0BF018D14E98A19006534F2 /* ButtonGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonGrey@2x.png"; sourceTree = "<group>"; };
+		A0BF01A714EC42C8006534F2 /* Icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-114.png"; sourceTree = "<group>"; };
+		A0BF01A814EC42C8006534F2 /* Icon-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-57.png"; sourceTree = "<group>"; };
+		A0BF01A914EC42C8006534F2 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -595,6 +601,7 @@
 				A027AC1714C78F3B00F177F7 /* LMSaveManager.h */,
 				A027AC1814C78F3C00F177F7 /* LMSaveManager.mm */,
 				A050661214B21C7F003E0C5E /* Supporting Files */,
+				A0BF01A614EC42C8006534F2 /* Artwork (System) */,
 				A0B8685814BE25F900663EBE /* Artwork */,
 				A0995BCF14B5087600F7C44F /* SNES9XBridge */,
 				A00401E214BE3E4D00FE28CE /* SNES9X */,
@@ -687,6 +694,16 @@
 			name = Controllers;
 			sourceTree = "<group>";
 		};
+		A0BF01A614EC42C8006534F2 /* Artwork (System) */ = {
+			isa = PBXGroup;
+			children = (
+				A0BF01A714EC42C8006534F2 /* Icon-114.png */,
+				A0BF01A914EC42C8006534F2 /* Icon-72.png */,
+				A0BF01A814EC42C8006534F2 /* Icon-57.png */,
+			);
+			path = "Artwork (System)";
+			sourceTree = SOURCE_ROOT;
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -757,6 +774,9 @@
 				A0BB592614E84BC000D12F97 /* Localizable.strings in Resources */,
 				A0BF018E14E98A19006534F2 /* ButtonGrey.png in Resources */,
 				A0BF018F14E98A19006534F2 /* ButtonGrey@2x.png in Resources */,
+				A0BF01AA14EC42C8006534F2 /* Icon-114.png in Resources */,
+				A0BF01AB14EC42C8006534F2 /* Icon-57.png in Resources */,
+				A0BF01AC14EC42C8006534F2 /* Icon-72.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

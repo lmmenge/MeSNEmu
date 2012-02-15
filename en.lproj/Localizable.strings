@@ -7,7 +7,7 @@
 */
 
 // LMROMBrowserController
-"ROMS" = "ROMs";
+"ROMS" = "Games";
 
 // LMSettingsController
 "SMOOTH_SCALING" = "Smooth Scaling";
@@ -29,9 +29,12 @@
 "RESET" = "Reset";
 "LOAD_STATE" = "Load state";
 "SAVE_STATE" = "Save state";
-"EXIT_GAME?" = "Exit game?";
+"LOAD_SAVE?" = "Load state?";
+"LOAD" = "Load";
+"SAVE_SAVE?" = "Save state?";
+"SAVE_CONSEQUENCES" = "This will overwrite your previous state.";
+"SAVE" = "Save";
 "EXIT_CONSEQUENCES" = "Any unsaved progress will be lost.";
-"EXIT" = "Exit";
 "CANCEL" = "Cancel";
 "RESET_GAME?" = "Reset game?";
 "RESET_CONSEQUENCES" = "Any unsaved progress will be lost.";

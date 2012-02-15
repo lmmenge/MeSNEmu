@@ -7,7 +7,7 @@
 */
 
 // LMROMBrowserController
-"ROMS" = "ROMs";
+"ROMS" = "Jogos";
 
 // LMSettingsController
 "SMOOTH_SCALING" = "Tratar imagem";
@@ -29,9 +29,12 @@
 "RESET" = "Reiniciar";
 "LOAD_STATE" = "Ler estado";
 "SAVE_STATE" = "Salvar estado";
-"EXIT_GAME?" = "Sair do jogo?";
+"LOAD_SAVE?" = "Ler estado?";
+"LOAD" = "Ler";
+"SAVE_SAVE?" = "Salvar estado?";
+"SAVE_CONSEQUENCES" = "Isto irá sobrescrever o último estado.";
+"SAVE" = "Salvar";
 "EXIT_CONSEQUENCES" = "Todo o progresso não salvo será perdido.";
-"EXIT" = "Sair";
 "CANCEL" = "Cancelar";
 "RESET_GAME?" = "Reiniciar o jogo?";
 "RESET_CONSEQUENCES" = "Todo o progresso não salvo será perdido.";

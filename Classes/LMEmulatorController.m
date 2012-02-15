@@ -23,7 +23,8 @@
 typedef enum _LMEmulatorAlert
 {
   LMEmulatorAlertReset,
-  LMEmulatorAlertExit
+  LMEmulatorAlertSave,
+  LMEmulatorAlertLoad
 } LMEmulatorAlert;
 
 void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
@@ -302,14 +303,9 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 #endif
   if(buttonIndex == actionSheet.destructiveButtonIndex)
   {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"EXIT_GAME?", nil)
-                                                    message:NSLocalizedString(@"EXIT_CONSEQUENCES", nil)
-                                                   delegate:self
-                                          cancelButtonTitle:NSLocalizedString(@"CANCEL", nil)
-                                          otherButtonTitles:NSLocalizedString(@"EXIT", nil), nil];
-    alert.tag = LMEmulatorAlertExit;
-    [alert show];
-    [alert release];
+    SISetEmulationRunning(0);
+    SIWaitForEmulationEnd();
+    [self.navigationController popViewControllerAnimated:YES];
   }
   else if(buttonIndex == resetIndex)
   {
@@ -324,17 +320,25 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   }
   else if(buttonIndex == loadIndex)
   {
-    SISetEmulationPaused(1);
-    SIWaitForPause();
-    [LMSaveManager loadStateForROMNamed:_romFileName slot:1];
-    SISetEmulationPaused(0);
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LOAD_SAVE?", nil)
+                                                    message:NSLocalizedString(@"EXIT_CONSEQUENCES", nil)
+                                                   delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"CANCEL", nil)
+                                          otherButtonTitles:NSLocalizedString(@"LOAD", nil), nil];
+    alert.tag = LMEmulatorAlertLoad;
+    [alert show];
+    [alert release];
   }
   else if(buttonIndex == saveIndex)
   {
-    SISetEmulationPaused(1);
-    SIWaitForPause();
-    [LMSaveManager saveStateForROMNamed:_romFileName slot:1];
-    SISetEmulationPaused(0);
+    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SAVE_SAVE?", nil)
+                                                    message:NSLocalizedString(@"SAVE_CONSEQUENCES", nil)
+                                                   delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"CANCEL", nil)
+                                          otherButtonTitles:NSLocalizedString(@"SAVE", nil), nil];
+    alert.tag = LMEmulatorAlertSave;
+    [alert show];
+    [alert release];
   }
   else if(buttonIndex == settingsIndex)
   {
@@ -361,15 +365,28 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
     else
       SIReset();
   }
-  else if(alertView.tag == LMEmulatorAlertExit)
+  else if(alertView.tag == LMEmulatorAlertLoad)
   {
     if(buttonIndex == alertView.cancelButtonIndex)
       SISetEmulationPaused(0);
     else
     {
-      SISetEmulationRunning(0);
-      SIWaitForEmulationEnd();
-      [self.navigationController popViewControllerAnimated:YES];
+      SISetEmulationPaused(1);
+      SIWaitForPause();
+      [LMSaveManager loadStateForROMNamed:_romFileName slot:1];
+      SISetEmulationPaused(0);
+    }
+  }
+  else if(alertView.tag == LMEmulatorAlertSave)
+  {
+    if(buttonIndex == alertView.cancelButtonIndex)
+      SISetEmulationPaused(0);
+    else
+    {
+      SISetEmulationPaused(1);
+      SIWaitForPause();
+      [LMSaveManager saveStateForROMNamed:_romFileName slot:1];
+      SISetEmulationPaused(0);
     }
   }
 }
