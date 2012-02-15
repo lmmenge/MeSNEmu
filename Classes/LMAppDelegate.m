@@ -11,7 +11,6 @@
 #import "LMROMBrowserController.h"
 
 // TODO: LM: Open SMC, SFC, FIG, ZIP files from other iOS apps
-// TODO: LM: License
 
 @implementation LMAppDelegate
 
