@@ -59,13 +59,20 @@ static void AQBufferCallback(
   {
     SI_AudioIsOnHold = 0;
 
-    int available = S9xGetSampleCount();
-    if(available > SI_SoundBufferSizeBytes/2)
-      available = SI_SoundBufferSizeBytes/2;
-    else
-      memset(outQB->mAudioData, 0, SI_SoundBufferSizeBytes);
+    int available = S9xGetSampleCount()*2;
+    if(available > SI_SoundBufferSizeBytes)
+      available = SI_SoundBufferSizeBytes;
     
-    S9xMixSamples((unsigned char*)outQB->mAudioData, available);
+    S9xMixSamples((unsigned char*)outQB->mAudioData, available/2);
+    
+    if(available < SI_SoundBufferSizeBytes)
+    {
+      //printf("Fixing\n");
+      // sounds wiggly
+      memset(((unsigned char*)outQB->mAudioData)+available, ((unsigned char*)outQB->mAudioData)[available-1], SI_SoundBufferSizeBytes-available);
+      // sounds a little skippedly
+      //memset(((unsigned char*)outQB->mAudioData)+available, *(int*)(((unsigned char*)outQB->mAudioData)+(available-3)), SI_SoundBufferSizeBytes-available);
+    }
   }
 
 	AudioQueueEnqueueBuffer(outQ, outQB, 0, NULL);
