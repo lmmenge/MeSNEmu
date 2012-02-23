@@ -10,7 +10,9 @@
 
 #import "LMROMBrowserController.h"
 
-// TODO: LM: Open SMC, SFC, FIG, ZIP files from other iOS apps
+// TODO: LM: Open SMC, SFC, FIG, ZIP, SRM and FRZ files from other iOS apps
+// TODO: LM: Better save UI to allow for multiple slots
+// TODO: LM: save/show screenshots for save states in the save state manager
 
 @implementation LMAppDelegate
 

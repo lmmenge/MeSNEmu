@@ -43,9 +43,11 @@
   UIButton* _optionsButton;
   
   NSString* _romFileName;
+  NSString* _initialSaveFileName;
 }
 
 @property (copy) NSString* romFileName;
+@property (copy) NSString* initialSaveFileName;
 
 - (void)startWithROM:(NSString*)romFileName;
 - (void)flipFrontbuffer;

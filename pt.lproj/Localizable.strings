@@ -8,6 +8,12 @@
 
 // LMROMBrowserController
 "ROMS" = "Jogos";
+"CARTRIDGE_FILES" = "Cartucho";
+"GAME_FILE" = "Jogo";
+"SRAM_FILE" = "Memória Interna";
+"SAVE_POINTS" = "Pontos de Salvamento";
+"LAST_PLAYED_SPOT" = "Última Parada";
+"SAVE_FILE_SLOT_%i" = "Salvamento %i";
 
 // LMSettingsController
 "SMOOTH_SCALING" = "Tratar imagem";

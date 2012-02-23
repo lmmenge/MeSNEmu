@@ -730,7 +730,7 @@
 		A05065FE14B21C7E003E0C5E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 				ORGANIZATIONNAME = "Lucas Menge";
 			};
 			buildConfigurationList = A050660114B21C7E003E0C5E /* Build configuration list for PBXProject "SiOS" */;
@@ -917,7 +917,6 @@
 					"$(OTHER_CFLAGS)",
 					"-ftemplate-depth-36",
 				);
-				PREBINDING = NO;
 				SDKROOT = iphoneos;
 				SNES_CFLAGS = "-D__IPHONE__ -DZLIB -DUNZIP_SUPPORT -DLSB_FIRST -funsigned-char -ffast-math -fexpensive-optimizations -mstructure-size-boundary=32 -falign-functions=32 -falign-loops -falign-labels -falign-jumps -finline -finline-functions -fno-builtin -fno-common -fomit-frame-pointer -fpeel-loops -fstrength-reduce -funroll-loops -fstrict-aliasing";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -947,7 +946,6 @@
 					"$(OTHER_CFLAGS)",
 					"-ftemplate-depth-36",
 				);
-				PREBINDING = NO;
 				SDKROOT = iphoneos;
 				SNES_CFLAGS = "-D__IPHONE__ -DZLIB -DUNZIP_SUPPORT -DLSB_FIRST -funsigned-char -ffast-math -fexpensive-optimizations -mstructure-size-boundary=32 -falign-functions=32 -falign-loops -falign-labels -falign-jumps -finline -finline-functions -fno-builtin -fno-common -fomit-frame-pointer -fpeel-loops -fstrength-reduce -funroll-loops -fstrict-aliasing";
 				TARGETED_DEVICE_FAMILY = "1,2";

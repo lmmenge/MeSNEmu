@@ -442,7 +442,19 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 {
 #ifdef SI_ENABLE_RUNNING_SAVES
   NSLog(@"Loading running state...");
-  [LMSaveManager loadRunningStateForROMNamed:_romFileName];
+  if(_initialSaveFileName == nil)
+  {
+    [LMSaveManager loadRunningStateForROMNamed:_romFileName];
+  }
+  else
+  {
+    // kind of hacky to figure out the slot number, but it suffices right now, since saves are always in a known place and I REALLY wanted to pass the path for the save, for some reason
+    int slot = [[[_initialSaveFileName stringByDeletingPathExtension] pathExtension] intValue];
+    if(slot == 0)
+      [LMSaveManager loadRunningStateForROMNamed:_romFileName];
+    else
+      [LMSaveManager loadStateForROMNamed:_romFileName slot:slot];
+  }
   NSLog(@"Loaded!");
 #endif
 }
@@ -527,6 +539,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 @implementation LMEmulatorController
 
 @synthesize romFileName = _romFileName;
+@synthesize initialSaveFileName = _initialSaveFileName;
 
 - (void)startWithROM:(NSString*)romFileName
 {
@@ -821,6 +834,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   _optionsButton = nil;
   
   self.romFileName = nil;
+  self.initialSaveFileName = nil;
   
   [super dealloc];
 }

@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@class LMFileListItem;
+
 @interface LMROMBrowserController : UITableViewController {
+  LMFileListItem* _detailsItem;
   NSString* _romPath;
+  NSString* _sramPath;
   
   NSArray* _romList;
   NSArray* _sectionTitles;
@@ -21,5 +25,7 @@
   
   NSTimer* _fsTimer;
 }
+
+@property (retain) LMFileListItem* detailsItem;
 
 @end

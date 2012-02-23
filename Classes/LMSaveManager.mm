@@ -17,31 +17,32 @@
 
 @implementation LMSaveManager(Privates)
 
-+ (NSString*)pathForRunningStates
++ (NSString*)LM_pathForRunningStates
 {
-  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
-  return [[paths objectAtIndex:0] stringByAppendingPathComponent:@"Saves"];
+  static NSString* path = nil;
+  @synchronized(self)
+  {
+    if(path == nil)
+    {
+      NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+      path = [[paths objectAtIndex:0] copy];
+    }
+  }
+  return path;
 }
 
-+ (NSString*)pathForSaveStates
++ (NSString*)LM_pathForSaveStates
 {
-  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-  return [[paths objectAtIndex:0] stringByAppendingPathComponent:@"Saves"];
-}
-
-+ (NSString*)pathForSaveOfROMName:(NSString*)romFileName slot:(int)slot
-{
-  NSString* saveFolderPath = nil;
-  if(slot <= 0)
-    saveFolderPath = [LMSaveManager pathForRunningStates];
-  else
-    saveFolderPath = [LMSaveManager pathForSaveStates];
-  
-  if([[NSFileManager defaultManager] fileExistsAtPath:saveFolderPath isDirectory:nil] == NO)
-    [[NSFileManager defaultManager] createDirectoryAtPath:saveFolderPath withIntermediateDirectories:YES attributes:nil error:nil];
-  
-  NSString* romFileNameWithoutExtension = [romFileName stringByDeletingPathExtension];
-  return [[saveFolderPath stringByAppendingPathComponent:romFileNameWithoutExtension] stringByAppendingPathExtension:[NSString stringWithFormat:@"%03d", slot]];
+  static NSString* path = nil;
+  @synchronized(self)
+  {
+    if(path == nil)
+    {
+      NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+      path = [[paths objectAtIndex:0] copy];
+    }
+  }
+  return path;
 }
 
 extern "C" volatile int SI_EmulationDidPause;
@@ -82,6 +83,40 @@ extern "C" volatile int SI_AudioIsOnHold;
 @end
 
 @implementation LMSaveManager
+
++ (NSString*)legacy_pathForRunningStates
+{
+  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES);
+  return [[paths objectAtIndex:0] stringByAppendingPathComponent:@"Saves"];
+}
+
++ (NSString*)legacy_pathForSaveStates
+{
+  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+  return [[paths objectAtIndex:0] stringByAppendingPathComponent:@"Saves"];
+}
+
++ (NSString*)pathForSaveOfROMName:(NSString*)romFileName slot:(int)slot
+{  
+  NSString* saveFolderPath = nil;
+  if(slot <= 0)
+    saveFolderPath = [LMSaveManager LM_pathForRunningStates];
+  else
+    saveFolderPath = [LMSaveManager LM_pathForSaveStates];
+  
+  if([[NSFileManager defaultManager] fileExistsAtPath:saveFolderPath isDirectory:nil] == NO)
+    [[NSFileManager defaultManager] createDirectoryAtPath:saveFolderPath withIntermediateDirectories:YES attributes:nil error:nil];
+  
+  NSString* romFileNameWithoutExtension = [romFileName stringByDeletingPathExtension];
+  NSString* saveFileName = [[romFileNameWithoutExtension stringByAppendingPathExtension:[NSString stringWithFormat:@"%03d", slot]] stringByAppendingPathExtension:@"frz"];
+  return [saveFolderPath stringByAppendingPathComponent:saveFileName];
+}
+
++ (BOOL)hasStateForROMNamed:(NSString*)romFileName slot:(int)slot
+{
+  NSString* path = [LMSaveManager pathForSaveOfROMName:romFileName slot:slot];
+  return [[NSFileManager defaultManager] fileExistsAtPath:path];
+}
 
 + (void)saveRunningStateForROMNamed:(NSString*)romFileName
 {
