@@ -257,15 +257,19 @@ static int const LMFileOrganizationVersionNumber = 1;
     tempSectionTitles = [NSMutableArray array];
     tempSectionMarkers = [NSMutableArray array];
     // rom item
-    [tempSectionTitles addObject:NSLocalizedString(@"CARTRIDGE_FILES", nil)];
-    [tempSectionMarkers addObject:[NSNumber numberWithInt:[itemsList count]]];
-    LMFileListItem* romItem = [[LMFileListItem alloc] init];
-    romItem.displayName = _detailsItem.displayName;
-    //romItem.displayName = NSLocalizedString(@"GAME_FILE", nil);
-    //romItem.displayDetails = _detailsItem.displayName;
-    romItem.fileName = _detailsItem.fileName;
-    [itemsList addObject:romItem];
-    [romItem release];
+    NSString* romPath = [_romPath stringByAppendingPathComponent:_detailsItem.fileName];
+    if([fm fileExistsAtPath:romPath] == YES)
+    {
+      [tempSectionTitles addObject:NSLocalizedString(@"CARTRIDGE_FILES", nil)];
+      [tempSectionMarkers addObject:[NSNumber numberWithInt:[itemsList count]]];
+      LMFileListItem* romItem = [[LMFileListItem alloc] init];
+      romItem.displayName = _detailsItem.displayName;
+      //romItem.displayName = NSLocalizedString(@"GAME_FILE", nil);
+      //romItem.displayDetails = _detailsItem.displayName;
+      romItem.fileName = _detailsItem.fileName;
+      [itemsList addObject:romItem];
+      [romItem release];
+    }
     // sram
     NSString* sramPath = [_sramPath stringByAppendingPathComponent:[[_detailsItem.fileName stringByDeletingPathExtension] stringByAppendingPathExtension:@"srm"]];
     if([fm fileExistsAtPath:sramPath] == YES)
@@ -527,14 +531,14 @@ static int const LMFileOrganizationVersionNumber = 1;
     // Delete the row from the data source
     int amount = [self tableView:tableView numberOfRowsInSection:indexPath.section];
     LMFileListItem* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
-    // TODO: LM: delete all related files if we delete the ROM file.
-    // TODO: LM: if we're in the details, pop this controller if we're deleting the ROM
     [[NSFileManager defaultManager] removeItemAtPath:[_romPath stringByAppendingPathComponent:item.fileName] error:nil];
     [self LM_reloadROMList:NO];
     if(amount == 1)
       [tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
     else
       [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    if([_romList count] == 0)
+      [self.navigationController popViewControllerAnimated:YES];
   }
 }
 
