@@ -67,11 +67,18 @@ static void AQBufferCallback(
     
     if(available < SI_SoundBufferSizeBytes)
     {
-      //printf("Fixing\n");
-      // sounds wiggly
-      memset(((unsigned char*)outQB->mAudioData)+available, ((unsigned char*)outQB->mAudioData)[available-1], SI_SoundBufferSizeBytes-available);
-      // sounds a little skippedly
-      //memset(((unsigned char*)outQB->mAudioData)+available, *(int*)(((unsigned char*)outQB->mAudioData)+(available-3)), SI_SoundBufferSizeBytes-available);
+      if(available == 0)
+      {
+        // do nothing here... we didn't copy anything... scared that if i write something to the output buffer, we'll get chirps and stuff
+      }
+      else
+      {
+        //printf("Fixing\n");
+        // sounds wiggly
+        memset(((unsigned char*)outQB->mAudioData)+available, ((unsigned char*)outQB->mAudioData)[available-1], SI_SoundBufferSizeBytes-available);
+        // sounds a little skippedly
+        //memset(((unsigned char*)outQB->mAudioData)+available, *(int*)(((unsigned char*)outQB->mAudioData)+(available-3)), SI_SoundBufferSizeBytes-available);
+      }
     }
   }
 
