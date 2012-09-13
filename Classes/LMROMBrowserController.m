@@ -569,6 +569,10 @@ static int const LMFileOrganizationVersionNumber = 1;
 {
   [super viewDidLoad];
   
+#ifdef LM_LOADING_SCREENSHOTS
+  return;
+#endif
+  
   if(_detailsItem == nil)
   {
     self.title = NSLocalizedString(@"ROMS", nil);

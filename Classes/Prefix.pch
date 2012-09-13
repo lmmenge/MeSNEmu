@@ -50,6 +50,13 @@
 #define unix
 
 
+// DEBUG defines
+// =============
+#ifdef DEBUG
+//#define LM_LOADING_SCREENSHOTS
+#endif
+
+
 // Regular includes and stuff
 // ==========================
 #ifdef __OBJC__

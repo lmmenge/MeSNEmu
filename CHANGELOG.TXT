@@ -1,4 +1,14 @@
+1.1
+===
+- Moved all files into the Documents folder for easier management in iTunes. Your current structure will be automatically upgraded;
+- Adjusted the ROM browser view to show which ROMs have SRAM and Save files and allow you to manage those files. Including allowing you to select a specific save file to start from;
+- Added support for iPhone 5;
+- Added icon for Retina iPad.
+
+1.0.1
+=====
+- Diminished sound squeaking when sound buffer isn't entirely available.
+
 1.0
 ===
-
 - Initial release.
