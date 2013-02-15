@@ -1,3 +1,7 @@
+1.1.1
+=====
+- Added support for importing/opening SMC, SFC, FRZ, and SRM files without having to copy via iTunes.
+
 1.1
 ===
 - Moved all files into the Documents folder for easier management in iTunes. Your current structure will be automatically upgraded;
