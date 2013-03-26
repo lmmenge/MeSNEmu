@@ -1,6 +1,6 @@
 #include "iOSAudio.h"
 
-#import <AudioToolbox/AudioQueue.h>
+#include <AudioToolbox/AudioQueue.h>
 
 #include "../SNES9X/port.h"
 #include "../SNES9X/apu/apu.h"
@@ -40,6 +40,8 @@ float SI_AQCallbackCount = 0;
 
 volatile int SI_AudioIsOnHold = 1;
 
+volatile int SI_AudioOffset = 0;
+
 #pragma mark - Audio Queue Management
 
 static void AQBufferCallback(
@@ -53,31 +55,63 @@ static void AQBufferCallback(
 	if(SI_EmulationPaused || !SI_EmulationRun || !SI_SoundIsInit)
   {
     SI_AudioIsOnHold = 1;
+    SI_AudioOffset = 0;
     memset(outQB->mAudioData, 0, SI_SoundBufferSizeBytes);
   }
 	else
   {
     SI_AudioIsOnHold = 0;
 
-    int available = S9xGetSampleCount()*2;
-    if(available > SI_SoundBufferSizeBytes)
-      available = SI_SoundBufferSizeBytes;
-    
-    S9xMixSamples((unsigned char*)outQB->mAudioData, available/2);
-    
-    if(available < SI_SoundBufferSizeBytes)
+    //static int i = 0;
+    //printf("willLock %i\n", i);
+    //printf("locked %i\n", i);
+    //i++;
+    int totalSamples = S9xGetSampleCount();
+    int totalBytes = totalSamples;
+    int samplesToUse = totalSamples;
+    int bytesToUse = totalBytes;
+    if(Settings.SixteenBitSound == true)
     {
-      if(available == 0)
+      bytesToUse *= 2;
+      totalBytes *= 2;
+    }
+    if(bytesToUse > SI_SoundBufferSizeBytes)
+    {
+      bytesToUse = SI_SoundBufferSizeBytes;
+      if(Settings.SixteenBitSound == true)
+        samplesToUse = SI_SoundBufferSizeBytes/2;
+      else
+        samplesToUse = SI_SoundBufferSizeBytes;
+    }
+    
+    // calculating the audio offset
+    int samplesShouldBe = SI_SoundBufferSizeBytes;
+    if(Settings.SixteenBitSound == true)
+      samplesShouldBe = SI_SoundBufferSizeBytes/2;
+    
+    SI_AudioOffset -= (totalSamples-samplesShouldBe)*(1.0/Settings.SoundPlaybackRate)*1000-50;
+    if(SI_AudioOffset > 8000)
+      SI_AudioOffset = 4000;
+    else if(SI_AudioOffset < -8000)
+      SI_AudioOffset = -4000;
+    //SI_AudioOffset = 900; // -900 is the magic number for this emulator running on iOS Simulator on my computer
+    //printf("AudioOffset: %i\n", SI_AudioOffset);
+  
+    if(samplesToUse > 0)
+      S9xMixSamples((unsigned char*)outQB->mAudioData, samplesToUse);
+    
+    if(bytesToUse < SI_SoundBufferSizeBytes)
+    {
+      if(bytesToUse == 0)
       {
         // do nothing here... we didn't copy anything... scared that if i write something to the output buffer, we'll get chirps and stuff
+        //printf("0 sampes available\n");
       }
       else
       {
-        //printf("Fixing\n");
+        //printf("Fixing %i of %i\n", bytesToUse, SI_SoundBufferSizeBytes);
         // sounds wiggly
-        memset(((unsigned char*)outQB->mAudioData)+available, ((unsigned char*)outQB->mAudioData)[available-1], SI_SoundBufferSizeBytes-available);
-        // sounds a little skippedly
-        //memset(((unsigned char*)outQB->mAudioData)+available, *(int*)(((unsigned char*)outQB->mAudioData)+(available-3)), SI_SoundBufferSizeBytes-available);
+        memset(((unsigned char*)outQB->mAudioData)+bytesToUse, ((unsigned char*)outQB->mAudioData)[bytesToUse-1], SI_SoundBufferSizeBytes-bytesToUse);
       }
     }
   }
@@ -88,6 +122,7 @@ static void AQBufferCallback(
 int SIOpenSound(int buffersize)
 {
   SI_SoundIsInit = 0;
+  SI_AudioOffset = 0;
 	
   if(SI_AQCallbackStruct.queue != 0)
     AudioQueueDispose(SI_AQCallbackStruct.queue, true);
@@ -96,7 +131,7 @@ int SIOpenSound(int buffersize)
   memset(&SI_AQCallbackStruct, 0, sizeof(AQCallbackStruct));
   
   Float64 sampleRate = 22050.0;
-  sampleRate = 32000.0;
+  sampleRate = Settings.SoundPlaybackRate;
 	SI_SoundBufferSizeBytes = buffersize;
 	
   SI_AQCallbackStruct.mDataFormat.mSampleRate = sampleRate;
@@ -106,7 +141,7 @@ int SIOpenSound(int buffersize)
   SI_AQCallbackStruct.mDataFormat.mFramesPerPacket   =   SI_IsStereo ? 1 : 2;
   SI_AQCallbackStruct.mDataFormat.mBytesPerFrame     =   SI_IsStereo ? 4 : 2;
   SI_AQCallbackStruct.mDataFormat.mChannelsPerFrame  =   SI_IsStereo ? 2 : 1;
-  SI_AQCallbackStruct.mDataFormat.mBitsPerChannel    =   16;
+  SI_AQCallbackStruct.mDataFormat.mBitsPerChannel    =   Settings.SixteenBitSound ? 16: 8;
 	
 	
   /* Pre-buffer before we turn on audio */
@@ -141,6 +176,11 @@ void SICloseSound(void)
 		SI_SoundIsInit = 0;
     SI_AudioIsOnHold = 1;
 	}
+}
+
+int SIAudioOffset()
+{
+  return -SI_AudioOffset;
 }
 
 void SIMuteSound(void)

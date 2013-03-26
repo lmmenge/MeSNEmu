@@ -19,6 +19,7 @@
 #include "../SNES9X/display.h"
 
 #include "Snes9xMain.h"
+#include "iOSAudio.h"
 
 #pragma mark Defines
 
@@ -230,6 +231,7 @@ void S9xSyncSpeed(void)
   
   // calculate lag
   gettimeofday (&now, NULL);
+  
   if (SI_NextFrameTime.tv_sec == 0)
   {
     SI_NextFrameTime = now;
@@ -237,13 +239,16 @@ void S9xSyncSpeed(void)
   }
   int lag = TIMER_DIFF (now, SI_NextFrameTime);
   SI_FrameTimeDebt += lag-(int)Settings.FrameTime;
+  //printf("Frame Time: %i. Should be less than %i\n", lag, (int)Settings.FrameTime);
   
   // if we're  going too fast
   bool sleptThis = 0;
   if(SI_FrameTimeDebt < 0 && IPPU.SkippedFrames == 0)
   //if(debt+(int)Settings.FrameTime < 0 && IPPU.SkippedFrames == 0)
   {
-    usleep(-SI_FrameTimeDebt);
+    int audioOffset = SIAudioOffset();
+    if(-SI_FrameTimeDebt+audioOffset > 0)
+      usleep(-SI_FrameTimeDebt+audioOffset);
     //usleep(-(debt+(int)Settings.FrameTime));
     SI_FrameTimeDebt = 0;
     sleptThis = 1;

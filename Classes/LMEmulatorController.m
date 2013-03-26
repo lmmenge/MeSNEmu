@@ -290,7 +290,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-  NSLog(@"%i", buttonIndex);
+  NSLog(@"UIActionSheet button index: %i", buttonIndex);
   int resetIndex = 1;
 #ifdef SI_ENABLE_SAVES
   int loadIndex = 2;

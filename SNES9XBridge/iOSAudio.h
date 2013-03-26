@@ -12,6 +12,9 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+  
+// audio synchronization stuff
+int SIAudioOffset();
 
 // starts up the AudioQueue system
 void SIDemuteSound(int buffersize);

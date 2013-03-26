@@ -545,7 +545,9 @@ extern "C" int SIStartWithROM(char* rom_filename)
 #else
     if (!Settings.Paused && !SI_EmulationPaused)
 #endif
+    {
       S9xMainLoop();
+    }
     
 #ifdef NETPLAY_SUPPORT
 		if (NP_Activated)
@@ -556,9 +558,9 @@ extern "C" int SIStartWithROM(char* rom_filename)
 #endif
     
 #ifdef DEBUGGER
-		if (Settings.Paused || (CPU.Flags & DEBUG_MODE_FLAG))
+		if(Settings.Paused || (CPU.Flags & DEBUG_MODE_FLAG))
 #else
-      if (Settings.Paused || SI_EmulationPaused)
+    if(Settings.Paused || SI_EmulationPaused)
 #endif
         S9xSetSoundMute(TRUE);
     
@@ -567,7 +569,7 @@ extern "C" int SIStartWithROM(char* rom_filename)
 			S9xDoDebug();
 		else
 #endif
-      if (Settings.Paused || SI_EmulationPaused || !SI_EmulationRun)
+      if(Settings.Paused || SI_EmulationPaused || !SI_EmulationRun)
       {
         SISaveSRAM();
         SISaveRunningStateForGameNamed(rom_filename);
@@ -602,11 +604,11 @@ extern "C" int SIStartWithROM(char* rom_filename)
 		//S9xProcessEvents(FALSE);
     
 #ifdef DEBUGGER
-		if (!Settings.Paused && !(CPU.Flags & DEBUG_MODE_FLAG))
+		if(!Settings.Paused && !(CPU.Flags & DEBUG_MODE_FLAG))
 #else
-      if (!Settings.Paused && !SI_EmulationPaused)
+    if(!Settings.Paused && !SI_EmulationPaused)
 #endif
-        S9xSetSoundMute(FALSE);
+      S9xSetSoundMute(FALSE);
 	}
   SI_EmulationIsRunning = 0;
   
