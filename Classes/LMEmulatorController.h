@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 
 #import "../SNES9XBridge/SIScreenDelegate.h"
-#import "iCadeReaderView.h"
+
 @class LMButtonView;
 @class LMDPadView;
 @class LMPixelView;
 
-@interface LMEmulatorController : UIViewController <SIScreenDelegate, iCadeEventDelegate> {
+@interface LMEmulatorController : UIViewController <SIScreenDelegate> {
   UIActionSheet* _actionSheet;
   LMPixelView* _screenView;
   

@@ -20,6 +20,8 @@
 #import "../SNES9XBridge/Snes9xMain.h"
 #import "../SNES9XBridge/SISaveDelegate.h"
 
+#import "../iCade/iCadeReaderView.h"
+
 typedef enum _LMEmulatorAlert
 {
   LMEmulatorAlertReset,
@@ -95,7 +97,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 
 #pragma mark -
 
-@interface LMEmulatorController(Privates) <UIActionSheetDelegate, UIAlertViewDelegate, LMSettingsControllerDelegate, SISaveDelegate>
+@interface LMEmulatorController(Privates) <UIActionSheetDelegate, UIAlertViewDelegate, LMSettingsControllerDelegate, SISaveDelegate, iCadeEventDelegate>
 @end
 
 #pragma mark -
@@ -286,7 +288,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   [sheet autorelease];
 }
 
-#pragma mark Delegates
+#pragma mark UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
@@ -356,6 +358,8 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   _actionSheet = nil;
 }
 
+#pragma mark UIAlertViewDelegate
+
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
   if(alertView.tag == LMEmulatorAlertReset)
@@ -391,9 +395,112 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   }
 }
 
+#pragma mark LMSettingsControllerDelegate
+
 - (void)settingsDidDismiss:(LMSettingsController*)settingsController
 {
   [self options:nil event:nil];
+}
+
+#pragma mark iCadeEventDelegate
+
+- (void)setState:(BOOL)state forButton:(iCadeState)button
+{
+  
+}
+
+- (void)buttonDown:(iCadeState)button
+{
+  [self setState:YES forButton:button];
+  
+  switch(button)
+  {
+    case iCadeJoystickRight:
+      SISetControllerPushButton(SIOS_RIGHT);
+      break;
+    case iCadeJoystickUp:
+      SISetControllerPushButton(SIOS_UP);
+      break;
+    case iCadeJoystickLeft:
+      SISetControllerPushButton(SIOS_LEFT);
+      break;
+    case iCadeJoystickDown:
+      SISetControllerPushButton(SIOS_DOWN);
+      break;
+    case iCadeButtonA:
+      SISetControllerPushButton(SIOS_X);
+      break;
+    case iCadeButtonB:
+      SISetControllerPushButton(SIOS_B);
+      break;
+    case iCadeButtonC:
+      SISetControllerPushButton(SIOS_A);
+      break;
+    case iCadeButtonD:
+      SISetControllerPushButton(SIOS_START);
+      break;
+    case iCadeButtonE:
+      SISetControllerPushButton(SIOS_Y);
+      break;
+    case iCadeButtonF:
+      SISetControllerPushButton(SIOS_SELECT);
+      break;
+    case iCadeButtonG:
+      SISetControllerPushButton(SIOS_L);
+      break;
+    case iCadeButtonH:
+      SISetControllerPushButton(SIOS_R);
+      break;
+    default:
+      break;
+  }
+}
+
+- (void)buttonUp:(iCadeState)button
+{
+  [self setState:NO forButton:button];
+  
+  switch(button)
+  {
+    case iCadeJoystickRight:
+      SISetControllerReleaseButton(SIOS_RIGHT);
+      break;
+    case iCadeJoystickUp:
+      SISetControllerReleaseButton(SIOS_UP);
+      break;
+    case iCadeJoystickLeft:
+      SISetControllerReleaseButton(SIOS_LEFT);
+      break;
+    case iCadeJoystickDown:
+      SISetControllerReleaseButton(SIOS_DOWN);
+      break;
+    case iCadeButtonA:
+      SISetControllerReleaseButton(SIOS_X);
+      break;
+    case iCadeButtonB:
+      SISetControllerReleaseButton(SIOS_B);
+      break;
+    case iCadeButtonC:
+      SISetControllerReleaseButton(SIOS_A);
+      break;
+    case iCadeButtonD:
+      SISetControllerReleaseButton(SIOS_START);
+      break;
+    case iCadeButtonE:
+      SISetControllerReleaseButton(SIOS_Y);
+      break;
+    case iCadeButtonF:
+      SISetControllerReleaseButton(SIOS_SELECT);
+      break;
+    case iCadeButtonG:
+      SISetControllerReleaseButton(SIOS_L);
+      break;
+    case iCadeButtonH:
+      SISetControllerReleaseButton(SIOS_R);
+      break;
+    default:
+      break;
+  } 
 }
 
 #pragma mark Notifications
@@ -638,6 +745,13 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   // d-pad
   _dPadView = [[LMDPadView alloc] initWithFrame:(CGRect){0,0,10,10}];
   [self.view addSubview:_dPadView];
+  
+  // iCade support
+  iCadeReaderView* iCadeControl = [[iCadeReaderView alloc] initWithFrame:CGRectZero];
+  [self.view addSubview:iCadeControl];
+  iCadeControl.active = YES;
+  iCadeControl.delegate = self;
+  [iCadeControl release];
 }
 
 - (void)viewDidLoad
@@ -682,11 +796,6 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
                                      bytesPerRow:bufferBytesPerRow
                                       bitmapInfo:bufferBitmapInfo];
   [(LMPixelLayer*)_screenView.layer addAltImageBuffer:_imageBufferAlt];
-    
-    iCadeReaderView *control = [[iCadeReaderView alloc] initWithFrame:CGRectZero];
-    [self.view addSubview:control];
-    control.active = YES;
-    control.delegate = self;
 }
 
 - (void)viewDidUnload
@@ -842,103 +951,6 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   self.initialSaveFileName = nil;
   
   [super dealloc];
-}
-
-#pragma mark - iCade
-- (void)setState:(BOOL)state forButton:(iCadeState)button {
-    
-}
-
-- (void)buttonDown:(iCadeState)button {
-    [self setState:YES forButton:button];
-    
-    switch (button) {
-        case iCadeJoystickRight:
-            SISetControllerPushButton(SIOS_RIGHT);
-            break;
-        case iCadeJoystickUp:
-            SISetControllerPushButton(SIOS_UP);
-            break;
-        case iCadeJoystickLeft:
-            SISetControllerPushButton(SIOS_LEFT);
-            break;
-        case iCadeJoystickDown:
-            SISetControllerPushButton(SIOS_DOWN);
-            break;
-        case iCadeButtonA:
-            SISetControllerPushButton(SIOS_X);
-            break;
-        case iCadeButtonB:
-            SISetControllerPushButton(SIOS_B);
-            break;
-        case iCadeButtonC:
-            SISetControllerPushButton(SIOS_A);
-            break;
-        case iCadeButtonD:
-            SISetControllerPushButton(SIOS_START);
-            break;
-        case iCadeButtonE:
-            SISetControllerPushButton(SIOS_Y);
-            break;
-        case iCadeButtonF:
-            SISetControllerPushButton(SIOS_SELECT);
-            break;
-        case iCadeButtonG:
-            SISetControllerPushButton(SIOS_L);
-            break;
-        case iCadeButtonH:
-            SISetControllerPushButton(SIOS_R);
-            break;
-        default:
-            break;
-    }
-}
-
-- (void)buttonUp:(iCadeState)button {
-    [self setState:NO forButton:button];
-    
-    switch (button) {
-        case iCadeJoystickRight:
-            SISetControllerReleaseButton(SIOS_RIGHT);
-            break;
-        case iCadeJoystickUp:
-            SISetControllerReleaseButton(SIOS_UP);
-            break;
-        case iCadeJoystickLeft:
-            SISetControllerReleaseButton(SIOS_LEFT);
-            break;
-        case iCadeJoystickDown:
-            SISetControllerReleaseButton(SIOS_DOWN);
-            break;
-        case iCadeButtonA:
-            SISetControllerReleaseButton(SIOS_X);
-            break;
-        case iCadeButtonB:
-            SISetControllerReleaseButton(SIOS_B);
-            break;
-        case iCadeButtonC:
-            SISetControllerReleaseButton(SIOS_A);
-            break;
-        case iCadeButtonD:
-            SISetControllerReleaseButton(SIOS_START);
-            break;
-        case iCadeButtonE:
-            SISetControllerReleaseButton(SIOS_Y);
-            break;
-        case iCadeButtonF:
-            SISetControllerReleaseButton(SIOS_SELECT);
-            break;
-        case iCadeButtonG:
-            SISetControllerReleaseButton(SIOS_L);
-            break;
-        case iCadeButtonH:
-            SISetControllerReleaseButton(SIOS_R);
-            break;
-        default:
-            break;
-    }
-    
-    
 }
 
 @end

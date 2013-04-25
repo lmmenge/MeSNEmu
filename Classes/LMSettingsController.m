@@ -120,7 +120,7 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kLMSettingsAutoFrameskip];
   
   if([[NSUserDefaults standardUserDefaults] objectForKey:kLMSettingsFrameskipValue] == nil)
-    [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:kLMSettingsFrameskipValue];
+    [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:kLMSettingsFrameskipValue];
 }
 
 @end
