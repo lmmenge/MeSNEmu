@@ -42,27 +42,3 @@ typedef enum iCadeState {
     iCadeButtonH            = 0x800,
     
 } iCadeState;
-
-/*typedef enum iCadeState {
-    iCadeJoystickNone       = 0x000,
-    iCadeJoystickUp         = 0x04C,
-    iCadeJoystickRight      = 0x002,
-    iCadeJoystickDown       = 0x004,
-    iCadeJoystickLeft       = 0x030,
-    
-    iCadeJoystickUpRight    = iCadeJoystickUp   | iCadeJoystickRight,
-    iCadeJoystickDownRight  = iCadeJoystickDown | iCadeJoystickRight,
-    iCadeJoystickUpLeft     = iCadeJoystickUp   | iCadeJoystickLeft,
-    iCadeJoystickDownLeft   = iCadeJoystickDown | iCadeJoystickLeft,
-    
-    iCadeButtonA            = 0x010,
-    iCadeButtonB            = 0x020,
-    iCadeButtonC            = 0x050,
-    iCadeButtonD            = 0x080,
-    iCadeButtonE            = 0x100,
-    iCadeButtonF            = 0x200,
-    iCadeButtonG            = 0x400,
-    iCadeButtonH            = 0x800,
- 
-} iCadeState;*/
-

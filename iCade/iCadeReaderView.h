@@ -45,19 +45,12 @@
 - (void)buttonDown:(iCadeState)button;
 - (void)buttonUp:(iCadeState)button;
 
-- (void)stateChangedK:(char)key;
-- (void)buttonDownK:(char)key;
-- (void)buttonUpK:(char)key;
-- (void)buttonEndCycle:(char)key;
-
 @end
 
 @interface iCadeReaderView : UIView<UIKeyInput> {
     UIView                  *inputView;
     iCadeState              _iCadeState;
     id<iCadeEventDelegate>  _delegate;
-    //NSMutableDictionary *keyDict;
-    //NSMutableDictionary *K_ON_STATES;
     
     struct {
         bool stateChanged:1;

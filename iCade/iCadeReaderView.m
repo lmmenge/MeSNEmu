@@ -22,30 +22,8 @@
 
 #import "iCadeReaderView.h"
 
-/*
- Haut : z, e
- Droite : d, c
- Bas : x, w
- Gauche : q, a
- Select : k, p
- Start : j, n
- Triangle : y, t
- Rond : u, f
- Croix : h, r
- Carré : i, ,
- */
-
-// iCade Querty
 static const char *ON_STATES  = "wdxayhujikol";
 static const char *OFF_STATES = "eczqtrfnmpgv";
-
-// iCade Azerty (change it if you're using AZERT keyboard - comment lines above)
-//static const char *ON_STATES  = "zdxqyhujikol";
-//static const char *OFF_STATES = "ecwatrfn,pgv";
-
-// Keyboard (WIP)
-static bool keyboard = false;
-//static const char *ON_STATES  = "zdsqyhujikol";
 
 @interface iCadeReaderView()
 
@@ -61,22 +39,14 @@ static bool keyboard = false;
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     inputView = [[UIView alloc] initWithFrame:CGRectZero];
-    //keyDict = [[NSMutableDictionary alloc] init];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
-    
-    // Detect keyboard type : FR Keyboard is different !
-    if ([[UITextInputMode currentInputMode].primaryLanguage isEqualToString:@"fr-FR"]) {
-        ON_STATES = "zdxqyhujikol";
-        OFF_STATES = "ecwatrfn,pgv";
-    }
     
     return self;
 }
 
 - (void)dealloc {
-    //[keyDict release];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
     [super dealloc];
@@ -92,8 +62,8 @@ static bool keyboard = false;
         [self becomeFirstResponder];
 }
 
-- (BOOL)canBecomeFirstResponder {
-    return YES;
+- (BOOL)canBecomeFirstResponder { 
+    return YES; 
 }
 
 - (void)setActive:(BOOL)value {
@@ -131,59 +101,26 @@ static bool keyboard = false;
     
     char ch = [text characterAtIndex:0];
     char *p = strchr(ON_STATES, ch);
-    NSString *key;
-    
     bool stateChanged = false;
-    if (!keyboard) {
-        key = [NSString stringWithFormat:@"%s", p];
-        NSLog(@"iCade detected key : %c", ch);
-        if (p) {
-            int index = p-ON_STATES;
-            _iCadeState |= (1 << index);
-            stateChanged = true;
-            
-            if (_delegateFlags.buttonDown) {
-                [_delegate buttonDown:(1 << index)];
-            }
-        } else {
-            p = strchr(OFF_STATES, ch);
-            if (p) {
-                int index = p-OFF_STATES;
-                _iCadeState &= ~(1 << index);
-                stateChanged = true;
-                if (_delegateFlags.buttonUp) {
-                    [_delegate buttonUp:(1 << index)];
-                }
-            }
-            
+    if (p) {
+        int index = p-ON_STATES;
+        _iCadeState |= (1 << index);
+        stateChanged = true;
+        if (_delegateFlags.buttonDown) {
+            [_delegate buttonDown:(1 << index)];
         }
     } else {
-        // WIP : To support bluetooth keyboard
-        /*key = [NSString stringWithFormat:@"%c", ch];
-        if ([K_ON_STATES objectForKey:key]) {
-            if ([[K_ON_STATES objectForKey:key] isEqualToString:@"0"]) {
-                [K_ON_STATES setValue:@"1" forKey:key];
-                int index = p-ON_STATES;
-                _iCadeState |= (1 << index);
-                stateChanged = true;
-                
-                if (_delegateFlags.buttonDown) {
-                    [_delegate buttonDown:(1 << index)];
-                }
-                
-            } else {
-                int index = p-OFF_STATES;
-                _iCadeState &= ~(1 << index);
-                stateChanged = true;
-                if (_delegateFlags.buttonUp) {
-                    [_delegate buttonUp:(1 << index)];
-                }
-                
-                [K_ON_STATES setValue:@"0" forKey:key];
+        p = strchr(OFF_STATES, ch);
+        if (p) {
+            int index = p-OFF_STATES;
+            _iCadeState &= ~(1 << index);
+            stateChanged = true;
+            if (_delegateFlags.buttonUp) {
+                [_delegate buttonUp:(1 << index)];
             }
-        }*/
+        }
     }
-    
+
     if (stateChanged && _delegateFlags.stateChanged) {
         [_delegate stateChanged:_iCadeState];
     }
