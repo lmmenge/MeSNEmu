@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		96ABEC8217292964003119F8 /* iCadeReaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 96ABEC8017292964003119F8 /* iCadeReaderView.m */; };
 		A00403C114BE3E4D00FE28CE /* apu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00401E514BE3E4D00FE28CE /* apu.cpp */; };
 		A00403C314BE3E4D00FE28CE /* SNES_SPC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00401F014BE3E4D00FE28CE /* SNES_SPC.cpp */; };
 		A00403C414BE3E4D00FE28CE /* SNES_SPC_misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00401F214BE3E4D00FE28CE /* SNES_SPC_misc.cpp */; };
@@ -133,6 +134,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		96ABEC7F17292964003119F8 /* iCadeReaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iCadeReaderView.h; path = Classes/iCadeReaderView.h; sourceTree = SOURCE_ROOT; };
+		96ABEC8017292964003119F8 /* iCadeReaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iCadeReaderView.m; path = Classes/iCadeReaderView.m; sourceTree = SOURCE_ROOT; };
+		96ABEC8117292964003119F8 /* iCadeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iCadeState.h; path = Classes/iCadeState.h; sourceTree = SOURCE_ROOT; };
 		A00401E314BE3E4D00FE28CE /* 65c816.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 65c816.h; sourceTree = "<group>"; };
 		A00401E514BE3E4D00FE28CE /* apu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = apu.cpp; sourceTree = "<group>"; };
 		A00401E614BE3E4D00FE28CE /* apu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apu.h; sourceTree = "<group>"; };
@@ -384,6 +388,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		96ABEC7E17292954003119F8 /* iCade */ = {
+			isa = PBXGroup;
+			children = (
+				96ABEC7F17292964003119F8 /* iCadeReaderView.h */,
+				96ABEC8017292964003119F8 /* iCadeReaderView.m */,
+				96ABEC8117292964003119F8 /* iCadeState.h */,
+			);
+			name = iCade;
+			sourceTree = "<group>";
+		};
 		A00401E214BE3E4D00FE28CE /* SNES9X */ = {
 			isa = PBXGroup;
 			children = (
@@ -614,6 +628,7 @@
 		A050661114B21C7F003E0C5E /* SiOS */ = {
 			isa = PBXGroup;
 			children = (
+				96ABEC7E17292954003119F8 /* iCade */,
 				A0C41FE9160224F30038CF06 /* Docs */,
 				A0B8687D14BE3B6800663EBE /* LMAppDelegate.h */,
 				A0B8687C14BE3B6800663EBE /* LMAppDelegate.m */,
@@ -922,6 +937,7 @@
 				A027AC1914C78F3D00F177F7 /* LMSaveManager.mm in Sources */,
 				A027AC2F14C8456D00F177F7 /* SISaveDelegate.m in Sources */,
 				A0B8686B14BE3B3100663EBE /* main.m in Sources */,
+				96ABEC8217292964003119F8 /* iCadeReaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1004,6 +1020,7 @@
 		A050662914B21C7F003E0C5E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Classes/Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
@@ -1012,6 +1029,7 @@
 					"\"$(SRCROOT)/SNES9X/macosx\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SNES_CFLAGS = "-funsigned-char -ffast-math -fexpensive-optimizations -mstructure-size-boundary=32 -falign-functions=32 -falign-loops -falign-labels -falign-jumps -finline -finline-functions -fno-builtin -fno-common -fomit-frame-pointer -fpeel-loops -fstrength-reduce -funroll-loops -fstrict-aliasing";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1020,6 +1038,7 @@
 		A050662A14B21C7F003E0C5E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Classes/Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
@@ -1028,6 +1047,7 @@
 					"\"$(SRCROOT)/SNES9X/macosx\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SNES_CFLAGS = "-funsigned-char -ffast-math -fexpensive-optimizations -mstructure-size-boundary=32 -falign-functions=32 -falign-loops -falign-labels -falign-jumps -finline -finline-functions -fno-builtin -fno-common -fomit-frame-pointer -fpeel-loops -fstrength-reduce -funroll-loops -fstrict-aliasing";
 				WRAPPER_EXTENSION = app;
 			};
