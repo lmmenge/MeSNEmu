@@ -48,6 +48,8 @@
 @end
 
 @interface iCadeReaderView : UIView<UIKeyInput> {
+    char *_on_states;
+    char *_off_states;
     UIView                  *inputView;
     iCadeState              _iCadeState;
     id<iCadeEventDelegate>  _delegate;

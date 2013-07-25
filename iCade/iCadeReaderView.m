@@ -22,8 +22,6 @@
 
 #import "iCadeReaderView.h"
 
-static const char *ON_STATES  = "wdxayhujikol";
-static const char *OFF_STATES = "eczqtrfnmpgv";
 
 @interface iCadeReaderView()
 
@@ -39,7 +37,14 @@ static const char *OFF_STATES = "eczqtrfnmpgv";
 - (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     inputView = [[UIView alloc] initWithFrame:CGRectZero];
-    
+  
+    int mapSize = 12*sizeof(char);
+    _on_states = malloc(mapSize);
+    _off_states = malloc(mapSize);
+  
+    memcpy(_on_states, "wdxayhujikol", mapSize);
+    memcpy(_off_states, "eczqtrfnmpgv", mapSize);
+  
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     
@@ -49,6 +54,18 @@ static const char *OFF_STATES = "eczqtrfnmpgv";
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+  
+    if(_on_states != nil)
+    {
+        free(_on_states);
+        _on_states = nil;
+    }
+    if(_off_states != nil)
+    {
+        free(_off_states);
+        _off_states = nil;
+    }
+  
     [super dealloc];
 }
 
@@ -100,19 +117,19 @@ static const char *OFF_STATES = "eczqtrfnmpgv";
 - (void)insertText:(NSString *)text {
     
     char ch = [text characterAtIndex:0];
-    char *p = strchr(ON_STATES, ch);
+    char *p = strchr(_on_states, ch);
     bool stateChanged = false;
     if (p) {
-        int index = p-ON_STATES;
+        int index = p-_on_states;
         _iCadeState |= (1 << index);
         stateChanged = true;
         if (_delegateFlags.buttonDown) {
             [_delegate buttonDown:(1 << index)];
         }
     } else {
-        p = strchr(OFF_STATES, ch);
+        p = strchr(_off_states, ch);
         if (p) {
-            int index = p-OFF_STATES;
+            int index = p-_off_states;
             _iCadeState &= ~(1 << index);
             stateChanged = true;
             if (_delegateFlags.buttonUp) {
