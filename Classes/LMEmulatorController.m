@@ -20,7 +20,7 @@
 #import "../SNES9XBridge/Snes9xMain.h"
 #import "../SNES9XBridge/SISaveDelegate.h"
 
-#import "../iCade/iCadeReaderView.h"
+#import "../iCade/LMBTControllerView.h"
 
 typedef enum _LMEmulatorAlert
 {
@@ -428,22 +428,22 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
       SISetControllerPushButton(SIOS_DOWN);
       break;
     case iCadeButtonA:
-      SISetControllerPushButton(SIOS_X);
+      SISetControllerPushButton(SIOS_SELECT);
       break;
     case iCadeButtonB:
-      SISetControllerPushButton(SIOS_B);
-      break;
-    case iCadeButtonC:
-      SISetControllerPushButton(SIOS_A);
-      break;
-    case iCadeButtonD:
       SISetControllerPushButton(SIOS_START);
       break;
-    case iCadeButtonE:
+    case iCadeButtonC:
       SISetControllerPushButton(SIOS_Y);
       break;
+    case iCadeButtonD:
+      SISetControllerPushButton(SIOS_B);
+      break;
+    case iCadeButtonE:
+      SISetControllerPushButton(SIOS_X);
+      break;
     case iCadeButtonF:
-      SISetControllerPushButton(SIOS_SELECT);
+      SISetControllerPushButton(SIOS_A);
       break;
     case iCadeButtonG:
       SISetControllerPushButton(SIOS_L);
@@ -475,22 +475,22 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
       SISetControllerReleaseButton(SIOS_DOWN);
       break;
     case iCadeButtonA:
-      SISetControllerReleaseButton(SIOS_X);
+      SISetControllerReleaseButton(SIOS_SELECT);
       break;
     case iCadeButtonB:
-      SISetControllerReleaseButton(SIOS_B);
-      break;
-    case iCadeButtonC:
-      SISetControllerReleaseButton(SIOS_A);
-      break;
-    case iCadeButtonD:
       SISetControllerReleaseButton(SIOS_START);
       break;
-    case iCadeButtonE:
+    case iCadeButtonC:
       SISetControllerReleaseButton(SIOS_Y);
       break;
+    case iCadeButtonD:
+      SISetControllerReleaseButton(SIOS_B);
+      break;
+    case iCadeButtonE:
+      SISetControllerReleaseButton(SIOS_X);
+      break;
     case iCadeButtonF:
-      SISetControllerReleaseButton(SIOS_SELECT);
+      SISetControllerReleaseButton(SIOS_A);
       break;
     case iCadeButtonG:
       SISetControllerReleaseButton(SIOS_L);
@@ -747,7 +747,8 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   [self.view addSubview:_dPadView];
   
   // iCade support
-  iCadeReaderView* iCadeControl = [[iCadeReaderView alloc] initWithFrame:CGRectZero];
+  LMBTControllerView* iCadeControl = [[LMBTControllerView alloc] initWithFrame:CGRectZero];
+  iCadeControl.controllerType = LMBTControllerType_iCade8Bitty;
   [self.view addSubview:iCadeControl];
   iCadeControl.active = YES;
   iCadeControl.delegate = self;

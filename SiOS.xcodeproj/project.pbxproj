@@ -131,6 +131,7 @@
 		A0C41FFC160227C00038CF06 /* Default-Portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0C41FF8160227C00038CF06 /* Default-Portrait@2x.png */; };
 		A0C41FFE160229E20038CF06 /* Icon-144.png in Resources */ = {isa = PBXBuildFile; fileRef = A0C41FFD160229E10038CF06 /* Icon-144.png */; };
 		A0D287B8172959A300CD6C6A /* iCadeReaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0D287B6172959A300CD6C6A /* iCadeReaderView.m */; };
+		A0FE5CB317A1EC5D0001EA30 /* LMBTControllerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0FE5CB217A1EC5D0001EA30 /* LMBTControllerView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -369,6 +370,8 @@
 		A0D287B5172959A300CD6C6A /* iCadeReaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCadeReaderView.h; sourceTree = "<group>"; };
 		A0D287B6172959A300CD6C6A /* iCadeReaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCadeReaderView.m; sourceTree = "<group>"; };
 		A0D287B7172959A300CD6C6A /* iCadeState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCadeState.h; sourceTree = "<group>"; };
+		A0FE5CB117A1EC5D0001EA30 /* LMBTControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMBTControllerView.h; sourceTree = "<group>"; };
+		A0FE5CB217A1EC5D0001EA30 /* LMBTControllerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMBTControllerView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -753,6 +756,8 @@
 				A0D287B5172959A300CD6C6A /* iCadeReaderView.h */,
 				A0D287B6172959A300CD6C6A /* iCadeReaderView.m */,
 				A0D287B7172959A300CD6C6A /* iCadeState.h */,
+				A0FE5CB117A1EC5D0001EA30 /* LMBTControllerView.h */,
+				A0FE5CB217A1EC5D0001EA30 /* LMBTControllerView.m */,
 			);
 			path = iCade;
 			sourceTree = "<group>";
@@ -938,6 +943,7 @@
 				A027AC2F14C8456D00F177F7 /* SISaveDelegate.m in Sources */,
 				A0B8686B14BE3B3100663EBE /* main.m in Sources */,
 				A0D287B8172959A300CD6C6A /* iCadeReaderView.m in Sources */,
+				A0FE5CB317A1EC5D0001EA30 /* LMBTControllerView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
