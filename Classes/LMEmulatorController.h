@@ -13,6 +13,7 @@
 @class LMButtonView;
 @class LMDPadView;
 @class LMPixelView;
+@class LMBTControllerView;
 
 @interface LMEmulatorController : UIViewController <SIScreenDelegate> {
   UIActionSheet* _actionSheet;
@@ -40,7 +41,12 @@
   // directions
   LMDPadView* _dPadView;
   
+  // external controller
+  LMBTControllerView* _iCadeControlView;
+  
   UIButton* _optionsButton;
+  
+  BOOL _hideUI;
   
   NSString* _romFileName;
   NSString* _initialSaveFileName;

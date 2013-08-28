@@ -203,7 +203,10 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
       smallButtonsOriginX = ((size.width-width)/2-_startButton.frame.size.width)/2;
       smallButtonsOriginY = smallButtonsOriginX;
       
-      controlsAlpha = 0.5;
+      if(_hideUI == NO)
+        controlsAlpha = 0.5;
+      else
+        controlsAlpha = 0;
     }
     else
     {
@@ -265,11 +268,27 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   _dPadView.alpha = controlsAlpha;
 }
 
+- (void)LM_hideUI:(BOOL)hidden animated:(BOOL)animated
+{
+  if(_hideUI != hidden)
+  {
+    _hideUI = hidden;
+    if(animated == YES)
+      [UIView animateWithDuration:0.3 animations:^{
+        [self layoutForThisOrientation];
+      }];
+    else
+      [self layoutForThisOrientation];
+  }
+}
+
 #pragma mark UI Interaction Handling
 
 - (void)options:(UIButton*)sender event:(UIEvent*)event;
 {
   SISetEmulationPaused(1);
+  
+  [self LM_hideUI:NO animated:YES];
   
   UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:nil
                                                      delegate:self
@@ -454,6 +473,9 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
     default:
       break;
   }
+  
+  if(_hideUI == NO)
+    [self LM_hideUI:YES animated:YES];
 }
 
 - (void)buttonUp:(iCadeState)button
@@ -537,6 +559,9 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   }
   SISetAutoFrameskip([defaults boolForKey:kLMSettingsAutoFrameskip]);
   SISetFrameskip([defaults integerForKey:kLMSettingsFrameskipValue]);
+  
+  _iCadeControlView.controllerType = [[NSUserDefaults standardUserDefaults] integerForKey:kLMSettingsBluetoothController];
+  // TODO: support custom key layouts
   
   SIUpdateSettings();
   
@@ -747,12 +772,10 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   [self.view addSubview:_dPadView];
   
   // iCade support
-  LMBTControllerView* iCadeControl = [[LMBTControllerView alloc] initWithFrame:CGRectZero];
-  iCadeControl.controllerType = LMBTControllerType_iCade8Bitty;
-  [self.view addSubview:iCadeControl];
-  iCadeControl.active = YES;
-  iCadeControl.delegate = self;
-  [iCadeControl release];
+  _iCadeControlView = [[LMBTControllerView alloc] initWithFrame:CGRectZero];
+  [self.view addSubview:_iCadeControlView];
+  _iCadeControlView.active = YES;
+  _iCadeControlView.delegate = self;
 }
 
 - (void)viewDidLoad
@@ -944,6 +967,9 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   _rButton = nil;
   [_dPadView release];
   _dPadView = nil;
+  
+  [_iCadeControlView release];
+  _iCadeControlView = nil;
   
   [_optionsButton release];
   _optionsButton = nil;

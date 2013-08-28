@@ -8,7 +8,29 @@
 
 #import "LMBTControllerView.h"
 
+@implementation LMBTControllerView(Privates)
+
+- (void)LMBT_setOnStateString:(const char*)onState offStateString:(const char*)offState
+{
+  int mapSize = 12*sizeof(char);
+  memcpy(_on_states,  onState, mapSize);
+  memcpy(_off_states, offState, mapSize);
+}
+
+@end
+
+#pragma mark -
+
 @implementation LMBTControllerView
+
+- (void)setOnStateString:(const char*)onState offStateString:(const char*)offState
+{
+  @synchronized(self)
+  {
+    self.controllerType = LMBTControllerType_Custom;
+    [self LMBT_setOnStateString:onState offStateString:offState];
+  }
+}
 
 @synthesize controllerType = _controllerType;
 - (void)setControllerType:(LMBTControllerType)controllerType
@@ -24,7 +46,6 @@
     //               B
     
     // map order: UP RT DN LT SE ST  Y  B  X  A  L  R
-    int mapSize = 12*sizeof(char);
     if(_controllerType == LMBTControllerType_iCade)
     {
       // regular iCade
@@ -34,8 +55,8 @@
       // ST B A R
       // UP RT DN LT SE ST  Y  B  X  A  L  R
       // UP RT DN LT  A  B  C  D  E  F  G  H
-      memcpy(_on_states,  "wdxayhujikol", mapSize);
-      memcpy(_off_states, "eczqtrfnmpgv", mapSize);
+      [self LMBT_setOnStateString:"wdxayhujikol"
+                   offStateString:"eczqtrfnmpgv"];
     }
     else if(_controllerType == LMBTControllerType_iCade8Bitty)
     {
@@ -48,16 +69,16 @@
       //     A  C    F  H
       // UP RT DN LT SE ST  Y  B  X  A  L  R
       // UP RT DN LT  A  B  C  D  E  F  G  H
-      memcpy(_on_states,  "wdxayuikolhj", mapSize);
-      memcpy(_off_states, "eczqtfmpgvrn", mapSize);
+      [self LMBT_setOnStateString:"wdxayuikolhj"
+                   offStateString:"eczqtfmpgvrn"];
     }
     else if(_controllerType == LMBTControllerType_EXHybrid)
     {
-      // //TODO: EX Hybrid
+      // //TODO: Properly support the EX Hybrid
       // UP RT DN LT SE ST  Y  B  X  A  L  R
       // UP RT DN LT  A  B  C  D  E  F  G  H
-      memcpy(_on_states,  "wdxayhujikol", mapSize);
-      memcpy(_off_states, "eczqtrfnmpgv", mapSize);
+      [self LMBT_setOnStateString:"wdxayhujikol"
+                   offStateString:"eczqtrfnmpgv"];
     }
   }
 }

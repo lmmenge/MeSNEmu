@@ -10,14 +10,17 @@
 
 typedef enum _LMBTControllerType
 {
-  LMBTControllerType_iCade,
-  LMBTControllerType_iCade8Bitty,
-  LMBTControllerType_EXHybrid
+  LMBTControllerType_Custom = 0,
+  LMBTControllerType_iCade = 1,
+  LMBTControllerType_iCade8Bitty = 2,
+  LMBTControllerType_EXHybrid = 3
 } LMBTControllerType;
 
 @interface LMBTControllerView : iCadeReaderView {
   LMBTControllerType _controllerType;
 }
+
+- (void)setOnStateString:(const char*)onState offStateString:(const char*)offState;
 
 @property (nonatomic) LMBTControllerType controllerType;
 

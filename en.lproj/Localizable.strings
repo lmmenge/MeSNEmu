@@ -22,6 +22,8 @@
 "AUTO_FRAMESKIP" = "Auto-frameskip";
 "SKIP_EVERY" = "Skip every";
 "FRAMES" = "frames";
+"BLUETOOTH_CONTROLLER" = "Controller";
+"CUSTOM" = "Custom";
 "SETTINGS" = "Settings";
 "FULL_SCREEN_EXPLANATION" = "Full screen makes better use of the screen, but controls will be on top of the game.";
 "AUTO_FRAMESKIP_EXPLANATION" = "Auto-frameskip may appear slower due to a more inconsistent skip rate.";

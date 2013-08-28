@@ -22,6 +22,8 @@
 "AUTO_FRAMESKIP" = "Auto-velocidade";
 "SKIP_EVERY" = "Pular a cada";
 "FRAMES" = "quadros";
+"BLUETOOTH_CONTROLLER" = "Controle";
+"CUSTOM" = "Outro";
 "SETTINGS" = "Ajustes";
 "FULL_SCREEN_EXPLANATION" = "Tela cheia usa melhor a tela, mas os controles vão ficar em cima do jogo.";
 "AUTO_FRAMESKIP_EXPLANATION" = "Auto-velocidade pode parecer mais lento devido a pulos de quadros inconsistentes.";

@@ -92,6 +92,7 @@
 		A050660E14B21C7F003E0C5E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A050660D14B21C7F003E0C5E /* Foundation.framework */; };
 		A050661014B21C7F003E0C5E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A050660F14B21C7F003E0C5E /* CoreGraphics.framework */; };
 		A050663214B21DDB003E0C5E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A050663114B21DDB003E0C5E /* QuartzCore.framework */; };
+		A093242917CE590200A93B6B /* LMMultipleChoicePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = A093242717CE590200A93B6B /* LMMultipleChoicePicker.m */; };
 		A0995BD714B508AC00F7C44F /* iOSAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995BD314B508AC00F7C44F /* iOSAudio.cpp */; };
 		A0995C1214B525D200F7C44F /* Snes9xMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995C1114B525D200F7C44F /* Snes9xMain.cpp */; };
 		A0995F8014B679FF00F7C44F /* Snes9xCallbacks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995F7F14B679F300F7C44F /* Snes9xCallbacks.cpp */; };
@@ -315,6 +316,9 @@
 		A050660D14B21C7F003E0C5E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A050660F14B21C7F003E0C5E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		A050663114B21DDB003E0C5E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		A093242617CE590200A93B6B /* LMMultipleChoicePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMMultipleChoicePicker.h; path = Classes/LMMultipleChoicePicker.h; sourceTree = SOURCE_ROOT; };
+		A093242717CE590200A93B6B /* LMMultipleChoicePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMMultipleChoicePicker.m; path = Classes/LMMultipleChoicePicker.m; sourceTree = SOURCE_ROOT; };
+		A093242817CE590200A93B6B /* CKMultipleChoicePickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CKMultipleChoicePickerDelegate.h; path = Classes/CKMultipleChoicePickerDelegate.h; sourceTree = SOURCE_ROOT; };
 		A0995BD314B508AC00F7C44F /* iOSAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = iOSAudio.cpp; path = SNES9XBridge/iOSAudio.cpp; sourceTree = SOURCE_ROOT; };
 		A0995C1114B525D200F7C44F /* Snes9xMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Snes9xMain.cpp; path = SNES9XBridge/Snes9xMain.cpp; sourceTree = SOURCE_ROOT; };
 		A0995F7F14B679F300F7C44F /* Snes9xCallbacks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Snes9xCallbacks.cpp; path = SNES9XBridge/Snes9xCallbacks.cpp; sourceTree = SOURCE_ROOT; };
@@ -719,6 +723,9 @@
 				A0B8687514BE3B6700663EBE /* LMROMBrowserController.m */,
 				A03C087214BF7AB2003FAEB9 /* LMSettingsController.h */,
 				A03C087314BF7AB2003FAEB9 /* LMSettingsController.m */,
+				A093242617CE590200A93B6B /* LMMultipleChoicePicker.h */,
+				A093242717CE590200A93B6B /* LMMultipleChoicePicker.m */,
+				A093242817CE590200A93B6B /* CKMultipleChoicePickerDelegate.h */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -788,7 +795,7 @@
 		A05065FE14B21C7E003E0C5E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Lucas Menge";
 			};
 			buildConfigurationList = A050660114B21C7E003E0C5E /* Build configuration list for PBXProject "SiOS" */;
@@ -944,6 +951,7 @@
 				A0B8686B14BE3B3100663EBE /* main.m in Sources */,
 				A0D287B8172959A300CD6C6A /* iCadeReaderView.m in Sources */,
 				A0FE5CB317A1EC5D0001EA30 /* LMBTControllerView.m in Sources */,
+				A093242917CE590200A93B6B /* LMMultipleChoicePicker.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

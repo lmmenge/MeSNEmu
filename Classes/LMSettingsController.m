@@ -10,11 +10,14 @@
 
 #import "../SNES9X/snes9x.h"
 
+#import "LMMultipleChoicePicker.h"
 #import "LMTableViewCellDelegate.h"
 #import "LMTableViewNumberCell.h"
 #import "LMTableViewSwitchCell.h"
 
 NSString* const kLMSettingsChangedNotification = @"SettingsChanged";
+
+NSString* const kLMSettingsBluetoothController = @"BluetoothController";
 
 NSString* const kLMSettingsSmoothScaling = @"SmoothScaling";
 NSString* const kLMSettingsFullScreen = @"FullScreen";
@@ -23,52 +26,60 @@ NSString* const kLMSettingsSound = @"Sound";
 NSString* const kLMSettingsAutoFrameskip = @"AutoFrameskip";
 NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
 
-@interface LMSettingsController(Privates) <LMTableViewCellDelegate>
+typedef enum _LMSettingsSections
+{
+  LMSettingsSectionScreen,
+  LMSettingsSectionEmulation,
+  LMSettingsSectionBluetoothController,
+  LMSettingsSectionAbout
+} LMSettingsSections;
+
+@interface LMSettingsController(Privates) <LMTableViewCellDelegate, LMMultipleChoicePickerDelegate>
 @end
 
 @implementation LMSettingsController(Privates)
 
-- (void)done
+- (void)LM_done
 {
-  if(_changed)
+  if(_changed == YES)
     [[NSNotificationCenter defaultCenter] postNotificationName:kLMSettingsChangedNotification object:nil userInfo:nil];
   [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
     [_delegate settingsDidDismiss:self];
   }];
 }
 
-- (void)toggleSmoothScaling:(UISwitch*)sender
+- (void)LM_toggleSmoothScaling:(UISwitch*)sender
 {
   _changed = YES;
   [[NSUserDefaults standardUserDefaults] setBool:sender.on forKey:kLMSettingsSmoothScaling];
 }
 
-- (void)toggleFullScreen:(UISwitch*)sender
+- (void)LM_toggleFullScreen:(UISwitch*)sender
 {
   _changed = YES;
   [[NSUserDefaults standardUserDefaults] setBool:sender.on forKey:kLMSettingsFullScreen];
 }
 
-- (void)toggleSound:(UISwitch*)sender
+- (void)LM_toggleSound:(UISwitch*)sender
 {
   _changed = YES;
   [[NSUserDefaults standardUserDefaults] setBool:sender.on forKey:kLMSettingsSound];
 }
 
-- (void)toggleAutoFrameskip:(UISwitch*)sender
+- (void)LM_toggleAutoFrameskip:(UISwitch*)sender
 {
   _changed = YES;
   [[NSUserDefaults standardUserDefaults] setBool:sender.on forKey:kLMSettingsAutoFrameskip];
 }
 
-- (void)cellValueChanged:(UITableViewCell*)cell
+- (void)LM_cellValueChanged:(UITableViewCell*)cell
 {
   _changed = YES;
   if([[self.tableView indexPathForCell:cell] compare:_frameskipValueIndexPath] == NSOrderedSame)
     [[NSUserDefaults standardUserDefaults] setInteger:((LMTableViewNumberCell*)cell).value forKey:kLMSettingsFrameskipValue];
 }
 
-- (LMTableViewNumberCell*)numberCell
+- (LMTableViewNumberCell*)LM_numberCell
 {
   static NSString* identifier = @"NumberCell";
   LMTableViewNumberCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
@@ -77,13 +88,32 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
   return cell;
 }
 
-- (LMTableViewSwitchCell*)switchCell
+- (LMTableViewSwitchCell*)LM_switchCell
 {
   static NSString* identifier = @"SwitchCell";
   LMTableViewSwitchCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
   if (cell == nil)
     cell = [[[LMTableViewSwitchCell alloc] initWithReuseIdentifier:identifier] autorelease];
   return cell;
+}
+
+- (UITableViewCell*)LM_multipleChoiceCell
+{
+  static NSString* identifier = @"MultipleChoiceCell";
+  UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+  if (cell == nil)
+    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier] autorelease];
+  cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+  return cell;
+}
+
+#pragma mark LMMultipleChoicePickerDelegate
+
+- (void)multipleChoice:(LMMultipleChoicePicker*)picker changedIndex:(int)index
+{
+  _changed = YES;
+  int value = [[picker.optionValues objectAtIndex:index] intValue];
+  [[NSUserDefaults standardUserDefaults] setInteger:value forKey:kLMSettingsBluetoothController];
 }
 
 @end
@@ -107,6 +137,9 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
 
 + (void)setDefaultsIfNotDefined
 {
+  if([[NSUserDefaults standardUserDefaults] objectForKey:kLMSettingsBluetoothController] == nil)
+    [[NSUserDefaults standardUserDefaults] setInteger:LMBTControllerType_iCade8Bitty forKey:kLMSettingsBluetoothController];
+  
   if([[NSUserDefaults standardUserDefaults] objectForKey:kLMSettingsFullScreen] == nil)
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:kLMSettingsFullScreen];
   
@@ -142,31 +175,33 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
   // Return the number of sections.
-  return 3;
+  return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
   // Return the number of rows in the section.
-  if(section == 0)
+  if(section == LMSettingsSectionBluetoothController)
+    return 1;
+  else if(section == LMSettingsSectionScreen)
     return 2;
-  else if(section == 1)
+  else if(section == LMSettingsSectionEmulation)
   {
     if(_soundIndexPath == nil)
       return 2;
     else
       return 3;
   }
-  else if(section == 2)
+  else if(section == LMSettingsSectionAbout)
     return 3;
   return 0;
 }
 
 - (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
-  if(section == 0)
+  if(section == LMSettingsSectionScreen)
     return NSLocalizedString(@"FULL_SCREEN_EXPLANATION", nil);
-  else if(section == 1)
+  else if(section == LMSettingsSectionEmulation)
     return NSLocalizedString(@"AUTO_FRAMESKIP_EXPLANATION", nil);
   return nil;
 }
@@ -175,48 +210,83 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
 {  
   UITableViewCell* cell = nil;
   
-  if([indexPath compare:_smoothScalingIndexPath] == NSOrderedSame)
+  NSInteger section = indexPath.section;
+  if(section == LMSettingsSectionBluetoothController)
   {
-    LMTableViewSwitchCell* c = (LMTableViewSwitchCell*)(cell = [self switchCell]);
-    
-    c.switchView.on = [[NSUserDefaults standardUserDefaults] boolForKey:kLMSettingsSmoothScaling];
-    [c.switchView addTarget:self action:@selector(toggleSmoothScaling:) forControlEvents:UIControlEventValueChanged];
-    c.textLabel.text = NSLocalizedString(@"SMOOTH_SCALING", nil);
+    if(indexPath.row == 0)
+    {
+      cell = [self LM_multipleChoiceCell];
+      cell.textLabel.text = NSLocalizedString(@"BLUETOOTH_CONTROLLER", nil);
+      NSString* controllerName = nil;
+      LMBTControllerType bluetoothControllerType = [[NSUserDefaults standardUserDefaults] integerForKey:kLMSettingsBluetoothController];
+      switch(bluetoothControllerType)
+      {
+        case LMBTControllerType_Custom:
+          controllerName = NSLocalizedString(@"CUSTOM", nil);
+          break;
+        case LMBTControllerType_EXHybrid:
+          controllerName = @"EX Hybrid";
+          break;
+        case LMBTControllerType_iCade:
+          controllerName = @"iCade";
+          break;
+        case LMBTControllerType_iCade8Bitty:
+          controllerName = @"iCade 8-Bitty";
+          break;
+        default:
+          break;
+      }
+      cell.detailTextLabel.text = controllerName;
+    }
   }
-  else if([indexPath compare:_fullScreenIndexPath] == NSOrderedSame)
+  if(section == LMSettingsSectionScreen)
   {
-    LMTableViewSwitchCell* c = (LMTableViewSwitchCell*)(cell = [self switchCell]);
-    
-    c.switchView.on = [[NSUserDefaults standardUserDefaults] boolForKey:kLMSettingsFullScreen];
-    [c.switchView addTarget:self action:@selector(toggleFullScreen:) forControlEvents:UIControlEventValueChanged];
-    c.textLabel.text = NSLocalizedString(@"FULL_SCREEN", nil);
+    if([indexPath compare:_smoothScalingIndexPath] == NSOrderedSame)
+    {
+      LMTableViewSwitchCell* c = (LMTableViewSwitchCell*)(cell = [self LM_switchCell]);
+      
+      c.switchView.on = [[NSUserDefaults standardUserDefaults] boolForKey:kLMSettingsSmoothScaling];
+      [c.switchView addTarget:self action:@selector(LM_toggleSmoothScaling:) forControlEvents:UIControlEventValueChanged];
+      c.textLabel.text = NSLocalizedString(@"SMOOTH_SCALING", nil);
+    }
+    else if([indexPath compare:_fullScreenIndexPath] == NSOrderedSame)
+    {
+      LMTableViewSwitchCell* c = (LMTableViewSwitchCell*)(cell = [self LM_switchCell]);
+      
+      c.switchView.on = [[NSUserDefaults standardUserDefaults] boolForKey:kLMSettingsFullScreen];
+      [c.switchView addTarget:self action:@selector(LM_toggleFullScreen:) forControlEvents:UIControlEventValueChanged];
+      c.textLabel.text = NSLocalizedString(@"FULL_SCREEN", nil);
+    }
   }
-  else if([indexPath compare:_soundIndexPath] == NSOrderedSame)
+  else if(section == LMSettingsSectionEmulation)
   {
-    LMTableViewSwitchCell* c = (LMTableViewSwitchCell*)(cell = [self switchCell]);
-    c.textLabel.text = NSLocalizedString(@"SOUND", nil);
-    c.switchView.on = [[NSUserDefaults standardUserDefaults] boolForKey:kLMSettingsSound];
-    [c.switchView addTarget:self action:@selector(toggleSound:) forControlEvents:UIControlEventValueChanged];
+    if([indexPath compare:_soundIndexPath] == NSOrderedSame)
+    {
+      LMTableViewSwitchCell* c = (LMTableViewSwitchCell*)(cell = [self LM_switchCell]);
+      c.textLabel.text = NSLocalizedString(@"SOUND", nil);
+      c.switchView.on = [[NSUserDefaults standardUserDefaults] boolForKey:kLMSettingsSound];
+      [c.switchView addTarget:self action:@selector(LM_toggleSound:) forControlEvents:UIControlEventValueChanged];
+    }
+    else if([indexPath compare:_autoFrameskipIndexPath] == NSOrderedSame)
+    {
+      LMTableViewSwitchCell* c = (LMTableViewSwitchCell*)(cell = [self LM_switchCell]);
+      c.textLabel.text = NSLocalizedString(@"AUTO_FRAMESKIP", nil);
+      c.switchView.on = [[NSUserDefaults standardUserDefaults] boolForKey:kLMSettingsAutoFrameskip];
+      [c.switchView addTarget:self action:@selector(LM_toggleAutoFrameskip:) forControlEvents:UIControlEventValueChanged];
+    }
+    else if([indexPath compare:_frameskipValueIndexPath] == NSOrderedSame)
+    {
+      LMTableViewNumberCell* c = (LMTableViewNumberCell*)(cell = [self LM_numberCell]);
+      c.textLabel.text = NSLocalizedString(@"SKIP_EVERY", nil);
+      c.minimumValue = 0;
+      c.maximumValue = 10;
+      c.suffix = NSLocalizedString(@"FRAMES", nil);
+      c.allowsDefault = NO;
+      c.value = [[NSUserDefaults standardUserDefaults] integerForKey:kLMSettingsFrameskipValue];
+      c.delegate = self;
+    }
   }
-  else if([indexPath compare:_autoFrameskipIndexPath] == NSOrderedSame)
-  {
-    LMTableViewSwitchCell* c = (LMTableViewSwitchCell*)(cell = [self switchCell]);
-    c.textLabel.text = NSLocalizedString(@"AUTO_FRAMESKIP", nil);
-    c.switchView.on = [[NSUserDefaults standardUserDefaults] boolForKey:kLMSettingsAutoFrameskip];
-    [c.switchView addTarget:self action:@selector(toggleAutoFrameskip:) forControlEvents:UIControlEventValueChanged];
-  }
-  else if([indexPath compare:_frameskipValueIndexPath] == NSOrderedSame)
-  {
-    LMTableViewNumberCell* c = (LMTableViewNumberCell*)(cell = [self numberCell]);
-    c.textLabel.text = NSLocalizedString(@"SKIP_EVERY", nil);
-    c.minimumValue = 0;
-    c.maximumValue = 10;
-    c.suffix = NSLocalizedString(@"FRAMES", nil);
-    c.allowsDefault = NO;
-    c.value = [[NSUserDefaults standardUserDefaults] integerForKey:kLMSettingsFrameskipValue];
-    c.delegate = self;
-  }
-  else
+  else if(section == LMSettingsSectionAbout)
   {
     static NSString* identifier = @"AboutCell";
     cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
@@ -249,6 +319,41 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+  NSInteger section = indexPath.section;
+  if(section == LMSettingsSectionBluetoothController)
+  {
+    if(indexPath.row == 0)
+    {
+      LMMultipleChoicePicker* c = [[LMMultipleChoicePicker alloc] initWithStyle:UITableViewStyleGrouped];
+      c.title = NSLocalizedString(@"BLUETOOTH_CONTROLLER", nil);
+      
+      // TODO: custom is obviously wrong here
+      c.optionNames = @[
+                        @"iCade",
+                        @"iCade 8-Bitty",
+                        @"EX Hybrid"/*,
+                        NSLocalizedString(@"CUSTOM", nil)*/
+                        ];
+      c.optionValues = @[
+                         [NSNumber numberWithInt:LMBTControllerType_iCade],
+                         [NSNumber numberWithInt:LMBTControllerType_iCade8Bitty],
+                         [NSNumber numberWithInt:LMBTControllerType_EXHybrid]/*,
+                         [NSNumber numberWithInt:LMBTControllerType_Custom]*/
+                        ];
+      LMBTControllerType controllerType = [[NSUserDefaults standardUserDefaults] integerForKey:kLMSettingsBluetoothController];
+      for(int i=0; i<[c.optionValues count]; i++)
+      {
+        if([[c.optionValues objectAtIndex:i] intValue] == controllerType)
+        {
+          c.pickedIndex = i;
+          break;
+        }
+      }
+      c.delegate = self;
+      [self.navigationController pushViewController:c animated:YES];
+      [c release];
+    }
+  }
 }
 
 @end
@@ -271,23 +376,23 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
   
   self.title = NSLocalizedString(@"SETTINGS", nil);
   
-  UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(done)];
+  UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(LM_done)];
   self.navigationItem.rightBarButtonItem = doneButton;
   [doneButton release];
   
-  _smoothScalingIndexPath = [[NSIndexPath indexPathForRow:0 inSection:0] retain];
-  _fullScreenIndexPath = [[NSIndexPath indexPathForRow:1 inSection:0] retain];
+  _smoothScalingIndexPath = [[NSIndexPath indexPathForRow:0 inSection:LMSettingsSectionScreen] retain];
+  _fullScreenIndexPath = [[NSIndexPath indexPathForRow:1 inSection:LMSettingsSectionScreen] retain];
   
   if(_hideSettingsThatRequireReset == NO)
   {
-    _soundIndexPath = [[NSIndexPath indexPathForRow:0 inSection:1] retain];
-    _autoFrameskipIndexPath = [[NSIndexPath indexPathForRow:1 inSection:1] retain];
-    _frameskipValueIndexPath = [[NSIndexPath indexPathForRow:2 inSection:1] retain];
+    _soundIndexPath = [[NSIndexPath indexPathForRow:0 inSection:LMSettingsSectionEmulation] retain];
+    _autoFrameskipIndexPath = [[NSIndexPath indexPathForRow:1 inSection:LMSettingsSectionEmulation] retain];
+    _frameskipValueIndexPath = [[NSIndexPath indexPathForRow:2 inSection:LMSettingsSectionEmulation] retain];
   }
   else
   {
-    _autoFrameskipIndexPath = [[NSIndexPath indexPathForRow:0 inSection:1] retain];
-    _frameskipValueIndexPath = [[NSIndexPath indexPathForRow:1 inSection:1] retain];
+    _autoFrameskipIndexPath = [[NSIndexPath indexPathForRow:0 inSection:LMSettingsSectionEmulation] retain];
+    _frameskipValueIndexPath = [[NSIndexPath indexPathForRow:1 inSection:LMSettingsSectionEmulation] retain];
   }
 }
 
@@ -300,8 +405,7 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
 {  
   [super viewWillAppear:animated];
   
-  //if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-    //[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+  [self.tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -324,7 +428,7 @@ NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
   // Return YES for supported orientations
-  if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
+  if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
   else
     return YES;

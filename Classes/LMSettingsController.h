@@ -8,7 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+#import "../iCade/LMBTControllerView.h"
+
 extern NSString* const kLMSettingsChangedNotification;
+
+extern NSString* const kLMSettingsBluetoothController;
 
 extern NSString* const kLMSettingsSmoothScaling;
 extern NSString* const kLMSettingsFullScreen;

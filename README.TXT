@@ -17,6 +17,16 @@ Features:
 - Optional Auto-frameskip.
 
 
+How to submit new iCade controller variants:
+============================================
+
+- Pair your bluetooth controller with the iOS device;
+- Make sure your device's keyboard layout is set to US (QWERTY);
+- Open Notes;
+- Enter the following button sequence matching, as best as you can, the SNES button layout: Up, Right, Down, Left, Select, Start, Y, B, X, A, L, R;
+- Copy the text generated (there should be 24 letters) and send it over to me with the correct controller name or comment on the controller tracking issue on GitHub.
+
+
 How to build:
 =============
 

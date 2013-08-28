@@ -10,6 +10,6 @@
 
 @protocol LMTableViewCellDelegate <NSObject>
 
-- (void)cellValueChanged:(UITableViewCell*)cell;
+- (void)LM_cellValueChanged:(UITableViewCell*)cell;
 
 @end

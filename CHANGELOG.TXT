@@ -1,3 +1,7 @@
+1.2.1
+=====
+- Added support for multiple iCade-like controllers, like the iCade 8-Bitty and (preliminary) EX Hybrid.
+
 1.2
 ===
 - iCade support.
