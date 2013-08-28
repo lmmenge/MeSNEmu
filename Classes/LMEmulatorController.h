@@ -12,7 +12,7 @@
 
 @class LMEmulatorControllerView;
 
-@interface LMEmulatorController : UIViewController <SIScreenDelegate> {
+@interface LMEmulatorController : UIViewController {
   LMEmulatorControllerView* _customView;
   
   UIActionSheet* _actionSheet;
@@ -27,6 +27,5 @@
 @property (copy) NSString* initialSaveFileName;
 
 - (void)startWithROM:(NSString*)romFileName;
-- (void)flipFrontbuffer;
 
 @end

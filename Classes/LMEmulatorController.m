@@ -32,14 +32,14 @@ typedef enum _LMEmulatorAlert
 
 #pragma mark -
 
-@interface LMEmulatorController(Privates) <UIActionSheetDelegate, UIAlertViewDelegate, LMSettingsControllerDelegate, SISaveDelegate, iCadeEventDelegate>
+@interface LMEmulatorController(Privates) <UIActionSheetDelegate, UIAlertViewDelegate, LMSettingsControllerDelegate, SISaveDelegate, iCadeEventDelegate, SIScreenDelegate>
 @end
 
 #pragma mark -
 
 @implementation LMEmulatorController(Privates)
 
-- (void)emulationThreadMethod:(NSString*)romFileName;
+- (void)LM_emulationThreadMethod:(NSString*)romFileName;
 {
   NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
   
@@ -66,7 +66,7 @@ typedef enum _LMEmulatorAlert
 
 #pragma mark UI Interaction Handling
 
-- (void)options:(UIButton*)sender event:(UIEvent*)event;
+- (void)LM_options:(UIButton*)sender
 {
   SISetEmulationPaused(1);
   
@@ -87,6 +87,45 @@ typedef enum _LMEmulatorAlert
   _actionSheet = sheet;
   [sheet showInView:self.view];
   [sheet autorelease];
+}
+
+#pragma mark SIScreenDelegate
+
+- (void)flipFrontbuffer
+{
+  [_customView flipFrontBuffer];
+}
+
+#pragma mark SISaveDelegate
+
+- (void)loadROMRunningState
+{
+#ifdef SI_ENABLE_RUNNING_SAVES
+  NSLog(@"Loading running state...");
+  if(_initialSaveFileName == nil)
+  {
+    [LMSaveManager loadRunningStateForROMNamed:_romFileName];
+  }
+  else
+  {
+    // kind of hacky to figure out the slot number, but it suffices right now, since saves are always in a known place and I REALLY wanted to pass the path for the save, for some reason
+    int slot = [[[_initialSaveFileName stringByDeletingPathExtension] pathExtension] intValue];
+    if(slot == 0)
+      [LMSaveManager loadRunningStateForROMNamed:_romFileName];
+    else
+      [LMSaveManager loadStateForROMNamed:_romFileName slot:slot];
+  }
+  NSLog(@"Loaded!");
+#endif
+}
+
+- (void)saveROMRunningState
+{
+#ifdef SI_ENABLE_RUNNING_SAVES
+  NSLog(@"Saving running state...");
+  [LMSaveManager saveRunningStateForROMNamed:_romFileName];
+  NSLog(@"Saved!");
+#endif
 }
 
 #pragma mark UIActionSheetDelegate
@@ -200,20 +239,13 @@ typedef enum _LMEmulatorAlert
 
 - (void)settingsDidDismiss:(LMSettingsController*)settingsController
 {
-  [self options:nil event:nil];
+  [self LM_options:nil];
 }
 
 #pragma mark iCadeEventDelegate
 
-- (void)setState:(BOOL)state forButton:(iCadeState)button
-{
-  
-}
-
 - (void)buttonDown:(iCadeState)button
-{
-  [self setState:YES forButton:button];
-  
+{  
   switch(button)
   {
     case iCadeJoystickRight:
@@ -260,9 +292,7 @@ typedef enum _LMEmulatorAlert
 }
 
 - (void)buttonUp:(iCadeState)button
-{
-  [self setState:NO forButton:button];
-  
+{  
   switch(button)
   {
     case iCadeJoystickRight:
@@ -308,7 +338,7 @@ typedef enum _LMEmulatorAlert
 
 #pragma mark Notifications
 
-- (void)didBecomeInactive
+- (void)LM_didBecomeInactive
 {
   UIBackgroundTaskIdentifier identifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
     [[UIApplication sharedApplication] endBackgroundTask:identifier];
@@ -318,13 +348,13 @@ typedef enum _LMEmulatorAlert
   [[UIApplication sharedApplication] endBackgroundTask:identifier];
 }
 
-- (void)didBecomeActive
+- (void)LM_didBecomeActive
 {
   if(_actionSheet == nil)
-    [self options:nil event:nil];
+    [self LM_options:nil];
 }
 
-- (void)settingsChanged
+- (void)LM_settingsChanged
 {
   NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
   SISetSoundOn([defaults boolForKey:kLMSettingsSound]);
@@ -346,35 +376,6 @@ typedef enum _LMEmulatorAlert
   }];
 }
 
-- (void)loadROMRunningState
-{
-#ifdef SI_ENABLE_RUNNING_SAVES
-  NSLog(@"Loading running state...");
-  if(_initialSaveFileName == nil)
-  {
-    [LMSaveManager loadRunningStateForROMNamed:_romFileName];
-  }
-  else
-  {
-    // kind of hacky to figure out the slot number, but it suffices right now, since saves are always in a known place and I REALLY wanted to pass the path for the save, for some reason
-    int slot = [[[_initialSaveFileName stringByDeletingPathExtension] pathExtension] intValue];
-    if(slot == 0)
-      [LMSaveManager loadRunningStateForROMNamed:_romFileName];
-    else
-      [LMSaveManager loadStateForROMNamed:_romFileName slot:slot];
-  }
-  NSLog(@"Loaded!");
-#endif
-}
-- (void)saveROMRunningState
-{
-#ifdef SI_ENABLE_RUNNING_SAVES
-  NSLog(@"Saving running state...");
-  [LMSaveManager saveRunningStateForROMNamed:_romFileName];
-  NSLog(@"Saved!");
-#endif
-}
-
 @end
 
 #pragma mark -
@@ -391,17 +392,10 @@ typedef enum _LMEmulatorAlert
   
   [LMSettingsController setDefaultsIfNotDefined];
   
-  [self settingsChanged];
+  [self LM_settingsChanged];
   
   _emulationThread = [NSThread mainThread];
-  [NSThread detachNewThreadSelector:@selector(emulationThreadMethod:) toTarget:self withObject:romFileName];
-}
-
-#pragma mark SIScreenDelegate
-
-- (void)flipFrontbuffer
-{
-  [_customView flipFrontBuffer];
+  [NSThread detachNewThreadSelector:@selector(LM_emulationThreadMethod:) toTarget:self withObject:romFileName];
 }
 
 @end
@@ -414,7 +408,7 @@ typedef enum _LMEmulatorAlert
 {
   _customView = [[LMEmulatorControllerView alloc] initWithFrame:(CGRect){0,0,100,200}];
   _customView.iCadeControlView.delegate = self;
-  [_customView.optionsButton addTarget:self action:@selector(options:event:) forControlEvents:UIControlEventTouchUpInside];
+  [_customView.optionsButton addTarget:self action:@selector(LM_options:) forControlEvents:UIControlEventTouchUpInside];
   self.view = _customView;
   
   self.wantsFullScreenLayout = YES;
@@ -440,8 +434,8 @@ typedef enum _LMEmulatorAlert
 {
   [super viewDidAppear:animated];
   
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeInactive) name:UIApplicationWillResignActiveNotification object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LM_didBecomeInactive) name:UIApplicationWillResignActiveNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LM_didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveROMRunningState:) name:SISaveRunningStateNotification object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadROMRunningState:) name:SILoadRunningStateNotification object:nil];
   
@@ -483,7 +477,7 @@ typedef enum _LMEmulatorAlert
   self = [super init];
   if(self)
   {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(settingsChanged) name:kLMSettingsChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LM_settingsChanged) name:kLMSettingsChangedNotification object:nil];
   }
   return self;
 }
