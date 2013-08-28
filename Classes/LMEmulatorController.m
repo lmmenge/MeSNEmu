@@ -147,7 +147,8 @@ typedef enum _LMEmulatorAlert
   {
     SISetEmulationRunning(0);
     SIWaitForEmulationEnd();
-    [self.navigationController popViewControllerAnimated:YES];
+    //[self.navigationController popViewControllerAnimated:YES];
+    [self dismissModalViewControllerAnimated:YES];
   }
   else if(buttonIndex == resetIndex)
   {

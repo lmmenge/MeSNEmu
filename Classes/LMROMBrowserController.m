@@ -511,7 +511,8 @@ static int const LMFileOrganizationVersionNumber = 1;
     }
   }
   [self.searchDisplayController setActive:NO];
-  [self.navigationController pushViewController:emulator animated:YES];
+  [self presentModalViewController:emulator animated:YES];
+  //[self.navigationController pushViewController:emulator animated:YES];
   [emulator release];
 }
 
