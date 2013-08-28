@@ -21,7 +21,7 @@
 
 #pragma mark UI Creation Shortcuts
 
-- (LMButtonView*)smallButtonWithButton:(int)buttonMap
+- (LMButtonView*)LM_smallButtonWithButton:(int)buttonMap
 {
   int width = 44;
   int height = 24;
@@ -40,7 +40,7 @@
   return [button autorelease];
 }
 
-- (LMButtonView*)buttonWithButton:(int)buttonMap
+- (LMButtonView*)LM_buttonWithButton:(int)buttonMap
 {
   int side = 50;
   side = 60;
@@ -163,10 +163,10 @@
     [self addSubview:_screenView];
     
     // start / select buttons
-    _startButton = [[self smallButtonWithButton:SIOS_START] retain];
+    _startButton = [[self LM_smallButtonWithButton:SIOS_START] retain];
     [self addSubview:_startButton];
     
-    _selectButton = [[self smallButtonWithButton:SIOS_SELECT] retain];
+    _selectButton = [[self LM_smallButtonWithButton:SIOS_SELECT] retain];
     [self addSubview:_selectButton];
     
     // menu button
@@ -180,23 +180,23 @@
     [self addSubview:_optionsButton];
     
     // ABXY buttons
-    _aButton = [[self buttonWithButton:SIOS_A] retain];
+    _aButton = [[self LM_buttonWithButton:SIOS_A] retain];
     [self addSubview:_aButton];
     
-    _bButton = [[self buttonWithButton:SIOS_B] retain];
+    _bButton = [[self LM_buttonWithButton:SIOS_B] retain];
     [self addSubview:_bButton];
     
-    _xButton = [[self buttonWithButton:SIOS_X] retain];
+    _xButton = [[self LM_buttonWithButton:SIOS_X] retain];
     [self addSubview:_xButton];
     
-    _yButton = [[self buttonWithButton:SIOS_Y] retain];
+    _yButton = [[self LM_buttonWithButton:SIOS_Y] retain];
     [self addSubview:_yButton];
     
     // L/R buttons
-    _lButton = [[self buttonWithButton:SIOS_L] retain];
+    _lButton = [[self LM_buttonWithButton:SIOS_L] retain];
     [self addSubview:_lButton];
     
-    _rButton = [[self buttonWithButton:SIOS_R] retain];
+    _rButton = [[self LM_buttonWithButton:SIOS_R] retain];
     [self addSubview:_rButton];
     
     // d-pad
@@ -262,7 +262,8 @@
   int height = originalHeight;
   int screenOffsetY = 0;
   CGSize size = self.bounds.size;
-  int screenBorder = 0;
+  int screenBorderX = 0;
+  int screenBorderY = 20;
   int buttonSpacing = 0;
   int smallButtonsOriginX = 0;
   int smallButtonsOriginY = 0;
@@ -270,14 +271,19 @@
   BOOL smallButtonsVertical = YES;
   float controlsAlpha = 1;
   if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    screenBorder = 90;
+  {
+    screenBorderX = 90;
+    screenBorderY = 90;
+  }
   
   if(size.height > size.width)
   {
+    // portrait
     self.backgroundColor = [UIColor colorWithRed:195/255.0 green:198/255.0 blue:205/255.0 alpha:1];
     
-    if(fullScreen)
+    if(fullScreen == YES)
     {
+      // portrait - full screen
       width = size.width;
       height = (int)(width/(double)originalWidth*originalHeight);
       
@@ -296,9 +302,10 @@
     }
     else
     {
+      // portrait - 1:1
       if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
       {
-        screenOffsetY = (int)((size.width-width)/2);
+        screenOffsetY = (int)((size.width-width)/4);
         smallButtonsVertical = NO;
         smallButtonsOriginX = (size.width-(_startButton.frame.size.width*3+smallButtonsSpacing*2))/2;
         smallButtonsOriginY = screenOffsetY+height+smallButtonsSpacing;
@@ -314,8 +321,10 @@
   }
   else
   {
-    if(fullScreen)
+    // landscape
+    if(fullScreen == YES)
     {
+      // landscape - full screen
       self.backgroundColor = [UIColor blackColor];
       
       height = size.height;
@@ -332,6 +341,7 @@
     }
     else
     {
+      // landscape - 1:1
       self.backgroundColor = [UIColor colorWithRed:195/255.0 green:198/255.0 blue:205/255.0 alpha:1];
       
       if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
@@ -355,7 +365,7 @@
   if(screenOffsetY == -1)
     screenOffsetY = screenOffsetX;
   else if(screenOffsetY == -2)
-    screenOffsetY = (size.height-screenBorder-_dPadView.image.size.height-height)/2;
+    screenOffsetY = (size.height-screenBorderY-_dPadView.image.size.height-height)/2;
   _screenView.frame = (CGRect){screenOffsetX,screenOffsetY, width,height};
   
   // start, select, menu buttons
@@ -371,22 +381,22 @@
   
   // layout buttons
   int buttonSize = _aButton.frame.size.width;
-  _aButton.frame = (CGRect){size.width-buttonSize-screenBorder, size.height-buttonSize-screenBorder, _aButton.frame.size};
+  _aButton.frame = (CGRect){size.width-buttonSize-screenBorderX, size.height-buttonSize-screenBorderY, _aButton.frame.size};
   _aButton.alpha = controlsAlpha;
-  _bButton.frame = (CGRect){size.width-buttonSize*2-screenBorder-buttonSpacing, size.height-buttonSize-screenBorder, _bButton.frame.size};
+  _bButton.frame = (CGRect){size.width-buttonSize*2-screenBorderX-buttonSpacing, size.height-buttonSize-screenBorderY, _bButton.frame.size};
   _bButton.alpha = controlsAlpha;
-  _xButton.frame = (CGRect){size.width-buttonSize-screenBorder, size.height-buttonSize*2-screenBorder-buttonSpacing, _xButton.frame.size};
+  _xButton.frame = (CGRect){size.width-buttonSize-screenBorderX, size.height-buttonSize*2-screenBorderY-buttonSpacing, _xButton.frame.size};
   _xButton.alpha = controlsAlpha;
-  _yButton.frame = (CGRect){size.width-buttonSize*2-screenBorder-buttonSpacing, size.height-buttonSize*2-screenBorder-buttonSpacing, _yButton.frame.size};
+  _yButton.frame = (CGRect){size.width-buttonSize*2-screenBorderX-buttonSpacing, size.height-buttonSize*2-screenBorderY-buttonSpacing, _yButton.frame.size};
   _yButton.alpha = controlsAlpha;
   
   _lButton.alpha = controlsAlpha;
-  _lButton.frame = (CGRect){size.width-buttonSize*2-screenBorder-buttonSpacing, size.height-buttonSize*3-screenBorder-buttonSpacing, _yButton.frame.size};
+  _lButton.frame = (CGRect){size.width-buttonSize*2-screenBorderX-buttonSpacing, size.height-buttonSize*3-screenBorderY-buttonSpacing, _yButton.frame.size};
   _rButton.alpha = controlsAlpha;
-  _rButton.frame = (CGRect){size.width-buttonSize-screenBorder, size.height-buttonSize*3-screenBorder-buttonSpacing, _xButton.frame.size};
+  _rButton.frame = (CGRect){size.width-buttonSize-screenBorderX, size.height-buttonSize*3-screenBorderY-buttonSpacing, _xButton.frame.size};
   
   // layout d-pad
-  _dPadView.frame = (CGRect){screenBorder,size.height-_dPadView.image.size.height-screenBorder, _dPadView.image.size};
+  _dPadView.frame = (CGRect){screenBorderX,size.height-_dPadView.image.size.height-screenBorderY, _dPadView.image.size};
   _dPadView.alpha = controlsAlpha;
 }
 

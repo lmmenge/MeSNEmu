@@ -319,7 +319,7 @@
 		A050663114B21DDB003E0C5E /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		A093242617CE590200A93B6B /* LMMultipleChoicePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMMultipleChoicePicker.h; path = Classes/LMMultipleChoicePicker.h; sourceTree = SOURCE_ROOT; };
 		A093242717CE590200A93B6B /* LMMultipleChoicePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMMultipleChoicePicker.m; path = Classes/LMMultipleChoicePicker.m; sourceTree = SOURCE_ROOT; };
-		A093242817CE590200A93B6B /* CKMultipleChoicePickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CKMultipleChoicePickerDelegate.h; path = Classes/CKMultipleChoicePickerDelegate.h; sourceTree = SOURCE_ROOT; };
+		A093242817CE590200A93B6B /* LMMultipleChoicePickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMMultipleChoicePickerDelegate.h; path = Classes/LMMultipleChoicePickerDelegate.h; sourceTree = SOURCE_ROOT; };
 		A093242E17CE6B3000A93B6B /* LMEmulatorControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMEmulatorControllerView.h; path = Classes/LMEmulatorControllerView.h; sourceTree = SOURCE_ROOT; };
 		A093242F17CE6B3000A93B6B /* LMEmulatorControllerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMEmulatorControllerView.m; path = Classes/LMEmulatorControllerView.m; sourceTree = SOURCE_ROOT; };
 		A0995BD314B508AC00F7C44F /* iOSAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = iOSAudio.cpp; path = SNES9XBridge/iOSAudio.cpp; sourceTree = SOURCE_ROOT; };
@@ -738,7 +738,7 @@
 				A03C087314BF7AB2003FAEB9 /* LMSettingsController.m */,
 				A093242617CE590200A93B6B /* LMMultipleChoicePicker.h */,
 				A093242717CE590200A93B6B /* LMMultipleChoicePicker.m */,
-				A093242817CE590200A93B6B /* CKMultipleChoicePickerDelegate.h */,
+				A093242817CE590200A93B6B /* LMMultipleChoicePickerDelegate.h */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";

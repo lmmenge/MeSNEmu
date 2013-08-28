@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "CKMultipleChoicePickerDelegate.h"
+#import "LMMultipleChoicePickerDelegate.h"
 
 @interface LMMultipleChoicePicker : UITableViewController {
   NSArray* _optionNames;
