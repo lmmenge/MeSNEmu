@@ -1,6 +1,7 @@
 1.2.1
 =====
 - Added support for multiple iCade-like controllers, like the iCade 8-Bitty and (preliminary) EX Hybrid;
+- Hiding on-screen controls when using a bluetooth controller;
 - Minor code re-organization in the emulator controller.
 
 1.2
