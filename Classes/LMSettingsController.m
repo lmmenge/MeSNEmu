@@ -279,7 +279,7 @@ typedef enum _LMSettingsSections
       LMTableViewNumberCell* c = (LMTableViewNumberCell*)(cell = [self LM_numberCell]);
       c.textLabel.text = NSLocalizedString(@"SKIP_EVERY", nil);
       c.minimumValue = 0;
-      c.maximumValue = 10;
+      c.maximumValue = 9;
       c.suffix = NSLocalizedString(@"FRAMES", nil);
       c.allowsDefault = NO;
       c.value = [[NSUserDefaults standardUserDefaults] integerForKey:kLMSettingsFrameskipValue];
