@@ -94,6 +94,9 @@
 		A050663214B21DDB003E0C5E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A050663114B21DDB003E0C5E /* QuartzCore.framework */; };
 		A093242917CE590200A93B6B /* LMMultipleChoicePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = A093242717CE590200A93B6B /* LMMultipleChoicePicker.m */; };
 		A093243017CE6B3000A93B6B /* LMEmulatorControllerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A093242F17CE6B3000A93B6B /* LMEmulatorControllerView.m */; };
+		A093243217CED06400A93B6B /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = A093243117CED06400A93B6B /* Icon-76.png */; };
+		A093243417CED06900A93B6B /* Icon-120.png in Resources */ = {isa = PBXBuildFile; fileRef = A093243317CED06900A93B6B /* Icon-120.png */; };
+		A093243617CED06E00A93B6B /* Icon-152.png in Resources */ = {isa = PBXBuildFile; fileRef = A093243517CED06E00A93B6B /* Icon-152.png */; };
 		A0995BD714B508AC00F7C44F /* iOSAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995BD314B508AC00F7C44F /* iOSAudio.cpp */; };
 		A0995C1214B525D200F7C44F /* Snes9xMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995C1114B525D200F7C44F /* Snes9xMain.cpp */; };
 		A0995F8014B679FF00F7C44F /* Snes9xCallbacks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A0995F7F14B679F300F7C44F /* Snes9xCallbacks.cpp */; };
@@ -322,6 +325,9 @@
 		A093242817CE590200A93B6B /* LMMultipleChoicePickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMMultipleChoicePickerDelegate.h; path = Classes/LMMultipleChoicePickerDelegate.h; sourceTree = SOURCE_ROOT; };
 		A093242E17CE6B3000A93B6B /* LMEmulatorControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMEmulatorControllerView.h; path = Classes/LMEmulatorControllerView.h; sourceTree = SOURCE_ROOT; };
 		A093242F17CE6B3000A93B6B /* LMEmulatorControllerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMEmulatorControllerView.m; path = Classes/LMEmulatorControllerView.m; sourceTree = SOURCE_ROOT; };
+		A093243117CED06400A93B6B /* Icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76.png"; sourceTree = "<group>"; };
+		A093243317CED06900A93B6B /* Icon-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-120.png"; sourceTree = "<group>"; };
+		A093243517CED06E00A93B6B /* Icon-152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-152.png"; sourceTree = "<group>"; };
 		A0995BD314B508AC00F7C44F /* iOSAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = iOSAudio.cpp; path = SNES9XBridge/iOSAudio.cpp; sourceTree = SOURCE_ROOT; };
 		A0995C1114B525D200F7C44F /* Snes9xMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Snes9xMain.cpp; path = SNES9XBridge/Snes9xMain.cpp; sourceTree = SOURCE_ROOT; };
 		A0995F7F14B679F300F7C44F /* Snes9xCallbacks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Snes9xCallbacks.cpp; path = SNES9XBridge/Snes9xCallbacks.cpp; sourceTree = SOURCE_ROOT; };
@@ -755,8 +761,11 @@
 				A0C41FF2160225F90038CF06 /* Default@2x.png */,
 				A0BF01A814EC42C8006534F2 /* Icon-57.png */,
 				A0BF01A914EC42C8006534F2 /* Icon-72.png */,
+				A093243117CED06400A93B6B /* Icon-76.png */,
 				A0BF01A714EC42C8006534F2 /* Icon-114.png */,
+				A093243317CED06900A93B6B /* Icon-120.png */,
 				A0C41FFD160229E10038CF06 /* Icon-144.png */,
+				A093243517CED06E00A93B6B /* Icon-152.png */,
 			);
 			path = "Artwork (System)";
 			sourceTree = SOURCE_ROOT;
@@ -865,6 +874,9 @@
 				A0C41FFB160227C00038CF06 /* Default-Portrait.png in Resources */,
 				A0C41FFC160227C00038CF06 /* Default-Portrait@2x.png in Resources */,
 				A0C41FFE160229E20038CF06 /* Icon-144.png in Resources */,
+				A093243217CED06400A93B6B /* Icon-76.png in Resources */,
+				A093243417CED06900A93B6B /* Icon-120.png in Resources */,
+				A093243617CED06E00A93B6B /* Icon-152.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
