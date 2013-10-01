@@ -467,6 +467,11 @@ typedef enum _LMEmulatorAlert
     return YES;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+  return YES;
+}
+
 @end
 
 #pragma mark -
