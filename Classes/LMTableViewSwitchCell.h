@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LMTableViewSwitchCell : UITableViewCell {
+@interface LMTableViewSwitchCell : UITableViewCell
+{
   UISwitch* _switch;
 }
 

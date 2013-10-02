@@ -14,6 +14,13 @@
 @class LMDPadView;
 @class LMPixelView;
 
+typedef enum _LMEmulatorControllerViewMode
+{
+  LMEmulatorControllerViewModeNormal,
+  LMEmulatorControllerViewModeScreenOnly,
+  LMEmulatorControllerViewModeControllerOnly
+} LMEmulatorControllerViewMode;
+
 @interface LMEmulatorControllerView : UIView
 {
   // buffers
@@ -46,10 +53,13 @@
   UIButton* _optionsButton;
   
   BOOL _hideUI;
+  
+  LMEmulatorControllerViewMode _viewMode;
 }
 
 @property (readonly) UIButton* optionsButton;
 @property (readonly) LMBTControllerView* iCadeControlView;
+@property (nonatomic) LMEmulatorControllerViewMode viewMode;
 
 - (void)setControlsHidden:(BOOL)value animated:(BOOL)animated;
 - (void)setMinMagFilter:(NSString*)filter;

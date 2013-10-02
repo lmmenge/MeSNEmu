@@ -93,6 +93,15 @@
 
 @synthesize optionsButton = _optionsButton;
 @synthesize iCadeControlView = _iCadeControlView;
+@synthesize viewMode = _viewMode;
+- (void)setViewMode:(LMEmulatorControllerViewMode)viewMode
+{
+  if(_viewMode != viewMode)
+  {
+    _viewMode = viewMode;
+    [self setNeedsLayout];
+  }
+}
 
 - (void)setControlsHidden:(BOOL)value animated:(BOOL)animated
 {
@@ -156,6 +165,9 @@
   if(self)
   {
     self.multipleTouchEnabled = YES;
+    _viewMode = LMEmulatorControllerViewModeNormal;
+    //_viewMode = LMEmulatorControllerViewModeScreenOnly;
+    _viewMode = LMEmulatorControllerViewModeControllerOnly;
     
     // screen
     _screenView = [[LMPixelView alloc] initWithFrame:(CGRect){0,0,10,10}];
@@ -256,6 +268,12 @@
   [super layoutSubviews];
   
   BOOL fullScreen = [[NSUserDefaults standardUserDefaults] boolForKey:kLMSettingsFullScreen];
+  UIColor* plasticColor = [UIColor colorWithRed:195/255.0 green:198/255.0 blue:205/255.0 alpha:1];
+  UIColor* blackColor = [UIColor blackColor];
+  if(_viewMode == LMEmulatorControllerViewModeScreenOnly)
+    plasticColor = [UIColor blackColor];
+  else if(_viewMode == LMEmulatorControllerViewModeControllerOnly)
+    blackColor = plasticColor;
   int originalWidth = 256;
   int originalHeight = 224;
   int width = originalWidth;
@@ -279,85 +297,125 @@
   if(size.height > size.width)
   {
     // portrait
-    self.backgroundColor = [UIColor colorWithRed:195/255.0 green:198/255.0 blue:205/255.0 alpha:1];
+    self.backgroundColor = plasticColor;
     
-    if(fullScreen == YES)
+    if(_viewMode == LMEmulatorControllerViewModeControllerOnly)
     {
-      // portrait - full screen
-      width = size.width;
-      height = (int)(width/(double)originalWidth*originalHeight);
-      
-      if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-      {
-        smallButtonsVertical = NO;
-        smallButtonsOriginX = smallButtonsSpacing;
-        smallButtonsOriginY = height+smallButtonsSpacing;
-      }
-      else
-      {
-        smallButtonsVertical = YES;
-        smallButtonsOriginX = (size.width-_startButton.frame.size.width)/2;
-        smallButtonsOriginY = size.height-_dPadView.image.size.height;
-      }
+      // portrait - controller mode
+      width = height = 0;
+      int dpadHeight = _dPadView.image.size.height;
+      screenBorderY = size.height*0.5-dpadHeight*0.5;
+      smallButtonsVertical = NO;
+      smallButtonsOriginY = size.height-smallButtonsSpacing-_startButton.image.size.height;
+      smallButtonsOriginX = size.width*0.5-_startButton.image.size.width*1.5-smallButtonsSpacing;
     }
     else
     {
-      // portrait - 1:1
-      if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+      // portrait - screen or screen+controller mode
+      if(fullScreen == YES)
       {
-        screenOffsetY = (int)((size.width-width)/4);
-        smallButtonsVertical = NO;
-        smallButtonsOriginX = (size.width-(_startButton.frame.size.width*3+smallButtonsSpacing*2))/2;
-        smallButtonsOriginY = screenOffsetY+height+smallButtonsSpacing;
+        // portrait - full screen
+        width = size.width;
+        height = (int)(width/(double)originalWidth*originalHeight);
+        
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        {
+          smallButtonsVertical = NO;
+          smallButtonsOriginX = smallButtonsSpacing;
+          smallButtonsOriginY = height+smallButtonsSpacing;
+        }
+        else
+        {
+          smallButtonsVertical = YES;
+          smallButtonsOriginX = (size.width-_startButton.frame.size.width)/2;
+          smallButtonsOriginY = size.height-_dPadView.image.size.height;
+        }
       }
       else
       {
-        screenOffsetY = -2;
-        smallButtonsVertical = YES;
-        smallButtonsOriginX = (size.width-_startButton.frame.size.width)/2;
-        smallButtonsOriginY = size.height-_dPadView.image.size.height;
+        // portrait - 1:1
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        {
+          screenOffsetY = (int)((size.width-width)/4);
+          smallButtonsVertical = NO;
+          smallButtonsOriginX = (size.width-(_startButton.frame.size.width*3+smallButtonsSpacing*2))/2;
+          smallButtonsOriginY = screenOffsetY+height+smallButtonsSpacing;
+        }
+        else
+        {
+          screenOffsetY = -2;
+          smallButtonsVertical = YES;
+          smallButtonsOriginX = (size.width-_startButton.frame.size.width)/2;
+          smallButtonsOriginY = size.height-_dPadView.image.size.height;
+        }
       }
     }
   }
   else
   {
     // landscape
-    if(fullScreen == YES)
+    if(_viewMode == LMEmulatorControllerViewModeControllerOnly)
     {
-      // landscape - full screen
-      self.backgroundColor = [UIColor blackColor];
-      
-      height = size.height;
-      width = (int)(height/(double)originalHeight*originalWidth);
-      
-      smallButtonsVertical = YES;
-      smallButtonsOriginX = ((size.width-width)/2-_startButton.frame.size.width)/2;
-      smallButtonsOriginY = smallButtonsOriginX;
-      
-      if(_hideUI == NO)
-        controlsAlpha = 0.5;
-      else
-        controlsAlpha = 0;
+      // landscape - controller mode
+      self.backgroundColor = plasticColor;
+      width = height = 0;
+      int dpadHeight = _dPadView.image.size.height;
+      screenBorderY = size.height*0.5-dpadHeight*0.5;
+      smallButtonsVertical = NO;
+      smallButtonsOriginY = size.height-smallButtonsSpacing-_startButton.image.size.height;
+      smallButtonsOriginX = size.width*0.5-_startButton.image.size.width*1.5-smallButtonsSpacing;
+      if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        screenBorderX = 30;
     }
     else
     {
-      // landscape - 1:1
-      self.backgroundColor = [UIColor colorWithRed:195/255.0 green:198/255.0 blue:205/255.0 alpha:1];
-      
-      if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+      // landscape - screen only or screen+controller mode
+      if(fullScreen == YES)
       {
+        // landscape - full screen
+        self.backgroundColor = blackColor;
+        
+        height = size.height;
+        width = (int)(height/(double)originalHeight*originalWidth);
+        
         smallButtonsVertical = YES;
         smallButtonsOriginX = ((size.width-width)/2-_startButton.frame.size.width)/2;
         smallButtonsOriginY = smallButtonsOriginX;
+        
+        if(_hideUI == NO)
+          controlsAlpha = 0.5;
+        else
+          controlsAlpha = 0;
       }
       else
       {
-        screenOffsetY = -2;
-        smallButtonsVertical = YES;
-        smallButtonsOriginX = (size.width-_startButton.frame.size.width)/2;
-        smallButtonsOriginY = size.height-_dPadView.image.size.height;
+        // landscape - 1:1
+        self.backgroundColor = plasticColor;
+        
+        if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        {
+          smallButtonsVertical = YES;
+          smallButtonsOriginX = ((size.width-width)/2-_startButton.frame.size.width)/2;
+          smallButtonsOriginY = smallButtonsOriginX;
+        }
+        else
+        {
+          screenOffsetY = -2;
+          smallButtonsVertical = YES;
+          smallButtonsOriginX = (size.width-_startButton.frame.size.width)/2;
+          smallButtonsOriginY = size.height-_dPadView.image.size.height;
+        }
       }
     }
+  }
+  
+  if(_viewMode == LMEmulatorControllerViewModeScreenOnly)
+    controlsAlpha = 0;
+  else if(_viewMode == LMEmulatorControllerViewModeControllerOnly)
+  {
+    controlsAlpha = 1;
+    
+    
   }
   
   // layout screen
@@ -366,18 +424,41 @@
     screenOffsetY = screenOffsetX;
   else if(screenOffsetY == -2)
     screenOffsetY = (size.height-screenBorderY-_dPadView.image.size.height-height)/2;
-  _screenView.frame = (CGRect){screenOffsetX,screenOffsetY, width,height};
+  if(_viewMode == LMEmulatorControllerViewModeScreenOnly)
+    // we're showing only the screen. center it
+    _screenView.frame = (CGRect){(int)((size.width-width)*0.5), (int)((size.height-height)*0.5), width,height};
+  else
+    // we're showing the controls + screen
+    _screenView.frame = (CGRect){screenOffsetX,screenOffsetY, width,height};
+  
+  if(_viewMode == LMEmulatorControllerViewModeControllerOnly)
+    _screenView.alpha = 0;
+  else
+    _screenView.alpha = 1;
   
   // start, select, menu buttons
   int xOffset = 0;
   int yOffset = 0;
-  if(smallButtonsVertical)
+  if(smallButtonsVertical == YES)
     yOffset = _startButton.frame.size.height+smallButtonsSpacing;
   else
     xOffset = _startButton.frame.size.width+smallButtonsSpacing;
   _startButton.frame = (CGRect){smallButtonsOriginX,smallButtonsOriginY, _startButton.frame.size};
   _selectButton.frame = (CGRect){smallButtonsOriginX+xOffset,smallButtonsOriginY+yOffset, _selectButton.frame.size};
   _optionsButton.frame = (CGRect){smallButtonsOriginX+2*xOffset,smallButtonsOriginY+2*yOffset, _selectButton.frame.size};
+  
+  if(_viewMode == LMEmulatorControllerViewModeScreenOnly)
+  {
+    _startButton.alpha = 0;
+    _selectButton.alpha = 0;
+    _optionsButton.alpha = 0;
+  }
+  else
+  {
+    _startButton.alpha = 1;
+    _selectButton.alpha = 1;
+    _optionsButton.alpha = 1;
+  }
   
   // layout buttons
   int buttonSize = _aButton.frame.size.width;

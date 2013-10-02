@@ -10,7 +10,8 @@
 
 @class LMFileListItem;
 
-@interface LMROMBrowserController : UITableViewController {
+@interface LMROMBrowserController : UITableViewController
+{
   LMFileListItem* _detailsItem;
   NSString* _romPath;
   NSString* _sramPath;

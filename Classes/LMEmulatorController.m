@@ -64,12 +64,34 @@ typedef enum _LMEmulatorAlert
   [pool release];
 }
 
+- (void)LM_dismantleExternalScreen
+{
+  if(_externalEmulator != nil)
+  {
+    _customView.viewMode = LMEmulatorControllerViewModeNormal;
+    
+    SISetScreenDelegate(self);
+    [_customView setPrimaryBuffer];
+
+    [_externalEmulator release];
+    _externalEmulator = nil;
+  }
+  
+  [_externalWindow release];
+  _externalWindow = nil;
+  
+  [UIView animateWithDuration:0.3 animations:^{
+    [_customView layoutIfNeeded];
+  }];
+}
+
 #pragma mark UI Interaction Handling
 
 - (void)LM_options:(UIButton*)sender
 {
   SISetEmulationPaused(1);
   
+  _customView.iCadeControlView.active = NO;
   [_customView setControlsHidden:NO animated:YES];
   
   UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:nil
@@ -145,6 +167,7 @@ typedef enum _LMEmulatorAlert
 #endif
   if(buttonIndex == actionSheet.destructiveButtonIndex)
   {
+    [self LM_dismantleExternalScreen];
     SISetEmulationRunning(0);
     SIWaitForEmulationEnd();
     //[self.navigationController popViewControllerAnimated:YES];
@@ -195,7 +218,10 @@ typedef enum _LMEmulatorAlert
     [n release];
   }
   else
+  {
+    _customView.iCadeControlView.active = YES;
     SISetEmulationPaused(0);
+  }
   _actionSheet = nil;
 }
 
@@ -353,6 +379,51 @@ typedef enum _LMEmulatorAlert
 {
   if(_actionSheet == nil)
     [self LM_options:nil];
+  [self LM_screensChanged];
+}
+
+- (void)LM_screensChanged
+{
+#ifdef LM_LOG_SCREENS
+  NSLog(@"Screens changed");
+  for(UIScreen* screen in [UIScreen screens])
+  {
+    NSLog(@"Screen: %@", screen);
+    for (UIScreenMode* mode in screen.availableModes)
+    {
+      NSLog(@"Mode: %@", mode);
+    }
+  }
+#endif
+  
+  if([[UIScreen screens] count] > 1)
+  {
+    if(_externalWindow == nil)
+    {
+      UIScreen* screen = [[UIScreen screens] objectAtIndex:1];
+      // TODO: pick the best display mode (lowest resolution preferred)
+      UIWindow* window = [[UIWindow alloc] initWithFrame:screen.bounds];
+      window.screen = screen;
+      window.backgroundColor = [UIColor redColor];
+      
+      // create our mirror controller
+      _externalEmulator = [[LMEmulatorController alloc] initMirrorOf:self];
+      window.rootViewController = _externalEmulator;
+      
+      window.hidden = NO;
+      _externalWindow = window;
+      
+      _customView.viewMode = LMEmulatorControllerViewModeControllerOnly;
+      [UIView animateWithDuration:0.3 animations:^{
+        [_customView layoutIfNeeded];
+      }];
+    }
+  }
+  else
+  {
+    // switch back to us and dismantle
+    [self LM_dismantleExternalScreen];
+  }
 }
 
 - (void)LM_settingsChanged
@@ -399,6 +470,19 @@ typedef enum _LMEmulatorAlert
   [NSThread detachNewThreadSelector:@selector(LM_emulationThreadMethod:) toTarget:self withObject:romFileName];
 }
 
+- (id)initMirrorOf:(LMEmulatorController*)mainController
+{
+  self = [self init];
+  if(self)
+  {
+    _isMirror = YES;
+    [self view];
+    _customView.viewMode = LMEmulatorControllerViewModeScreenOnly;
+    _customView.iCadeControlView.active = NO;
+  }
+  return self;
+}
+
 @end
 
 #pragma mark -
@@ -429,23 +513,37 @@ typedef enum _LMEmulatorAlert
   
   [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
   [self.navigationController setNavigationBarHidden:YES animated:YES];
+  
+  if(_isMirror == NO)
+    [self LM_screensChanged];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
   
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LM_didBecomeInactive) name:UIApplicationWillResignActiveNotification object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LM_didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveROMRunningState:) name:SISaveRunningStateNotification object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadROMRunningState:) name:SILoadRunningStateNotification object:nil];
+  if(_isMirror == NO)
+  {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LM_didBecomeInactive) name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LM_didBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LM_screensChanged) name:UIScreenDidConnectNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LM_screensChanged) name:UIScreenDidDisconnectNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveROMRunningState:) name:SISaveRunningStateNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadROMRunningState:) name:SILoadRunningStateNotification object:nil];
+  }
   
-  SISetScreenDelegate(self);
-  SISetSaveDelegate(self);
+  if(_externalEmulator == nil)
+  {
+    SISetScreenDelegate(self);
+    [_customView setPrimaryBuffer];
+  }
   
-  [_customView setPrimaryBuffer];
-  if(_emulationThread == nil)
-    [self startWithROM:_romFileName];
+  if(_isMirror == NO)
+  {
+    SISetSaveDelegate(self);
+    if(_emulationThread == nil)
+      [self startWithROM:_romFileName];
+  }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -454,6 +552,8 @@ typedef enum _LMEmulatorAlert
   
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIScreenDidConnectNotification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:UIScreenDidDisconnectNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:SISaveRunningStateNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:SILoadRunningStateNotification object:nil];
 }
@@ -492,13 +592,18 @@ typedef enum _LMEmulatorAlert
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
   
-  SISetEmulationRunning(0);
-  SIWaitForEmulationEnd();
-  SISetScreenDelegate(nil);
-  SISetSaveDelegate(nil);
+  if(_isMirror == NO)
+  {
+    SISetEmulationRunning(0);
+    SIWaitForEmulationEnd();
+    SISetScreenDelegate(nil);
+    SISetSaveDelegate(nil);
+  }
   
   // this is released upon showing
   _actionSheet = nil;
+  
+  [self LM_dismantleExternalScreen];
   
   [_customView release];
   _customView = nil;

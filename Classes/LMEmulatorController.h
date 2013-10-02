@@ -12,7 +12,8 @@
 
 @class LMEmulatorControllerView;
 
-@interface LMEmulatorController : UIViewController {
+@interface LMEmulatorController : UIViewController
+{
   LMEmulatorControllerView* _customView;
   
   UIActionSheet* _actionSheet;
@@ -21,11 +22,18 @@
   
   NSString* _romFileName;
   NSString* _initialSaveFileName;
+  
+  // handling external screens
+  BOOL _isMirror;
+  UIWindow* _externalWindow;
+  LMEmulatorController* _externalEmulator;
 }
 
 @property (copy) NSString* romFileName;
 @property (copy) NSString* initialSaveFileName;
 
 - (void)startWithROM:(NSString*)romFileName;
+
+- (id)initMirrorOf:(LMEmulatorController*)mainController;
 
 @end

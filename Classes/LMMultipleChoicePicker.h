@@ -10,7 +10,8 @@
 
 #import "LMMultipleChoicePickerDelegate.h"
 
-@interface LMMultipleChoicePicker : UITableViewController {
+@interface LMMultipleChoicePicker : UITableViewController
+{
   NSArray* _optionNames;
   NSArray* _optionValues;
   int _pickedIndex;

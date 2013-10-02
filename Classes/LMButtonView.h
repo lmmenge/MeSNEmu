@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LMButtonView : UIImageView {
+@interface LMButtonView : UIImageView
+{
   uint32_t _button;
   UILabel* _label;
 }

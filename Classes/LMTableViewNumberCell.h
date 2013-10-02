@@ -11,7 +11,8 @@
 #import "LMTableViewCellDelegate.h"
 
 
-@interface LMTableViewNumberCell : UITableViewCell {
+@interface LMTableViewNumberCell : UITableViewCell
+{
   int _value;
   int _minimumValue;
   int _maximumValue;

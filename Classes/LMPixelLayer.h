@@ -9,7 +9,8 @@
 #import <QuartzCore/QuartzCore.h>
 
 
-@interface LMPixelLayer : CALayer {
+@interface LMPixelLayer : CALayer
+{
   unsigned char* _imageBuffer;
   unsigned char* _imageBufferAlt;
   unsigned int _bufferWidth;

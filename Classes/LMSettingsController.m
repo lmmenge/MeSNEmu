@@ -434,6 +434,11 @@ typedef enum _LMSettingsSections
     return YES;
 }
 
+- (BOOL)prefersStatusBarHidden
+{
+  return NO;
+}
+
 @end
 
 #pragma mark -

@@ -31,7 +31,8 @@ extern NSString* const kLMSettingsFrameskipValue;
 
 #pragma mark -
 
-@interface LMSettingsController : UITableViewController {
+@interface LMSettingsController : UITableViewController
+{
   BOOL _hideSettingsThatRequireReset;
   BOOL _changed;
   

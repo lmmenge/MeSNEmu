@@ -511,7 +511,7 @@ static int const LMFileOrganizationVersionNumber = 1;
     }
   }
   [self.searchDisplayController setActive:NO];
-  [self presentModalViewController:emulator animated:YES];
+  [self.navigationController presentModalViewController:emulator animated:YES];
   //[self.navigationController pushViewController:emulator animated:YES];
   [emulator release];
 }
@@ -634,6 +634,11 @@ static int const LMFileOrganizationVersionNumber = 1;
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LM_reloadROMList) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+  [super viewDidAppear:animated];
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
   [super viewWillDisappear:animated];
@@ -642,6 +647,11 @@ static int const LMFileOrganizationVersionNumber = 1;
   _fsTimer = nil;
   
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+  return NO;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
