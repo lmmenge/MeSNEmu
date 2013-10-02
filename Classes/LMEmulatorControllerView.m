@@ -167,7 +167,7 @@
     self.multipleTouchEnabled = YES;
     _viewMode = LMEmulatorControllerViewModeNormal;
     //_viewMode = LMEmulatorControllerViewModeScreenOnly;
-    _viewMode = LMEmulatorControllerViewModeControllerOnly;
+    //_viewMode = LMEmulatorControllerViewModeControllerOnly;
     
     // screen
     _screenView = [[LMPixelView alloc] initWithFrame:(CGRect){0,0,10,10}];
