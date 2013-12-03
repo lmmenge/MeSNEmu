@@ -2,6 +2,7 @@
 =====
 - Added support external screens via adapter or AirPlay and turning the device into a dedicated controller;
 - Fixed certain situations where iCade controllers might get disabled after going into settings;
+- Added support for SteelSeries Free gamepad (thanks to Infernoten);
 - Minor bugfix to hide the status bar under iOS 7 in the emulator.
 
 1.2.1

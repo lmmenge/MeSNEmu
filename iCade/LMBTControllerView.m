@@ -80,6 +80,13 @@
       [self LMBT_setOnStateString:"wdxayhujikol"
                    offStateString:"eczqtrfnmpgv"];
     }
+    else if(_controllerType == LMBTControllerType_SteelSeriesFree)
+    {
+      // SteelSeries Free (thanks to Infernoten)
+      // submitted string: wedcxzaqoglvythrufjnimkp
+      [self LMBT_setOnStateString:"wdxaolyhujik"
+                   offStateString:"eczqgvtrfnmp"];
+    }
   }
 }
 
