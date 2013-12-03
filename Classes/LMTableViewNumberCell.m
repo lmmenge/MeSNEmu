@@ -46,9 +46,39 @@
 {
   if(_plusMinusAccessoryView == nil)
   {
-    UIImage* plusImage = [UIImage imageNamed:@"ButtonNumberPlus.png"];
-    UIImage* minusImage = [UIImage imageNamed:@"ButtonNumberMinus.png"];
-    UIImage* defaultImage = [UIImage imageNamed:@"ButtonNumberDefault.png"];
+    UIImage* plusImage = nil;
+    UIImage* minusImage = nil;
+    UIImage* defaultImage = nil;
+    UIImage* plusImageDown = nil;
+    UIImage* minusImageDown = nil;
+    UIImage* defaultImageDown = nil;
+    
+    BOOL ios7 = NO;
+    if([self respondsToSelector:@selector(tintColor)] == YES)
+      ios7 = YES;
+    
+    if(ios7 == YES)
+    {
+      plusImage = [UIImage imageNamed:@"ButtonNumberPlus-7.png"];
+      plusImage = [plusImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+      minusImage = [UIImage imageNamed:@"ButtonNumberMinus-7.png"];
+      minusImage = [minusImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+      defaultImage = [UIImage imageNamed:@"ButtonNumberDefault-7.png"];
+      defaultImage = [defaultImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+      
+      plusImageDown = [UIImage imageNamed:@"ButtonNumberPlusDown-7.png"];
+      plusImageDown = [plusImageDown imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+      minusImageDown = [UIImage imageNamed:@"ButtonNumberMinusDown-7.png"];
+      minusImageDown = [minusImageDown imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+      defaultImageDown = [UIImage imageNamed:@"ButtonNumberDefaultDown-7.png"];
+      defaultImageDown = [defaultImageDown imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    }
+    else
+    {
+      plusImage = [UIImage imageNamed:@"ButtonNumberPlus.png"];
+      minusImage = [UIImage imageNamed:@"ButtonNumberMinus.png"];
+      defaultImage = [UIImage imageNamed:@"ButtonNumberDefault.png"];
+    }
     
     _plusMinusAccessoryView = [[UIView alloc] initWithFrame:(CGRect){0,0,plusImage.size.width+minusImage.size.width+defaultImage.size.width,defaultImage.size.height}];
     
@@ -59,6 +89,7 @@
     }
     _minusButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
     [_minusButton setBackgroundImage:minusImage forState:UIControlStateNormal];
+    [_minusButton setBackgroundImage:minusImageDown forState:UIControlStateHighlighted];
     _minusButton.bounds = (CGRect){0,0, minusImage.size};
     _minusButton.frame = (CGRect){0,0, minusImage.size};
     [_minusButton addTarget:self action:@selector(minus:) forControlEvents:UIControlEventTouchUpInside];
@@ -71,12 +102,20 @@
     }
     _defaultButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
     [_defaultButton setBackgroundImage:defaultImage forState:UIControlStateNormal];
+    [_defaultButton setBackgroundImage:defaultImageDown forState:UIControlStateHighlighted];
     _defaultButton.bounds = (CGRect){0,0, defaultImage.size};
     _defaultButton.frame = (CGRect){minusImage.size.width, 0, defaultImage.size};
     [_defaultButton setTitleColor:self.detailTextLabel.textColor forState:UIControlStateNormal];
-    [_defaultButton setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_defaultButton setTitleShadowColor:[UIColor colorWithWhite:1 alpha:0.25] forState:UIControlStateHighlighted];
-    _defaultButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
+    if(ios7 == YES)
+    {
+      [_defaultButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    }
+    else
+    {
+      [_defaultButton setTitleShadowColor:[UIColor whiteColor] forState:UIControlStateNormal];
+      [_defaultButton setTitleShadowColor:[UIColor colorWithWhite:1 alpha:0.25] forState:UIControlStateHighlighted];
+      _defaultButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
+    }
     _defaultButton.titleLabel.adjustsFontSizeToFitWidth = YES;
     _defaultButton.titleLabel.minimumFontSize = 8;
     _defaultButton.adjustsImageWhenDisabled = NO;
@@ -91,6 +130,7 @@
     }
     _plusButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
     [_plusButton setBackgroundImage:plusImage forState:UIControlStateNormal];
+    [_plusButton setBackgroundImage:plusImageDown forState:UIControlStateHighlighted];
     _plusButton.bounds = (CGRect){0,0, plusImage.size};
     _plusButton.frame = (CGRect){minusImage.size.width+defaultImage.size.width,0, plusImage.size};
     [_plusButton addTarget:self action:@selector(plus:) forControlEvents:UIControlEventTouchUpInside];

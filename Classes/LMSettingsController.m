@@ -233,6 +233,9 @@ typedef enum _LMSettingsSections
         case LMBTControllerType_iCade8Bitty:
           controllerName = @"iCade 8-Bitty";
           break;
+        case LMBTControllerType_SteelSeriesFree:
+          controllerName = @"SteelSeries Free";
+          break;
         default:
           break;
       }
