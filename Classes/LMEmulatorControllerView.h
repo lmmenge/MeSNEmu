@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "LMGameControllerManager.h"
+
 @class LMBTControllerView;
 
 @class LMButtonView;
@@ -21,7 +23,7 @@ typedef enum _LMEmulatorControllerViewMode
   LMEmulatorControllerViewModeControllerOnly
 } LMEmulatorControllerViewMode;
 
-@interface LMEmulatorControllerView : UIView
+@interface LMEmulatorControllerView : UIView <LMGameControllerManagerDelegate>
 {
   // buffers
   unsigned int _bufferWidth;

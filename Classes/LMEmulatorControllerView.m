@@ -89,7 +89,9 @@
 
 #pragma mark -
 
-@implementation LMEmulatorControllerView
+@implementation LMEmulatorControllerView {
+    LMGameControllerManager *gameControllerManager;
+}
 
 @synthesize optionsButton = _optionsButton;
 @synthesize iCadeControlView = _iCadeControlView;
@@ -151,6 +153,30 @@
     
     ((LMPixelLayer*)_screenView.layer).displayMainBuffer = YES;
   }
+}
+
+
+#pragma mark -
+#pragma mark GameController Handling
+
+- (void)gameControllerManagerGamepadDidConnect:(LMGameControllerManager *)controllerManager {
+    [self setControlsHiddenForGamepad:YES];
+}
+
+- (void)gameControllerManagerGamepadDidDisconnect:(LMGameControllerManager *)controllerManager {
+    [self setControlsHiddenForGamepad:NO];
+}
+
+- (void)setControlsHiddenForGamepad:(BOOL)hidden {
+    _aButton.hidden = hidden;
+    _bButton.hidden = hidden;
+    _xButton.hidden = hidden;
+    _yButton.hidden = hidden;
+
+    _lButton.hidden = hidden;
+    _rButton.hidden = hidden;
+
+    _dPadView.hidden = hidden;
 }
 
 @end
@@ -259,6 +285,10 @@
                                          bytesPerRow:bufferBytesPerRow
                                           bitmapInfo:bufferBitmapInfo];
     [(LMPixelLayer*)_screenView.layer addAltImageBuffer:_imageBufferAlt];
+      
+    gameControllerManager = [LMGameControllerManager sharedInstance];
+    gameControllerManager.delegate = self;
+    [self setControlsHiddenForGamepad:gameControllerManager.gameControllerConnected];
   }
   return self;
 }
