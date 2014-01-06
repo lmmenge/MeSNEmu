@@ -449,6 +449,14 @@ typedef enum _LMEmulatorAlert
   }];
 }
 
+- (void)showControls {
+    [_customView setControlsHidden:NO animated:YES];
+}
+
+- (void)hideControls {
+    [_customView setControlsHidden:YES animated:YES];
+}
+
 @end
 
 #pragma mark -
@@ -518,7 +526,7 @@ typedef enum _LMEmulatorAlert
     if (![element isKindOfClass:[GCControllerButtonInput class]])
             return;
 
-    GCControllerButtonInput *button = element;
+    GCControllerButtonInput *button = (GCControllerButtonInput*)element;
     int siosButton = [self getButtonMap:button forGamepad:gamepad];
     if (siosButton < 0)
             return;
@@ -551,14 +559,6 @@ typedef enum _LMEmulatorAlert
 
 - (void)doNotAllowSleep {
     [UIApplication sharedApplication].idleTimerDisabled = YES;
-}
-
-- (void)showControls {
-    [_customView setControlsHidden:NO animated:YES];
-}
-
-- (void)hideControls {
-    [_customView setControlsHidden:YES animated:YES];
 }
 
 -(void)initializeGameControllers {
