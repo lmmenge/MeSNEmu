@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8CAEAA93187471B600E76198 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CAEAA92187471B600E76198 /* GameController.framework */; };
+		8CAEAA93187471B600E76198 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CAEAA92187471B600E76198 /* GameController.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		A00403C114BE3E4D00FE28CE /* apu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00401E514BE3E4D00FE28CE /* apu.cpp */; };
 		A00403C314BE3E4D00FE28CE /* SNES_SPC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00401F014BE3E4D00FE28CE /* SNES_SPC.cpp */; };
 		A00403C414BE3E4D00FE28CE /* SNES_SPC_misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00401F214BE3E4D00FE28CE /* SNES_SPC_misc.cpp */; };
