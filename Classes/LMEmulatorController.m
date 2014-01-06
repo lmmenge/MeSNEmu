@@ -22,6 +22,7 @@
 #import "../SNES9XBridge/SISaveDelegate.h"
 
 #import "../iCade/LMBTControllerView.h"
+#import <GameController/GameController.h>
 
 typedef enum _LMEmulatorAlert
 {
@@ -42,10 +43,10 @@ typedef enum _LMEmulatorAlert
 - (void)LM_emulationThreadMethod:(NSString*)romFileName;
 {
   NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-  
+
   if(_emulationThread == [NSThread mainThread])
     _emulationThread = [NSThread currentThread];
-  
+
   const char* originalString = [romFileName UTF8String];
   char* romFileNameCString = (char*)calloc(strlen(originalString)+1, sizeof(char));
   strcpy(romFileNameCString, originalString);
@@ -55,12 +56,12 @@ typedef enum _LMEmulatorAlert
   SISetEmulationRunning(1);
   SIStartWithROM(romFileNameCString);
   SISetEmulationRunning(0);
-  
+
   free(romFileNameCString);
-  
+
   if(_emulationThread == [NSThread currentThread])
     _emulationThread = nil;
-  
+
   [pool release];
 }
 
@@ -69,17 +70,17 @@ typedef enum _LMEmulatorAlert
   if(_externalEmulator != nil)
   {
     _customView.viewMode = LMEmulatorControllerViewModeNormal;
-    
+
     SISetScreenDelegate(self);
     [_customView setPrimaryBuffer];
 
     [_externalEmulator release];
     _externalEmulator = nil;
   }
-  
+
   [_externalWindow release];
   _externalWindow = nil;
-  
+
   [UIView animateWithDuration:0.3 animations:^{
     [_customView layoutIfNeeded];
   }];
@@ -90,10 +91,10 @@ typedef enum _LMEmulatorAlert
 - (void)LM_options:(UIButton*)sender
 {
   SISetEmulationPaused(1);
-  
+
   _customView.iCadeControlView.active = NO;
-  [_customView setControlsHidden:NO animated:YES];
-  
+  [self showControls];
+
   UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:nil
                                                      delegate:self
                                             cancelButtonTitle:NSLocalizedString(@"BACK_TO_GAME", nil)
@@ -272,7 +273,7 @@ typedef enum _LMEmulatorAlert
 #pragma mark iCadeEventDelegate
 
 - (void)buttonDown:(iCadeState)button
-{  
+{
   switch(button)
   {
     case iCadeJoystickRight:
@@ -314,12 +315,12 @@ typedef enum _LMEmulatorAlert
     default:
       break;
   }
-  
-  [_customView setControlsHidden:YES animated:YES];
+
+    [self hideControls];
 }
 
 - (void)buttonUp:(iCadeState)button
-{  
+{
   switch(button)
   {
     case iCadeJoystickRight:
@@ -360,7 +361,7 @@ typedef enum _LMEmulatorAlert
       break;
     default:
       break;
-  } 
+  }
 }
 
 #pragma mark Notifications
@@ -395,7 +396,7 @@ typedef enum _LMEmulatorAlert
     }
   }
 #endif
-  
+
   if([[UIScreen screens] count] > 1)
   {
     if(_externalWindow == nil)
@@ -405,14 +406,14 @@ typedef enum _LMEmulatorAlert
       UIWindow* window = [[UIWindow alloc] initWithFrame:screen.bounds];
       window.screen = screen;
       window.backgroundColor = [UIColor redColor];
-      
+
       // create our mirror controller
       _externalEmulator = [[LMEmulatorController alloc] initMirrorOf:self];
       window.rootViewController = _externalEmulator;
-      
+
       window.hidden = NO;
       _externalWindow = window;
-      
+
       _customView.viewMode = LMEmulatorControllerViewModeControllerOnly;
       [UIView animateWithDuration:0.3 animations:^{
         [_customView layoutIfNeeded];
@@ -436,12 +437,12 @@ typedef enum _LMEmulatorAlert
     [_customView setMinMagFilter:kCAFilterNearest];
   SISetAutoFrameskip([defaults boolForKey:kLMSettingsAutoFrameskip]);
   SISetFrameskip([defaults integerForKey:kLMSettingsFrameskipValue]);
-  
+
   _customView.iCadeControlView.controllerType = [[NSUserDefaults standardUserDefaults] integerForKey:kLMSettingsBluetoothController];
   // TODO: support custom key layouts
-  
+
   SIUpdateSettings();
-  
+
   [_customView setNeedsLayout];
   [UIView animateWithDuration:0.3 animations:^{
     [_customView layoutIfNeeded];
@@ -461,11 +462,11 @@ typedef enum _LMEmulatorAlert
 {
   if(_emulationThread != nil)
     return;
-  
+
   [LMSettingsController setDefaultsIfNotDefined];
-  
+
   [self LM_settingsChanged];
-  
+
   _emulationThread = [NSThread mainThread];
   [NSThread detachNewThreadSelector:@selector(LM_emulationThreadMethod:) toTarget:self withObject:romFileName];
 }
@@ -483,6 +484,118 @@ typedef enum _LMEmulatorAlert
   return self;
 }
 
+-(BOOL)isIOS6OrLower {
+    return floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_6_1;
+}
+
+-(void)subscribeToGameControllersConnected {
+    if ([self isIOS6OrLower])
+        return;
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:GCControllerDidConnectNotification object:nil queue:nil usingBlock:^(NSNotification *notification) {
+        [self initializeGameController:notification.object];
+    }];
+}
+
+-(void)initializeGameController:(GCController*)controller {
+    [self hideControls];
+    [self doNotAllowSleep];
+
+    controller.controllerPausedHandler = ^(GCController *controller) {
+        [self handlePause];
+    };
+
+    controller.gamepad.dpad.valueChangedHandler = ^(GCControllerDirectionPad *dpad, float xValue, float yValue) {
+        [self handleDPadWithX:xValue andY:yValue];
+    };
+
+    controller.gamepad.valueChangedHandler = ^(GCGamepad *gamepad, GCControllerElement *element) {
+        [self handleButton:element onGamepad:gamepad];
+    };
+}
+
+- (void)handleButton:(GCControllerElement *)element onGamepad:(GCGamepad *)gamepad {
+    if (![element isKindOfClass:[GCControllerButtonInput class]])
+            return;
+
+    GCControllerButtonInput *button = element;
+    int siosButton = [self getButtonMap:button forGamepad:gamepad];
+    if (siosButton < 0)
+            return;
+
+    [self handleButton:siosButton isPressed:button.isPressed];
+}
+
+- (void)handleDPadWithX:(float)xValue andY:(float)yValue {
+    [self handleButton:SIOS_DOWN isPressed:NO];
+    [self handleButton:SIOS_UP isPressed:NO];
+    [self handleButton:SIOS_LEFT isPressed:NO];
+    [self handleButton:SIOS_RIGHT isPressed:NO];
+
+    if (xValue > 0)
+            [self handleButton:SIOS_RIGHT isPressed:YES];
+        else if (xValue < 0)
+            [self handleButton:SIOS_LEFT isPressed:YES];
+    if (yValue > 0)
+            [self handleButton:SIOS_UP isPressed:YES];
+        else if (yValue < 0)
+            [self handleButton:SIOS_DOWN isPressed:YES];
+}
+
+- (void)handlePause {
+    [self handleButton:SIOS_START isPressed:YES];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self handleButton:SIOS_START isPressed:NO];
+        });
+}
+
+- (void)doNotAllowSleep {
+    [UIApplication sharedApplication].idleTimerDisabled = YES;
+}
+
+- (void)showControls {
+    [_customView setControlsHidden:NO animated:YES];
+}
+
+- (void)hideControls {
+    [_customView setControlsHidden:YES animated:YES];
+}
+
+-(void)initializeGameControllers {
+    if ([self isIOS6OrLower])
+        return;
+
+    NSArray *controllers = [GCController controllers];
+    for (GCController *controller in controllers)
+        [self initializeGameController:controller];
+}
+
+-(void)handleButton:(int)button isPressed:(BOOL)isPressed {
+    if(isPressed)
+        SISetControllerPushButton(button);
+    else
+        SISetControllerReleaseButton(button);
+
+    [self hideControls];
+}
+
+-(int)getButtonMap:(GCControllerButtonInput*)button forGamepad:(GCGamepad*)gamepad{
+    if(button == gamepad.buttonA)
+        return SIOS_B;
+    if(button == gamepad.buttonB)
+        return SIOS_A;
+    if(button == gamepad.buttonX)
+        return SIOS_Y;
+    if(button == gamepad.buttonY)
+        return SIOS_X;
+    if(button == gamepad.leftShoulder)
+        return SIOS_L;
+    if(button == gamepad.rightShoulder)
+        return SIOS_R;
+
+    return -1;
+}
+
 @end
 
 #pragma mark -
@@ -495,25 +608,25 @@ typedef enum _LMEmulatorAlert
   _customView.iCadeControlView.delegate = self;
   [_customView.optionsButton addTarget:self action:@selector(LM_options:) forControlEvents:UIControlEventTouchUpInside];
   self.view = _customView;
-  
+
   self.wantsFullScreenLayout = YES;
 }
 
 - (void)viewDidUnload
 {
   [super viewDidUnload];
-  
+
   [_customView release];
   _customView = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated
-{  
+{
   [super viewWillAppear:animated];
-  
+
   [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
   [self.navigationController setNavigationBarHidden:YES animated:YES];
-  
+
   if(_isMirror == NO)
     [self LM_screensChanged];
 }
@@ -521,7 +634,7 @@ typedef enum _LMEmulatorAlert
 - (void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
-  
+
   if(_isMirror == NO)
   {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LM_didBecomeInactive) name:UIApplicationWillResignActiveNotification object:nil];
@@ -531,13 +644,13 @@ typedef enum _LMEmulatorAlert
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveROMRunningState:) name:SISaveRunningStateNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadROMRunningState:) name:SILoadRunningStateNotification object:nil];
   }
-  
+
   if(_externalEmulator == nil)
   {
     SISetScreenDelegate(self);
     [_customView setPrimaryBuffer];
   }
-  
+
   if(_isMirror == NO)
   {
     SISetSaveDelegate(self);
@@ -549,7 +662,7 @@ typedef enum _LMEmulatorAlert
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
-  
+
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIScreenDidConnectNotification object:nil];
@@ -584,6 +697,8 @@ typedef enum _LMEmulatorAlert
   if(self)
   {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LM_settingsChanged) name:kLMSettingsChangedNotification object:nil];
+    [self initializeGameControllers];
+    [self subscribeToGameControllersConnected];
   }
   return self;
 }
@@ -591,7 +706,7 @@ typedef enum _LMEmulatorAlert
 - (void)dealloc
 {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  
+
   if(_isMirror == NO)
   {
     SISetEmulationRunning(0);
@@ -599,18 +714,18 @@ typedef enum _LMEmulatorAlert
     SISetScreenDelegate(nil);
     SISetSaveDelegate(nil);
   }
-  
+
   // this is released upon showing
   _actionSheet = nil;
-  
+
   [self LM_dismantleExternalScreen];
-  
+
   [_customView release];
   _customView = nil;
-  
+
   self.romFileName = nil;
   self.initialSaveFileName = nil;
-  
+
   [super dealloc];
 }
 

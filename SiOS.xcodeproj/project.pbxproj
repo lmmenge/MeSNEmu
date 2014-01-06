@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8CAEAA93187471B600E76198 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CAEAA92187471B600E76198 /* GameController.framework */; };
 		A00403C114BE3E4D00FE28CE /* apu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00401E514BE3E4D00FE28CE /* apu.cpp */; };
 		A00403C314BE3E4D00FE28CE /* SNES_SPC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00401F014BE3E4D00FE28CE /* SNES_SPC.cpp */; };
 		A00403C414BE3E4D00FE28CE /* SNES_SPC_misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00401F214BE3E4D00FE28CE /* SNES_SPC_misc.cpp */; };
@@ -152,6 +153,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8CAEAA92187471B600E76198 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
 		A00401E314BE3E4D00FE28CE /* 65c816.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 65c816.h; sourceTree = "<group>"; };
 		A00401E514BE3E4D00FE28CE /* apu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = apu.cpp; sourceTree = "<group>"; };
 		A00401E614BE3E4D00FE28CE /* apu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apu.h; sourceTree = "<group>"; };
@@ -416,6 +418,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CAEAA93187471B600E76198 /* GameController.framework in Frameworks */,
 				A0A8A0FC14B25409003C5688 /* libz.dylib in Frameworks */,
 				A0A8A0FA14B25401003C5688 /* AudioToolbox.framework in Frameworks */,
 				A050663214B21DDB003E0C5E /* QuartzCore.framework in Frameworks */,
@@ -645,6 +648,7 @@
 		A050660A14B21C7F003E0C5E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8CAEAA92187471B600E76198 /* GameController.framework */,
 				A0A8A0F914B25401003C5688 /* AudioToolbox.framework */,
 				A050660F14B21C7F003E0C5E /* CoreGraphics.framework */,
 				A050660D14B21C7F003E0C5E /* Foundation.framework */,
