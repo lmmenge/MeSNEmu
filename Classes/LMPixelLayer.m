@@ -52,7 +52,7 @@
   }
 }
 
-- (void)addAltImageBuffer:(unsigned char *)imageBuffer
+- (void)addAltImageBuffer:(unsigned char*)imageBuffer
 {
   if(_bitmapContextAlt != nil)
     CGContextRelease(_bitmapContextAlt);

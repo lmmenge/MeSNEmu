@@ -54,12 +54,12 @@ void S9xExtraUsage (void)
   
 }
 
-void S9xParseArg (char **a, int &b, int c)
+void S9xParseArg (char** a, int &b, int c)
 {
   
 }
 
-const char * S9xGetDirectory (enum s9x_getdirtype dirtype)
+const char* S9xGetDirectory (enum s9x_getdirtype dirtype)
 {
   static int	index = 0;
   static char	path[4][PATH_MAX + 1];
@@ -98,7 +98,7 @@ bool8 S9xDoScreenshot (int width, int height)
   return true;
 }
 
-const char * S9xStringInput (const char *s)
+const char* S9xStringInput (const char* s)
 {
   return (NULL);
 }
@@ -108,7 +108,7 @@ void S9xHandlePortCommand (s9xcommand_t cmd, int16 data1, int16 data2)
   return;
 }
 
-bool S9xPollAxis (uint32 id, int16 *value)
+bool S9xPollAxis (uint32 id, int16* value)
 {
   return (false);
 }
@@ -125,7 +125,7 @@ void S9xToggleSoundChannel (int c)
   S9xSetSoundControl(channel_enable);
 }
 
-bool S9xPollButton (uint32 id, bool *pressed)
+bool S9xPollButton (uint32 id, bool* pressed)
 {
   *pressed = false;
   return true;
@@ -136,19 +136,19 @@ bool8 S9xContinueUpdate (int width, int height)
   return (true);
 }
 
-bool S9xPollPointer (uint32 id, int16 *x, int16 *y)
+bool S9xPollPointer (uint32 id, int16* x, int16* y)
 {
   *x = *y = 0;
   
   return (true);
 }
 
-const char * S9xChooseFilename (bool8 read_only)
+const char* S9xChooseFilename (bool8 read_only)
 {
   return (NULL);
 }
 
-const char * S9xChooseMovieFilename (bool8 read_only)
+const char* S9xChooseMovieFilename (bool8 read_only)
 {
   return (NULL);
 }
@@ -158,7 +158,7 @@ void S9xSetPalette ()
   
 }
 
-bool8 S9xOpenSnapshotFile (const char *fname, bool8 read_only, STREAM *file)
+bool8 S9xOpenSnapshotFile (const char* fname, bool8 read_only, STREAM* file)
 {
   if (read_only)
   {
@@ -179,14 +179,14 @@ void S9xCloseSnapshotFile (STREAM file)
   CLOSE_STREAM(file);
 }
 
-void S9xMessage (int /* type */, int /* number */, const char *message)
+void S9xMessage (int /* type */, int /* number */, const char* message)
 {
   printf ("%s\n", message);
 }
 
 bool8_32 S9xInitUpdate ()
 {
-  //GFX.Screen = (uint8 *) framebuffer16 + (640*8) + 64;
+  //GFX.Screen = (uint8*) framebuffer16 + (640*8) + 64;
   
   return (TRUE);
 }
@@ -200,7 +200,7 @@ bool8 S9xDeinitUpdate (int width, int height)
   return (TRUE);
 }
 
-const char *S9xGetFilename (const char *ex, enum s9x_getdirtype dirtype)
+const char* S9xGetFilename (const char* ex, enum s9x_getdirtype dirtype)
 {
   static char filename [PATH_MAX + 1];
   char drive [_MAX_DRIVE + 1];
@@ -217,8 +217,8 @@ const char *S9xGetFilename (const char *ex, enum s9x_getdirtype dirtype)
   return (filename);
 }
 
-//const char *S9xGetFilenameInc (const char *e)
-const char * S9xGetFilenameInc (const char *inExt, enum s9x_getdirtype dirtype)
+//const char* S9xGetFilenameInc (const char* e)
+const char* S9xGetFilenameInc (const char* inExt, enum s9x_getdirtype dirtype)
 {
   S9xMessage (0,0,"get filename inc");
   //return e;
@@ -296,9 +296,9 @@ void S9xSyncSpeed(void)
   gettimeofday (&SI_NextFrameTime, NULL);
 }
 
-const char *S9xBasename (const char *in)
+const char* S9xBasename (const char* in)
 {
-  /*const char *p;
+  /*const char* p;
   
   S9xMessage (0,0,"s9x base name");
   
@@ -343,8 +343,8 @@ void S9xAutoSaveSRAM (void)
 
 #pragma mark - OS-Related Path Manipulation
 
-void _makepath (char *path, const char *, const char *dir,
-                const char *fname, const char *ext)
+void _makepath (char* path, const char*, const char* dir,
+                const char* fname, const char* ext)
 {
 	if (dir && *dir)
 	{
@@ -361,16 +361,16 @@ void _makepath (char *path, const char *, const char *dir,
 	}
 }
 
-void _splitpath (const char *path, char *drive, char *dir, char *fname,
-                 char *ext)
+void _splitpath (const char* path, char* drive, char* dir, char* fname,
+                 char* ext)
 {
 	*drive = 0;
   
-	char *slash = strrchr (path, '/');
+	char* slash = strrchr (path, '/');
 	if (!slash)
 		slash = strrchr (path, '\\');
   
-	char *dot = strrchr (path, '.');
+	char* dot = strrchr (path, '.');
   
 	if (dot && slash && dot < slash)
 		dot = NULL;

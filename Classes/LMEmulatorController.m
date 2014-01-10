@@ -152,7 +152,7 @@ typedef enum _LMEmulatorAlert
 
 #pragma mark UIActionSheetDelegate
 
-- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
+- (void)actionSheet:(UIActionSheet*)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
   NSLog(@"UIActionSheet button index: %i", buttonIndex);
   int resetIndex = 1;
@@ -227,7 +227,7 @@ typedef enum _LMEmulatorAlert
 
 #pragma mark UIAlertViewDelegate
 
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+- (void)alertView:(UIAlertView*)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
   if(alertView.tag == LMEmulatorAlertReset)
   {

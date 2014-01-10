@@ -6,24 +6,28 @@
 //
 //
 
-#import "../SNES9XBridge/Snes9xMain.h"
-
 @class LMGameControllerManager;
 
 @protocol LMGameControllerManagerDelegate <NSObject>
 
 @required
-- (void)gameControllerManagerGamepadDidConnect:(LMGameControllerManager *)controllerManager;
-- (void)gameControllerManagerGamepadDidDisconnect:(LMGameControllerManager *)controllerManager;
+- (void)gameControllerManagerGamepadDidConnect:(LMGameControllerManager*)controllerManager;
+- (void)gameControllerManagerGamepadDidDisconnect:(LMGameControllerManager*)controllerManager;
 
 @end
 
-@interface LMGameControllerManager : NSObject
+#pragma mark -
 
-+(instancetype)sharedInstance;
+@class GCController;
+
+@interface LMGameControllerManager : NSObject
+{
+  GCController* _gameController;
+}
 
 @property (nonatomic, readonly) BOOL gameControllerConnected;
-
 @property (nonatomic, weak) id<LMGameControllerManagerDelegate> delegate;
+
++ (instancetype)sharedInstance;
 
 @end
