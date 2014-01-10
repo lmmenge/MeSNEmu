@@ -23,7 +23,7 @@ typedef enum _LMEmulatorControllerViewMode
   LMEmulatorControllerViewModeControllerOnly
 } LMEmulatorControllerViewMode;
 
-@interface LMEmulatorControllerView : UIView <LMGameControllerManagerDelegate>
+@interface LMEmulatorControllerView : UIView
 {
   // buffers
   unsigned int _bufferWidth;

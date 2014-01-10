@@ -17,6 +17,12 @@
 #import "LMPixelLayer.h"
 #import "LMSettingsController.h"
 
+@interface LMEmulatorControllerView(Privates) <LMGameControllerManagerDelegate>
+
+@end
+
+#pragma mark -
+
 @implementation LMEmulatorControllerView(Privates)
 
 #pragma mark UI Creation Shortcuts
@@ -85,13 +91,23 @@
   return [button autorelease];
 }
 
+#pragma mark GameController Handling
+
+- (void)gameControllerManagerGamepadDidConnect:(LMGameControllerManager*)controllerManager
+{
+  [self setControlsHidden:YES animated:YES];
+}
+
+- (void)gameControllerManagerGamepadDidDisconnect:(LMGameControllerManager*)controllerManager
+{
+  [self setControlsHidden:NO animated:YES];
+}
+
 @end
 
 #pragma mark -
 
-@implementation LMEmulatorControllerView {
-    LMGameControllerManager *gameControllerManager;
-}
+@implementation LMEmulatorControllerView
 
 @synthesize optionsButton = _optionsButton;
 @synthesize iCadeControlView = _iCadeControlView;
@@ -153,30 +169,6 @@
     
     ((LMPixelLayer*)_screenView.layer).displayMainBuffer = YES;
   }
-}
-
-
-#pragma mark -
-#pragma mark GameController Handling
-
-- (void)gameControllerManagerGamepadDidConnect:(LMGameControllerManager *)controllerManager {
-    [self setControlsHiddenForGamepad:YES];
-}
-
-- (void)gameControllerManagerGamepadDidDisconnect:(LMGameControllerManager *)controllerManager {
-    [self setControlsHiddenForGamepad:NO];
-}
-
-- (void)setControlsHiddenForGamepad:(BOOL)hidden {
-    _aButton.hidden = hidden;
-    _bButton.hidden = hidden;
-    _xButton.hidden = hidden;
-    _yButton.hidden = hidden;
-
-    _lButton.hidden = hidden;
-    _rButton.hidden = hidden;
-
-    _dPadView.hidden = hidden;
 }
 
 @end
@@ -285,10 +277,14 @@
                                          bytesPerRow:bufferBytesPerRow
                                           bitmapInfo:bufferBitmapInfo];
     [(LMPixelLayer*)_screenView.layer addAltImageBuffer:_imageBufferAlt];
-      
-    gameControllerManager = [LMGameControllerManager sharedInstance];
-    gameControllerManager.delegate = self;
-    [self setControlsHiddenForGamepad:gameControllerManager.gameControllerConnected];
+    
+    if([self respondsToSelector:@selector(tintColor)] == YES)
+    {
+      // set up game controllers if available
+      LMGameControllerManager* gameControllerManager = [LMGameControllerManager sharedInstance];
+      gameControllerManager.delegate = self;
+      [self setControlsHidden:gameControllerManager.gameControllerConnected animated:NO];
+    }
   }
   return self;
 }
@@ -558,6 +554,10 @@
   
   [_optionsButton release];
   _optionsButton = nil;
+  
+  LMGameControllerManager* gameControllerManager = [LMGameControllerManager sharedInstance];
+  if(gameControllerManager.delegate == self)
+    gameControllerManager.delegate = nil;
   
   [super dealloc];
 }
