@@ -29,5 +29,6 @@
 @property (nonatomic, weak) id<LMGameControllerManagerDelegate> delegate;
 
 + (instancetype)sharedInstance;
++ (BOOL)gameControllersMightBeAvailable;
 
 @end

@@ -216,6 +216,13 @@
   return _sharedInstance;
 }
 
++ (BOOL)gameControllersMightBeAvailable
+{
+  if([GCController class] != nil)
+    return YES;
+  return NO;
+}
+
 @end
 
 #pragma mark -

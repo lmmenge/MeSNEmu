@@ -17,7 +17,7 @@
 #import "LMPixelLayer.h"
 #import "LMSettingsController.h"
 
-@interface LMEmulatorControllerView(Privates) <LMGameControllerManagerDelegate>
+@interface LMEmulatorControllerView(Privates)
 
 @end
 
@@ -89,18 +89,6 @@
       button.label.text = @"R";
   }
   return [button autorelease];
-}
-
-#pragma mark GameController Handling
-
-- (void)gameControllerManagerGamepadDidConnect:(LMGameControllerManager*)controllerManager
-{
-  [self setControlsHidden:YES animated:YES];
-}
-
-- (void)gameControllerManagerGamepadDidDisconnect:(LMGameControllerManager*)controllerManager
-{
-  [self setControlsHidden:NO animated:YES];
 }
 
 @end
@@ -277,14 +265,6 @@
                                          bytesPerRow:bufferBytesPerRow
                                           bitmapInfo:bufferBitmapInfo];
     [(LMPixelLayer*)_screenView.layer addAltImageBuffer:_imageBufferAlt];
-    
-    if([self respondsToSelector:@selector(tintColor)] == YES)
-    {
-      // set up game controllers if available
-      LMGameControllerManager* gameControllerManager = [LMGameControllerManager sharedInstance];
-      gameControllerManager.delegate = self;
-      [self setControlsHidden:gameControllerManager.gameControllerConnected animated:NO];
-    }
   }
   return self;
 }
@@ -554,10 +534,6 @@
   
   [_optionsButton release];
   _optionsButton = nil;
-  
-  LMGameControllerManager* gameControllerManager = [LMGameControllerManager sharedInstance];
-  if(gameControllerManager.delegate == self)
-    gameControllerManager.delegate = nil;
   
   [super dealloc];
 }

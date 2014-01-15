@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-#import "LMGameControllerManager.h"
-
 @class LMBTControllerView;
 
 @class LMButtonView;
