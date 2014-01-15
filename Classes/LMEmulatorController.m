@@ -529,6 +529,7 @@ typedef enum _LMEmulatorAlert
   
   [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
   [self.navigationController setNavigationBarHidden:YES animated:YES];
+  [UIApplication sharedApplication].idleTimerDisabled = YES;
   
   if(_isMirror == NO)
   {
@@ -575,6 +576,8 @@ typedef enum _LMEmulatorAlert
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
+  
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
   
   if([LMGameControllerManager gameControllersMightBeAvailable] == YES)
   {
