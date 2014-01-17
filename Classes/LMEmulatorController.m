@@ -16,6 +16,7 @@
 #import "LMSaveManager.h"
 #endif
 #import "LMSettingsController.h"
+#import "LMGameControllerManager.h"
 
 #import "../SNES9XBridge/Snes9xMain.h"
 #import "../SNES9XBridge/SISaveDelegate.h"
@@ -96,6 +97,12 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 #pragma mark -
 
 @interface LMEmulatorController(Privates) <UIActionSheetDelegate, UIAlertViewDelegate, LMSettingsControllerDelegate, SISaveDelegate>
+@end
+
+@interface LMEmulatorController()
+
+@property (nonatomic, strong) LMGameControllerManager *hardwareControllerManager;
+
 @end
 
 #pragma mark -
@@ -643,6 +650,8 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 - (void)viewDidLoad
 {
   [super viewDidLoad];
+    
+    self.hardwareControllerManager = [[LMGameControllerManager alloc] init];
 
   _bufferWidth = 256;
   _bufferHeight = 224;
