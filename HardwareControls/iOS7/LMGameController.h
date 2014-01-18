@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "LMHardwareController.h"
+#import <GameController/GameController.h>
 
 @interface LMGameController : NSObject <LMHardwareController>
 

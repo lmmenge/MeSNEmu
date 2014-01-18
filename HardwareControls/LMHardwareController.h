@@ -7,8 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <GameController/GameController.h>
+
+typedef void(^LMPauseHandler)(void);
 
 @protocol LMHardwareController <NSObject>
+
+@property (nonatomic, copy) LMPauseHandler pauseHandler;
 
 @end

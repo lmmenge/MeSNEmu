@@ -16,6 +16,7 @@
 @end
 
 @implementation LMGameController
+@synthesize pauseHandler = _pauseHandler;
 
 - (instancetype)initWithGameController:(GCController *)controller {
     if ((self = [super init])) {
@@ -104,6 +105,12 @@
             SISetControllerPushButton(SIOS_RIGHT);
         } else {
             SISetControllerReleaseButton(SIOS_RIGHT);
+        }
+    };
+    
+    self.gameController.controllerPausedHandler = ^(GCController *controller) {
+        if (self.pauseHandler) {
+            self.pauseHandler();
         }
     };
 }

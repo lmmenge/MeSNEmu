@@ -354,7 +354,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
     c.delegate = self;
     UINavigationController* n = [[UINavigationController alloc] initWithRootViewController:c];
     n.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentModalViewController:n animated:YES];
+    [self presentViewController:n animated:YES completion:NULL];
     [c release];
     [n release];
   }
@@ -595,7 +595,7 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
 {
   [super loadView];
   
-  self.wantsFullScreenLayout = YES;
+//  self.wantsFullScreenLayout = YES;
   self.view.multipleTouchEnabled = YES;
   
   // screen
@@ -647,11 +647,37 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   [self.view addSubview:_dPadView];
 }
 
-- (void)viewDidLoad
-{
-  [super viewDidLoad];
-    
-    self.hardwareControllerManager = [[LMGameControllerManager alloc] init];
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    __block LMEmulatorController *weakSelf = self;
+
+    LMGameControllerManager *manager = [[LMGameControllerManager alloc] init];
+    self.hardwareControllerManager = manager;
+    [manager release];
+
+    self.hardwareControllerManager.connectionHandler = ^(BOOL isConnected) {
+        _yButton.hidden = isConnected;
+        _xButton.hidden = isConnected;
+        _aButton.hidden = isConnected;
+        _bButton.hidden = isConnected;
+        _lButton.hidden = isConnected;
+        _rButton.hidden = isConnected;
+        _dPadView.hidden = isConnected;
+
+        if (isConnected) {
+            [weakSelf.hardwareControllerManager.hardwareController setPauseHandler:^{
+                if (_actionSheet) {
+                    SISetEmulationPaused(0);
+                    _actionSheet.delegate = nil;
+                    [_actionSheet dismissWithClickedButtonIndex:0 animated:YES];
+                    _actionSheet = nil;
+                } else {
+                    [weakSelf options:nil event:nil];
+                }
+            }];
+        }
+    };
 
   _bufferWidth = 256;
   _bufferHeight = 224;
@@ -844,6 +870,8 @@ void convert565ToARGB(uint32_t* dest, uint16_t* source, int width, int height)
   
   self.romFileName = nil;
   self.initialSaveFileName = nil;
+    
+    [_hardwareControllerManager release];
   
   [super dealloc];
 }

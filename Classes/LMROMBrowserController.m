@@ -371,7 +371,7 @@ static int const LMFileOrganizationVersionNumber = 1;
   LMSettingsController* c = [[LMSettingsController alloc] init];
   UINavigationController* n = [[UINavigationController alloc] initWithRootViewController:c];
   n.modalPresentationStyle = UIModalPresentationFormSheet;
-  [self presentModalViewController:n animated:YES];
+  [self presentViewController:n animated:YES completion:NULL];
   [c release];
   [n release];
 }

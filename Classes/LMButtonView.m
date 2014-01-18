@@ -47,7 +47,7 @@
     _label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _label.backgroundColor = nil;
     _label.opaque = NO;
-    _label.textAlignment = UITextAlignmentCenter;
+    _label.textAlignment = NSTextAlignmentCenter;
     [self addSubview:_label];
   }
   return self;

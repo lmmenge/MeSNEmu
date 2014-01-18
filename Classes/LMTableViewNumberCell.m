@@ -78,7 +78,7 @@
     [_defaultButton setTitleShadowColor:[UIColor colorWithWhite:1 alpha:0.25] forState:UIControlStateHighlighted];
     _defaultButton.titleLabel.shadowOffset = CGSizeMake(0, 1);
     _defaultButton.titleLabel.adjustsFontSizeToFitWidth = YES;
-    _defaultButton.titleLabel.minimumFontSize = 8;
+    _defaultButton.titleLabel.minimumScaleFactor = 2;
     _defaultButton.adjustsImageWhenDisabled = NO;
     _defaultButton.titleEdgeInsets = UIEdgeInsetsMake(0, 4, 0, 4);
     [_defaultButton addTarget:self action:@selector(toggleDefault:) forControlEvents:UIControlEventTouchUpInside];

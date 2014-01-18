@@ -48,14 +48,32 @@ static LMGameControllerManager *singleton;
     [[UIApplication sharedApplication] setIdleTimerDisabled: YES];
 }
 
+- (void)setConnectionHandler:(LMGameControllerConnectionHandler)connectionHandler {
+    _connectionHandler = [connectionHandler copy];
+    if (connectionHandler) {
+        BOOL isConnected = self.hardwareController != nil;
+        connectionHandler(isConnected);
+    }
+}
+
 #pragma mark - Notifications
 
 - (void)controllerDidConnect:(NSNotification *)notification {
-    _hardwareController = [[LMGameController alloc] initWithGameController:notification.object];
+    GCController *controller = notification.object;
+    _hardwareController = [[LMGameController alloc] initWithGameController:controller];
+    [self registerController:_hardwareController];
+
+    if (self.connectionHandler) {
+        self.connectionHandler(YES);
+    }
 }
 
 - (void)controllerDidDisconnect:(NSNotification *)notification {
     _hardwareController = nil;
+
+    if (self.connectionHandler) {
+        self.connectionHandler(NO);
+    }
 }
 
 - (void)dealloc {

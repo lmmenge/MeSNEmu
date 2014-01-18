@@ -9,10 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "LMHardwareController.h"
 
+typedef void(^LMGameControllerConnectionHandler)(BOOL isConnected);
+
 @interface LMGameControllerManager : NSObject
 
-+ (instancetype)sharedManager;
-
 @property (nonatomic, strong) id<LMHardwareController>hardwareController;
+@property (nonatomic, copy) LMGameControllerConnectionHandler connectionHandler;
 
 @end
