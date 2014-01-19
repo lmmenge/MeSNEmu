@@ -30,33 +30,33 @@
 - (void)setupController {
     self.gameController.gamepad.buttonX.valueChangedHandler = ^(GCControllerButtonInput *button, float value, BOOL pressed) {
         if (pressed) {
-            SISetControllerPushButton(SIOS_X);
-        } else {
-            SISetControllerReleaseButton(SIOS_X);
-        }
-    };
-    
-    self.gameController.gamepad.buttonY.valueChangedHandler = ^(GCControllerButtonInput *button, float value, BOOL pressed) {
-        if (pressed) {
             SISetControllerPushButton(SIOS_Y);
         } else {
             SISetControllerReleaseButton(SIOS_Y);
         }
     };
     
+    self.gameController.gamepad.buttonY.valueChangedHandler = ^(GCControllerButtonInput *button, float value, BOOL pressed) {
+        if (pressed) {
+            SISetControllerPushButton(SIOS_X);
+        } else {
+            SISetControllerReleaseButton(SIOS_X);
+        }
+    };
+    
     self.gameController.gamepad.buttonA.valueChangedHandler = ^(GCControllerButtonInput *button, float value, BOOL pressed) {
         if (pressed) {
-            SISetControllerPushButton(SIOS_A);
+            SISetControllerPushButton(SIOS_B);
         } else {
-            SISetControllerReleaseButton(SIOS_A);
+            SISetControllerReleaseButton(SIOS_B);
         }
     };
     
     self.gameController.gamepad.buttonB.valueChangedHandler = ^(GCControllerButtonInput *button, float value, BOOL pressed) {
         if (pressed) {
-            SISetControllerPushButton(SIOS_B);
+            SISetControllerPushButton(SIOS_A);
         } else {
-            SISetControllerReleaseButton(SIOS_B);
+            SISetControllerReleaseButton(SIOS_A);
         }
     };
     
