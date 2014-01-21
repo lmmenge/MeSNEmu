@@ -1,6 +1,7 @@
 1.4
 ===
-- Added support for MFi GameControllers (thanks to b3ll).
+- Added support for MFi GameControllers (thanks to b3ll);
+- Avoiding dimming the screen while playing (thanks for the reminder, GaryJohnson).
 
 1.3
 ===
