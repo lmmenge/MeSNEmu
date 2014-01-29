@@ -87,6 +87,13 @@
       [self LMBT_setOnStateString:"wdxaolyhujik"
                    offStateString:"eczqgvtrfnmp"];
     }
+    else if(_controllerType == LMBTControllerType_8BitdoFC30)
+    {
+      // 8Bitdo FC30 (thanks to eltonsalmeida)
+      // submitted string: wedcxzaqtufimkpoglvhrjnu
+      [self LMBT_setOnStateString:"wdxatfmpgvrn"
+                   offStateString:"eczquikolhju"];
+    }
   }
 }
 
