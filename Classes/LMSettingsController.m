@@ -238,6 +238,9 @@ typedef enum _LMSettingsSections
         case LMBTControllerType_iMpulse:
           controllerName = @"iMpulse";
           break;
+        case LMBTControllerType_8BitdoFC30:
+          controllerName = @"8Bitdo FC30";
+          break;
         default:
           break;
       }
@@ -338,13 +341,18 @@ typedef enum _LMSettingsSections
                         @"iCade 8-Bitty",
                         @"EX Hybrid",
                         @"SteelSeries Free",
-                        @"iMpulse"];
+                        @"8Bitdo FC30",
+                        @"iMpulse"/*,
+                        NSLocalizedString(@"CUSTOM", nil)*/
+                        ];
       c.optionValues = @[
                          [NSNumber numberWithInt:LMBTControllerType_iCade],
                          [NSNumber numberWithInt:LMBTControllerType_iCade8Bitty],
                          [NSNumber numberWithInt:LMBTControllerType_EXHybrid],
                          [NSNumber numberWithInt:LMBTControllerType_SteelSeriesFree],
-                         [NSNumber numberWithInt:LMBTControllerType_iMpulse]
+                         [NSNumber numberWithInt:LMBTControllerType_8BitdoFC30],
+                         [NSNumber numberWithInt:LMBTControllerType_iMpulse]/*,
+                         [NSNumber numberWithInt:LMBTControllerType_Custom]*/
                         ];
       LMBTControllerType controllerType = [[NSUserDefaults standardUserDefaults] integerForKey:kLMSettingsBluetoothController];
       for(int i=0; i<[c.optionValues count]; i++)
