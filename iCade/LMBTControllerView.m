@@ -94,6 +94,11 @@
       [self LMBT_setOnStateString:"wdxatfmpgvrn"
                    offStateString:"eczquikolhju"];
     }
+    else if(_controllerType == LMBTControllerType_iMpulse)
+    {
+        [self LMBT_setOnStateString:"wdxa..lkoyhj"
+                     offStateString:"eczq..vpgtrn"];
+    }
   }
 }
 
