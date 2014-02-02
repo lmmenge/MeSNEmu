@@ -14,7 +14,9 @@ typedef enum _LMBTControllerType
   LMBTControllerType_iCade = 1,
   LMBTControllerType_iCade8Bitty = 2,
   LMBTControllerType_EXHybrid = 3,
-  LMBTControllerType_SteelSeriesFree = 4
+  LMBTControllerType_SteelSeriesFree = 4,
+  LMBTControllerType_iMpulse = 5,
+
 } LMBTControllerType;
 
 @interface LMBTControllerView : iCadeReaderView {
