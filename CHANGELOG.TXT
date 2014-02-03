@@ -1,3 +1,7 @@
+1.3.2
+=====
+- Added support for iMpulse Game Controller (thanks to davidmuzi).
+
 1.3.1
 =====
 - Added support for 8Bitdo FC30 gamepad (thanks to eltonsalmeida).
