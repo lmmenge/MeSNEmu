@@ -11,6 +11,7 @@
 #import "LMButtonView.h"
 #import "LMDPadView.h"
 #import "LMEmulatorControllerView.h"
+#import "LMGameControllerManager.h"
 #import "LMPixelLayer.h"
 #import "LMPixelView.h"
 #ifdef SI_ENABLE_SAVES
@@ -32,7 +33,7 @@ typedef enum _LMEmulatorAlert
 
 #pragma mark -
 
-@interface LMEmulatorController(Privates) <UIActionSheetDelegate, UIAlertViewDelegate, LMSettingsControllerDelegate, SISaveDelegate, iCadeEventDelegate, SIScreenDelegate>
+@interface LMEmulatorController(Privates) <UIActionSheetDelegate, UIAlertViewDelegate, LMSettingsControllerDelegate, SISaveDelegate, iCadeEventDelegate, SIScreenDelegate, LMGameControllerManagerDelegate>
 @end
 
 #pragma mark -
@@ -92,7 +93,10 @@ typedef enum _LMEmulatorAlert
   SISetEmulationPaused(1);
   
   _customView.iCadeControlView.active = NO;
-  [_customView setControlsHidden:NO animated:YES];
+  if([LMGameControllerManager gameControllersMightBeAvailable] == YES)
+    [_customView setControlsHidden:[LMGameControllerManager sharedInstance].gameControllerConnected animated:NO];
+  else
+    [_customView setControlsHidden:NO animated:YES];
   
   UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:nil
                                                      delegate:self
@@ -152,7 +156,7 @@ typedef enum _LMEmulatorAlert
 
 #pragma mark UIActionSheetDelegate
 
-- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
+- (void)actionSheet:(UIActionSheet*)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
   NSLog(@"UIActionSheet button index: %i", buttonIndex);
   int resetIndex = 1;
@@ -227,7 +231,7 @@ typedef enum _LMEmulatorAlert
 
 #pragma mark UIAlertViewDelegate
 
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+- (void)alertView:(UIAlertView*)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
   if(alertView.tag == LMEmulatorAlertReset)
   {
@@ -361,6 +365,18 @@ typedef enum _LMEmulatorAlert
     default:
       break;
   } 
+}
+
+#pragma mark LMGameControllerManagerDelegate
+
+- (void)gameControllerManagerGamepadDidConnect:(LMGameControllerManager*)controllerManager
+{
+  [_customView setControlsHidden:YES animated:YES];
+}
+
+- (void)gameControllerManagerGamepadDidDisconnect:(LMGameControllerManager*)controllerManager
+{
+  [_customView setControlsHidden:NO animated:YES];
 }
 
 #pragma mark Notifications
@@ -513,9 +529,20 @@ typedef enum _LMEmulatorAlert
   
   [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
   [self.navigationController setNavigationBarHidden:YES animated:YES];
+  [UIApplication sharedApplication].idleTimerDisabled = YES;
   
   if(_isMirror == NO)
+  {
     [self LM_screensChanged];
+    
+    if([LMGameControllerManager gameControllersMightBeAvailable] == YES)
+    {
+      // set up game controllers if available
+      LMGameControllerManager* gameControllerManager = [LMGameControllerManager sharedInstance];
+      gameControllerManager.delegate = self;
+      [_customView setControlsHidden:gameControllerManager.gameControllerConnected animated:NO];
+    }
+  }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -549,6 +576,15 @@ typedef enum _LMEmulatorAlert
 - (void)viewWillDisappear:(BOOL)animated
 {
 	[super viewWillDisappear:animated];
+  
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
+  
+  if([LMGameControllerManager gameControllersMightBeAvailable] == YES)
+  {
+    LMGameControllerManager* gameControllerManager = [LMGameControllerManager sharedInstance];
+    if(gameControllerManager.delegate == self)
+      gameControllerManager.delegate = nil;
+  }
   
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];

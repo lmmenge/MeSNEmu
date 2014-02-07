@@ -61,7 +61,7 @@ void SIFlipFramebuffer(int flip, int sync)
   SIFlipFramebufferClient();
 }
 
-const char *SIGetFilename(const char *ex)
+const char* SIGetFilename(const char* ex)
 {
   static char filename [PATH_MAX + 1];
   char drive [_MAX_DRIVE + 1];
@@ -424,7 +424,7 @@ extern "C" int SIStartWithROM(char* rom_filename)
 #endif
   
   GFX.Pitch = SNES_WIDTH*2;
-  /*vrambuffer = (uint8 *) malloc (GFX.Pitch * SNES_HEIGHT_EXTENDED*2);
+  /*vrambuffer = (uint8*) malloc (GFX.Pitch * SNES_HEIGHT_EXTENDED*2);
 	memset (vrambuffer, 0, GFX.Pitch * SNES_HEIGHT_EXTENDED*2);
   GFX.Screen = (uint16*)vrambuffer;*/
   S9xGraphicsInit();

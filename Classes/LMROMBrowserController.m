@@ -17,7 +17,8 @@
 static NSString* const LMFileOrganizationVersion = @"LMFileOrganizationVersion";
 static int const LMFileOrganizationVersionNumber = 1;
 
-@interface LMFileListItem : NSObject {
+@interface LMFileListItem : NSObject
+{
   BOOL _hasDetails;
   NSString* _displayName;
   NSString* _displayDetails;
@@ -413,7 +414,7 @@ static int const LMFileOrganizationVersionNumber = 1;
 
 @implementation LMROMBrowserController(UITableViewController)
 
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+- (NSArray*)sectionIndexTitlesForTableView:(UITableView*)tableView
 {
   if(_detailsItem != nil)
     return nil;
@@ -423,12 +424,12 @@ static int const LMFileOrganizationVersionNumber = 1;
     return _sectionTitles;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString*)title atIndex:(NSInteger)index
+- (NSInteger)tableView:(UITableView*)tableView sectionForSectionIndexTitle:(NSString*)title atIndex:(NSInteger)index
 {
   return index;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
   // Return the number of sections.
   if(tableView == self.searchDisplayController.searchResultsTableView)
@@ -437,7 +438,7 @@ static int const LMFileOrganizationVersionNumber = 1;
     return [_sectionTitles count];
 }
 
-- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (NSString*)tableView:(UITableView*)tableView titleForHeaderInSection:(NSInteger)section
 {
   if(tableView == self.searchDisplayController.searchResultsTableView)
     return [_filteredSectionTitles objectAtIndex:section];
@@ -445,7 +446,7 @@ static int const LMFileOrganizationVersionNumber = 1;
     return [_sectionTitles objectAtIndex:section];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
   // Return the number of rows in the section.
   int sectionStart, sectionEnd;
@@ -467,11 +468,11 @@ static int const LMFileOrganizationVersionNumber = 1;
   return sectionEnd-sectionStart;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-  static NSString *CellIdentifier = @"Cell";
+  static NSString* CellIdentifier = @"Cell";
   
-  UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+  UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
   if(cell == nil)
     cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
   
@@ -486,7 +487,7 @@ static int const LMFileOrganizationVersionNumber = 1;
   return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
   LMEmulatorController* emulator = [[LMEmulatorController alloc] init];
   LMFileListItem* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
@@ -552,7 +553,8 @@ static int const LMFileOrganizationVersionNumber = 1;
 - (id)initWithStyle:(UITableViewStyle)style
 {
   self = [super initWithStyle:style];
-  if (self) {
+  if(self)
+  {
     // Custom initialization
   }
   return self;
@@ -601,8 +603,8 @@ static int const LMFileOrganizationVersionNumber = 1;
   }
   
   // documents folder
-  NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-  NSString *documentsPath = [paths objectAtIndex:0];
+  NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+  NSString* documentsPath = [paths objectAtIndex:0];
   
   // set it for the ROMs
   _romPath = [documentsPath copy];

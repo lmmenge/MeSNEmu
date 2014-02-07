@@ -82,7 +82,7 @@ typedef enum _LMSettingsSections
 - (LMTableViewNumberCell*)LM_numberCell
 {
   static NSString* identifier = @"NumberCell";
-  LMTableViewNumberCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+  LMTableViewNumberCell* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
   if (cell == nil)
     cell = [[[LMTableViewNumberCell alloc] initWithReuseIdentifier:identifier] autorelease];
   return cell;
@@ -91,7 +91,7 @@ typedef enum _LMSettingsSections
 - (LMTableViewSwitchCell*)LM_switchCell
 {
   static NSString* identifier = @"SwitchCell";
-  LMTableViewSwitchCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+  LMTableViewSwitchCell* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
   if (cell == nil)
     cell = [[[LMTableViewSwitchCell alloc] initWithReuseIdentifier:identifier] autorelease];
   return cell;
@@ -100,7 +100,7 @@ typedef enum _LMSettingsSections
 - (UITableViewCell*)LM_multipleChoiceCell
 {
   static NSString* identifier = @"MultipleChoiceCell";
-  UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
+  UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
   if (cell == nil)
     cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier] autorelease];
   cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -172,13 +172,13 @@ typedef enum _LMSettingsSections
   return self;
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)numberOfSectionsInTableView:(UITableView*)tableView
 {
   // Return the number of sections.
   return 4;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
   // Return the number of rows in the section.
   if(section == LMSettingsSectionBluetoothController)
@@ -197,7 +197,7 @@ typedef enum _LMSettingsSections
   return 0;
 }
 
-- (NSString*)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+- (NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
   if(section == LMSettingsSectionScreen)
     return NSLocalizedString(@"FULL_SCREEN_EXPLANATION", nil);
@@ -206,7 +206,7 @@ typedef enum _LMSettingsSections
   return nil;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {  
   UITableViewCell* cell = nil;
   
@@ -325,7 +325,7 @@ typedef enum _LMSettingsSections
   return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
   NSInteger section = indexPath.section;
   if(section == LMSettingsSectionBluetoothController)

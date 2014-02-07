@@ -12,8 +12,8 @@
 
 #pragma mark - External Forward Declarations
 
-//extern void S9xMixSamplesO (signed short *buffer, int sample_count, int sample_offset);
-extern bool8 S9xMixSamples (uint8 *buffer, int sample_count);
+//extern void S9xMixSamplesO (signed short* buffer, int sample_count, int sample_offset);
+extern bool8 S9xMixSamples (uint8* buffer, int sample_count);
 
 extern volatile int SI_EmulationPaused;
 extern volatile int SI_EmulationRun;
@@ -45,7 +45,7 @@ volatile int SI_AudioOffset = 0;
 #pragma mark - Audio Queue Management
 
 static void AQBufferCallback(
-                             void *userdata,
+                             void* userdata,
                              AudioQueueRef outQ,
                              AudioQueueBufferRef outQB)
 {

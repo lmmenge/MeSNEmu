@@ -17,6 +17,12 @@
 #import "LMPixelLayer.h"
 #import "LMSettingsController.h"
 
+@interface LMEmulatorControllerView(Privates)
+
+@end
+
+#pragma mark -
+
 @implementation LMEmulatorControllerView(Privates)
 
 #pragma mark UI Creation Shortcuts
