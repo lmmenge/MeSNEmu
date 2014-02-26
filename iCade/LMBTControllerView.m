@@ -89,10 +89,13 @@
     }
     else if(_controllerType == LMBTControllerType_8BitdoFC30)
     {
-      // 8Bitdo FC30 (thanks to eltonsalmeida)
-      // submitted string: wedcxzaqtufimkpoglvhrjnu
-      [self LMBT_setOnStateString:"wdxatfmpgvrn"
-                   offStateString:"eczquikolhju"];
+      // 8Bitdo FC30 (thanks to guidoscheffler)
+      // submitted string for English layout: wedcxzaqytufimkpoglvhrjn
+      [self LMBT_setOnStateString:"wdxayuikolhj"
+                   offStateString:"eczqtfmpgvrn"];
+      // submitted string for German layout:  wedcxyaqztufimkpoglvhrjn
+      //[self LMBT_setOnStateString:"wdxazuikolhj"
+      //             offStateString:"ecyqtfmpgvrn"];
     }
     else if(_controllerType == LMBTControllerType_iMpulse)
     {

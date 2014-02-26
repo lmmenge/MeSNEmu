@@ -1,3 +1,7 @@
+1.4.1
+=====
+- Fixed support for 8Bitdo FC30 gamepad (thanks to  guidoscheffler).
+
 1.4
 ===
 - Added support for MFi GameControllers (thanks to b3ll);
