@@ -75,6 +75,7 @@
 		<dict>
 			<key>CFBundleIconFiles</key>
 			<array>
+				<string>Icon-120</string>
 				<string>Icon-152.png</string>
 				<string>Icon-144.png</string>
 				<string>Icon-120.png</string>
@@ -99,6 +100,17 @@
 	<string>1.4.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>db-kqmc4kbeev7tyu6</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>1.4.1</string>
 	<key>LSRequiresIPhoneOS</key>

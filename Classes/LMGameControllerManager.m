@@ -58,42 +58,42 @@
       
       // You should swap A+B / X+Y because it feels awkward on Gamepad
       if (extendedGamepad.buttonA.pressed) {
-        SISetControllerPushButton(SIOS_B);
+        SISetControllerPushButton(kSIOS_1PB);
       }
       else {
-        SISetControllerReleaseButton(SIOS_B);
+        SISetControllerReleaseButton(kSIOS_1PB);
       }
       if (extendedGamepad.buttonB.pressed) {
-        SISetControllerPushButton(SIOS_A);
+        SISetControllerPushButton(kSIOS_1PA);
       }
       else {
-        SISetControllerReleaseButton(SIOS_A);
+        SISetControllerReleaseButton(kSIOS_1PA);
       }
       if (extendedGamepad.buttonX.pressed) {
-        SISetControllerPushButton(SIOS_Y);
+        SISetControllerPushButton(kSIOS_1PY);
       }
       else {
-        SISetControllerReleaseButton(SIOS_Y);
+        SISetControllerReleaseButton(kSIOS_1PY);
       }
       if (extendedGamepad.buttonY.pressed) {
-        SISetControllerPushButton(SIOS_X);
+        SISetControllerPushButton(kSIOS_1PX);
       }
       else {
-        SISetControllerReleaseButton(SIOS_X);
+        SISetControllerReleaseButton(kSIOS_1PX);
       }
       
       if (extendedGamepad.leftShoulder.pressed) {
-        SISetControllerPushButton(SIOS_L);
+        SISetControllerPushButton(kSIOS_1PL);
       }
       else {
-        SISetControllerReleaseButton(SIOS_L);
+        SISetControllerReleaseButton(kSIOS_1PL);
       }
       
       if (extendedGamepad.rightShoulder.pressed) {
-        SISetControllerPushButton(SIOS_R);
+        SISetControllerPushButton(kSIOS_1PR);
       }
       else {
-        SISetControllerReleaseButton(SIOS_R);
+        SISetControllerReleaseButton(kSIOS_1PR);
       }
       
       // This feels super awkward
@@ -108,28 +108,28 @@
       
       // Extended Gamepad gets a thumbstick as well
       if (extendedGamepad.dpad.up.pressed || extendedGamepad.leftThumbstick.up.pressed) {
-        SISetControllerPushButton(SIOS_UP);
+        SISetControllerPushButton(kSIOS_1PUp);
       }
       else {
-        SISetControllerReleaseButton(SIOS_UP);
+        SISetControllerReleaseButton(kSIOS_1PUp);
       }
       if (extendedGamepad.dpad.down.pressed || extendedGamepad.leftThumbstick.down.pressed) {
-        SISetControllerPushButton(SIOS_DOWN);
+        SISetControllerPushButton(kSIOS_1PDown);
       }
       else {
-        SISetControllerReleaseButton(SIOS_DOWN);
+        SISetControllerReleaseButton(kSIOS_1PDown);
       }
       if (extendedGamepad.dpad.left.pressed || extendedGamepad.leftThumbstick.left.pressed) {
-        SISetControllerPushButton(SIOS_LEFT);
+        SISetControllerPushButton(kSIOS_1PLeft);
       }
       else {
-        SISetControllerReleaseButton(SIOS_LEFT);
+        SISetControllerReleaseButton(kSIOS_1PLeft);
       }
       if (extendedGamepad.dpad.right.pressed || extendedGamepad.leftThumbstick.right.pressed) {
-        SISetControllerPushButton(SIOS_RIGHT);
+        SISetControllerPushButton(kSIOS_1PRight);
       }
       else {
-        SISetControllerReleaseButton(SIOS_RIGHT);
+        SISetControllerReleaseButton(kSIOS_1PRight);
       }
     }
     
@@ -139,54 +139,54 @@
       
       // You should swap A+B / X+Y because it feels awkward on Gamepad
       if (gamepad.buttonA.pressed) {
-        SISetControllerPushButton(SIOS_B);
+        SISetControllerPushButton(kSIOS_1PB);
       }
       else {
-        SISetControllerReleaseButton(SIOS_B);
+        SISetControllerReleaseButton(kSIOS_1PB);
       }
       if (gamepad.buttonB.pressed) {
-        SISetControllerPushButton(SIOS_A);
+        SISetControllerPushButton(kSIOS_1PA);
       }
       else {
-        SISetControllerReleaseButton(SIOS_A);
+        SISetControllerReleaseButton(kSIOS_1PA);
       }
       if (gamepad.buttonX.pressed) {
-        SISetControllerPushButton(SIOS_Y);
+        SISetControllerPushButton(kSIOS_1PY);
       }
       else {
-        SISetControllerReleaseButton(SIOS_Y);
+        SISetControllerReleaseButton(kSIOS_1PY);
       }
       if (gamepad.buttonY.pressed) {
-        SISetControllerPushButton(SIOS_X);
+        SISetControllerPushButton(kSIOS_1PX);
       }
       else {
-        SISetControllerReleaseButton(SIOS_X);
+        SISetControllerReleaseButton(kSIOS_1PX);
       }
       
       // Extended Gamepad gets a thumbstick as well
       if (gamepad.dpad.up.pressed) {
-        SISetControllerPushButton(SIOS_UP);
+        SISetControllerPushButton(kSIOS_1PUp);
       }
       else {
-        SISetControllerReleaseButton(SIOS_UP);
+        SISetControllerReleaseButton(kSIOS_1PUp);
       }
       if (gamepad.dpad.down.pressed) {
-        SISetControllerPushButton(SIOS_DOWN);
+        SISetControllerPushButton(kSIOS_1PDown);
       }
       else {
-        SISetControllerReleaseButton(SIOS_DOWN);
+        SISetControllerReleaseButton(kSIOS_1PDown);
       }
       if (gamepad.dpad.left.pressed) {
-        SISetControllerPushButton(SIOS_LEFT);
+        SISetControllerPushButton(kSIOS_1PLeft);
       }
       else {
-        SISetControllerReleaseButton(SIOS_LEFT);
+        SISetControllerReleaseButton(kSIOS_1PLeft);
       }
       if (gamepad.dpad.right.pressed) {
-        SISetControllerPushButton(SIOS_RIGHT);
+        SISetControllerPushButton(kSIOS_1PRight);
       }
       else {
-        SISetControllerReleaseButton(SIOS_RIGHT);
+        SISetControllerReleaseButton(kSIOS_1PRight);
       }
     }
   }

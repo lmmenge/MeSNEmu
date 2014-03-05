@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Lucas Menge. All rights reserved.
 //
 
+#import "LMAppDelegate.h"
 #import "LMEmulatorControllerView.h"
 
 #import "../iCade/LMBTControllerView.h"
@@ -39,9 +40,9 @@
   button.label.shadowOffset = CGSizeMake(0, -1);
   button.label.font = [UIFont systemFontOfSize:10];
   button.button = buttonMap;
-  if(buttonMap == SIOS_START)
+  if(buttonMap == kSIOS_1PStart)
     button.label.text = @"Start";
-  else if(buttonMap == SIOS_SELECT)
+  else if(buttonMap == kSIOS_1PSelect)
     button.label.text = @"Select";
   return [button autorelease];
 }
@@ -55,37 +56,37 @@
   LMButtonView* button = [[LMButtonView alloc] initWithFrame:(CGRect){0,0, side,side}];
   button.button = buttonMap;
   button.label.font = [UIFont boldSystemFontOfSize:27.0];
-  if(buttonMap == SIOS_A || buttonMap == SIOS_B)
+  if(buttonMap == kSIOS_1PA || buttonMap == kSIOS_1PB)
   {
     button.image = [UIImage imageNamed:@"ButtonDarkPurple.png"];
     button.label.textColor = [UIColor colorWithRed:63/255.0 green:32/255.0 blue:127/255.0 alpha:0.75];
     button.label.shadowColor = [UIColor colorWithWhite:1 alpha:0.25];
     button.label.shadowOffset = CGSizeMake(0, 1);
-    if(buttonMap == SIOS_A)
+    if(buttonMap == kSIOS_1PA)
       button.label.text = @"A";
-    else if(buttonMap == SIOS_B)
+    else if(buttonMap == kSIOS_1PB)
       button.label.text = @"B";
   }
-  else if(buttonMap == SIOS_X || buttonMap == SIOS_Y)
+  else if(buttonMap == kSIOS_1PX || buttonMap == kSIOS_1PY)
   {
     button.image = [UIImage imageNamed:@"ButtonLightPurple.png"];
     button.label.textColor = [UIColor colorWithRed:122/255.0 green:101/255.0 blue:208/255.0 alpha:0.75];
     button.label.shadowColor = [UIColor colorWithWhite:1 alpha:0.25];
     button.label.shadowOffset = CGSizeMake(0, 1);
-    if(buttonMap == SIOS_X)
+    if(buttonMap == kSIOS_1PX)
       button.label.text = @"X";
-    else if(buttonMap == SIOS_Y)
+    else if(buttonMap == kSIOS_1PY)
       button.label.text = @"Y";
   }
-  else if(buttonMap == SIOS_L || buttonMap == SIOS_R)
+  else if(buttonMap == kSIOS_1PL || buttonMap == kSIOS_1PR)
   {
     button.image = [UIImage imageNamed:@"ButtonGrey.png"];
     button.label.textColor = [UIColor colorWithRed:136/255.0 green:140/255.0 blue:148/255.0 alpha:0.75];
     button.label.shadowColor = [UIColor colorWithWhite:1 alpha:0.25];
     button.label.shadowOffset = CGSizeMake(0, 1);
-    if(buttonMap == SIOS_L)
+    if(buttonMap == kSIOS_1PL)
       button.label.text = @"L";
-    else if(buttonMap == SIOS_R)
+    else if(buttonMap == kSIOS_1PR)
       button.label.text = @"R";
   }
   return [button autorelease];
@@ -159,6 +160,18 @@
   }
 }
 
+- (void)setButtonsAlpha:(double)percentage
+{
+    NSLog(@"alpha: %f", percentage);
+    _aButton.alpha = percentage;
+    _bButton.alpha = percentage;
+    _xButton.alpha = percentage;
+    _yButton.alpha = percentage;
+    _lButton.alpha = percentage;
+    _rButton.alpha = percentage;
+    _dPadView.alpha = percentage;
+}
+
 @end
 
 #pragma mark -
@@ -181,10 +194,10 @@
     [self addSubview:_screenView];
     
     // start / select buttons
-    _startButton = [[self LM_smallButtonWithButton:SIOS_START] retain];
+    _startButton = [[self LM_smallButtonWithButton:kSIOS_1PStart] retain];
     [self addSubview:_startButton];
     
-    _selectButton = [[self LM_smallButtonWithButton:SIOS_SELECT] retain];
+    _selectButton = [[self LM_smallButtonWithButton:kSIOS_1PSelect] retain];
     [self addSubview:_selectButton];
     
     // menu button
@@ -198,23 +211,23 @@
     [self addSubview:_optionsButton];
     
     // ABXY buttons
-    _aButton = [[self LM_buttonWithButton:SIOS_A] retain];
+    _aButton = [[self LM_buttonWithButton:kSIOS_1PA] retain];
     [self addSubview:_aButton];
     
-    _bButton = [[self LM_buttonWithButton:SIOS_B] retain];
+    _bButton = [[self LM_buttonWithButton:kSIOS_1PB] retain];
     [self addSubview:_bButton];
     
-    _xButton = [[self LM_buttonWithButton:SIOS_X] retain];
+    _xButton = [[self LM_buttonWithButton:kSIOS_1PX] retain];
     [self addSubview:_xButton];
     
-    _yButton = [[self LM_buttonWithButton:SIOS_Y] retain];
+    _yButton = [[self LM_buttonWithButton:kSIOS_1PY] retain];
     [self addSubview:_yButton];
     
     // L/R buttons
-    _lButton = [[self LM_buttonWithButton:SIOS_L] retain];
+    _lButton = [[self LM_buttonWithButton:kSIOS_1PL] retain];
     [self addSubview:_lButton];
     
-    _rButton = [[self LM_buttonWithButton:SIOS_R] retain];
+    _rButton = [[self LM_buttonWithButton:kSIOS_1PR] retain];
     [self addSubview:_rButton];
     
     // d-pad
@@ -485,6 +498,8 @@
   // layout d-pad
   _dPadView.frame = (CGRect){screenBorderX,size.height-_dPadView.image.size.height-screenBorderY, _dPadView.image.size};
   _dPadView.alpha = controlsAlpha;
+    
+    [self setButtonsAlpha:[[NSUserDefaults standardUserDefaults] doubleForKey:kLMSettingsHideButtons]];
 }
 
 @end

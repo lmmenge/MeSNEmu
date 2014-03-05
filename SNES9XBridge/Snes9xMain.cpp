@@ -61,7 +61,7 @@ void SIFlipFramebuffer(int flip, int sync)
   SIFlipFramebufferClient();
 }
 
-const char* SIGetFilename(const char* ex)
+const char *SIGetFilename(const char *ex)
 {
   static char filename [PATH_MAX + 1];
   char drive [_MAX_DRIVE + 1];
@@ -311,22 +311,114 @@ extern "C" int SIStartWithROM(char* rom_filename)
   S9xUnmapAllControls();
   S9xSetController(0, CTL_JOYPAD, 0, 0, 0, 0);
   //S9xSetController(1, CTL_JOYPAD, 1, 0, 0, 0);
+  S9xSetController(1, CTL_MP5, 1, 2, 3, 4);
   
   s9xcommand_t	cmd;
   
-	ASSIGN_BUTTONf(SIOS_X,         "Joypad1 X");
-	ASSIGN_BUTTONf(SIOS_A,         "Joypad1 A");
-	ASSIGN_BUTTONf(SIOS_B,         "Joypad1 B");
-	ASSIGN_BUTTONf(SIOS_Y,         "Joypad1 Y");
-	ASSIGN_BUTTONf(SIOS_L,         "Joypad1 L");
-	ASSIGN_BUTTONf(SIOS_R,         "Joypad1 R");
-	ASSIGN_BUTTONf(SIOS_SELECT,    "Joypad1 Select");
-	ASSIGN_BUTTONf(SIOS_START,     "Joypad1 Start");
-	ASSIGN_BUTTONf(SIOS_UP,        "Joypad1 Up");
-	ASSIGN_BUTTONf(SIOS_DOWN,      "Joypad1 Down");
-	ASSIGN_BUTTONf(SIOS_LEFT,      "Joypad1 Left");
-	ASSIGN_BUTTONf(SIOS_RIGHT,     "Joypad1 Right");
-  
+	ASSIGN_BUTTONf(kSIOS_1PX,         "Joypad1 X");
+	ASSIGN_BUTTONf(kSIOS_1PA,         "Joypad1 A");
+	ASSIGN_BUTTONf(kSIOS_1PB,         "Joypad1 B");
+	ASSIGN_BUTTONf(kSIOS_1PY,         "Joypad1 Y");
+	ASSIGN_BUTTONf(kSIOS_1PL,         "Joypad1 L");
+	ASSIGN_BUTTONf(kSIOS_1PR,         "Joypad1 R");
+	ASSIGN_BUTTONf(kSIOS_1PSelect,    "Joypad1 Select");
+	ASSIGN_BUTTONf(kSIOS_1PStart,     "Joypad1 Start");
+	ASSIGN_BUTTONf(kSIOS_1PUp,        "Joypad1 Up");
+	ASSIGN_BUTTONf(kSIOS_1PDown,      "Joypad1 Down");
+	ASSIGN_BUTTONf(kSIOS_1PLeft,      "Joypad1 Left");
+	ASSIGN_BUTTONf(kSIOS_1PRight,     "Joypad1 Right");
+    
+	ASSIGN_BUTTONf(kSIOS_2PX,         "Joypad2 X");
+	ASSIGN_BUTTONf(kSIOS_2PA,         "Joypad2 A");
+	ASSIGN_BUTTONf(kSIOS_2PB,         "Joypad2 B");
+	ASSIGN_BUTTONf(kSIOS_2PY,         "Joypad2 Y");
+	ASSIGN_BUTTONf(kSIOS_2PL,         "Joypad2 L");
+	ASSIGN_BUTTONf(kSIOS_2PR,         "Joypad2 R");
+	ASSIGN_BUTTONf(kSIOS_2PSelect,    "Joypad2 Select");
+	ASSIGN_BUTTONf(kSIOS_2PStart,     "Joypad2 Start");
+	ASSIGN_BUTTONf(kSIOS_2PUp,        "Joypad2 Up");
+	ASSIGN_BUTTONf(kSIOS_2PDown,      "Joypad2 Down");
+	ASSIGN_BUTTONf(kSIOS_2PLeft,      "Joypad2 Left");
+	ASSIGN_BUTTONf(kSIOS_2PRight,     "Joypad2 Right");
+    
+	ASSIGN_BUTTONf(kSIOS_3PX,         "Joypad3 X");
+	ASSIGN_BUTTONf(kSIOS_3PA,         "Joypad3 A");
+	ASSIGN_BUTTONf(kSIOS_3PB,         "Joypad3 B");
+	ASSIGN_BUTTONf(kSIOS_3PY,         "Joypad3 Y");
+	ASSIGN_BUTTONf(kSIOS_3PL,         "Joypad3 L");
+	ASSIGN_BUTTONf(kSIOS_3PR,         "Joypad3 R");
+	ASSIGN_BUTTONf(kSIOS_3PSelect,    "Joypad3 Select");
+	ASSIGN_BUTTONf(kSIOS_3PStart,     "Joypad3 Start");
+	ASSIGN_BUTTONf(kSIOS_3PUp,        "Joypad3 Up");
+	ASSIGN_BUTTONf(kSIOS_3PDown,      "Joypad3 Down");
+	ASSIGN_BUTTONf(kSIOS_3PLeft,      "Joypad3 Left");
+	ASSIGN_BUTTONf(kSIOS_3PRight,     "Joypad3 Right");
+    
+	ASSIGN_BUTTONf(kSIOS_4PX,         "Joypad4 X");
+	ASSIGN_BUTTONf(kSIOS_4PA,         "Joypad4 A");
+	ASSIGN_BUTTONf(kSIOS_4PB,         "Joypad4 B");
+	ASSIGN_BUTTONf(kSIOS_4PY,         "Joypad4 Y");
+	ASSIGN_BUTTONf(kSIOS_4PL,         "Joypad4 L");
+	ASSIGN_BUTTONf(kSIOS_4PR,         "Joypad4 R");
+	ASSIGN_BUTTONf(kSIOS_4PSelect,    "Joypad4 Select");
+	ASSIGN_BUTTONf(kSIOS_4PStart,     "Joypad4 Start");
+	ASSIGN_BUTTONf(kSIOS_4PUp,        "Joypad4 Up");
+	ASSIGN_BUTTONf(kSIOS_4PDown,      "Joypad4 Down");
+	ASSIGN_BUTTONf(kSIOS_4PLeft,      "Joypad4 Left");
+	ASSIGN_BUTTONf(kSIOS_4PRight,     "Joypad4 Right");
+    
+	ASSIGN_BUTTONf(kSIOS_5PX,         "Joypad5 X");
+	ASSIGN_BUTTONf(kSIOS_5PA,         "Joypad5 A");
+	ASSIGN_BUTTONf(kSIOS_5PB,         "Joypad5 B");
+	ASSIGN_BUTTONf(kSIOS_5PY,         "Joypad5 Y");
+	ASSIGN_BUTTONf(kSIOS_5PL,         "Joypad5 L");
+	ASSIGN_BUTTONf(kSIOS_5PR,         "Joypad5 R");
+	ASSIGN_BUTTONf(kSIOS_5PSelect,    "Joypad5 Select");
+	ASSIGN_BUTTONf(kSIOS_5PStart,     "Joypad5 Start");
+	ASSIGN_BUTTONf(kSIOS_5PUp,        "Joypad5 Up");
+	ASSIGN_BUTTONf(kSIOS_5PDown,      "Joypad5 Down");
+	ASSIGN_BUTTONf(kSIOS_5PLeft,      "Joypad5 Left");
+	ASSIGN_BUTTONf(kSIOS_5PRight,     "Joypad5 Right");
+    
+	ASSIGN_BUTTONf(kSIOS_6PX,         "Joypad6 X");
+	ASSIGN_BUTTONf(kSIOS_6PA,         "Joypad6 A");
+	ASSIGN_BUTTONf(kSIOS_6PB,         "Joypad6 B");
+	ASSIGN_BUTTONf(kSIOS_6PY,         "Joypad6 Y");
+	ASSIGN_BUTTONf(kSIOS_6PL,         "Joypad6 L");
+	ASSIGN_BUTTONf(kSIOS_6PR,         "Joypad6 R");
+	ASSIGN_BUTTONf(kSIOS_6PSelect,    "Joypad6 Select");
+	ASSIGN_BUTTONf(kSIOS_6PStart,     "Joypad6 Start");
+	ASSIGN_BUTTONf(kSIOS_6PUp,        "Joypad6 Up");
+	ASSIGN_BUTTONf(kSIOS_6PDown,      "Joypad6 Down");
+	ASSIGN_BUTTONf(kSIOS_6PLeft,      "Joypad6 Left");
+	ASSIGN_BUTTONf(kSIOS_6PRight,     "Joypad6 Right");
+    
+	ASSIGN_BUTTONf(kSIOS_7PX,         "Joypad7 X");
+	ASSIGN_BUTTONf(kSIOS_7PA,         "Joypad7 A");
+	ASSIGN_BUTTONf(kSIOS_7PB,         "Joypad7 B");
+	ASSIGN_BUTTONf(kSIOS_7PY,         "Joypad7 Y");
+	ASSIGN_BUTTONf(kSIOS_7PL,         "Joypad7 L");
+	ASSIGN_BUTTONf(kSIOS_7PR,         "Joypad7 R");
+	ASSIGN_BUTTONf(kSIOS_7PSelect,    "Joypad7 Select");
+	ASSIGN_BUTTONf(kSIOS_7PStart,     "Joypad7 Start");
+	ASSIGN_BUTTONf(kSIOS_7PUp,        "Joypad7 Up");
+	ASSIGN_BUTTONf(kSIOS_7PDown,      "Joypad7 Down");
+	ASSIGN_BUTTONf(kSIOS_7PLeft,      "Joypad7 Left");
+	ASSIGN_BUTTONf(kSIOS_7PRight,     "Joypad7 Right");
+    
+	ASSIGN_BUTTONf(kSIOS_8PX,         "Joypad8 X");
+	ASSIGN_BUTTONf(kSIOS_8PA,         "Joypad8 A");
+	ASSIGN_BUTTONf(kSIOS_8PB,         "Joypad8 B");
+	ASSIGN_BUTTONf(kSIOS_8PY,         "Joypad8 Y");
+	ASSIGN_BUTTONf(kSIOS_8PL,         "Joypad8 L");
+	ASSIGN_BUTTONf(kSIOS_8PR,         "Joypad8 R");
+	ASSIGN_BUTTONf(kSIOS_8PSelect,    "Joypad8 Select");
+	ASSIGN_BUTTONf(kSIOS_8PStart,     "Joypad8 Start");
+	ASSIGN_BUTTONf(kSIOS_8PUp,        "Joypad8 Up");
+	ASSIGN_BUTTONf(kSIOS_8PDown,      "Joypad8 Down");
+	ASSIGN_BUTTONf(kSIOS_8PLeft,      "Joypad8 Left");
+	ASSIGN_BUTTONf(kSIOS_8PRight,     "Joypad8 Right");
+    
 	S9xReportControllers();
   
 #ifdef GFX_MULTI_FORMAT

@@ -8,6 +8,7 @@
 
 #import "LMEmulatorController.h"
 
+#import "LMAppDelegate.h"
 #import "LMButtonView.h"
 #import "LMDPadView.h"
 #import "LMEmulatorControllerView.h"
@@ -33,7 +34,7 @@ typedef enum _LMEmulatorAlert
 
 #pragma mark -
 
-@interface LMEmulatorController(Privates) <UIActionSheetDelegate, UIAlertViewDelegate, LMSettingsControllerDelegate, SISaveDelegate, iCadeEventDelegate, SIScreenDelegate, LMGameControllerManagerDelegate>
+@interface LMEmulatorController(Privates) <UIActionSheetDelegate, UIAlertViewDelegate, LMSettingsControllerDelegate, SISaveDelegate, iCadeEventDelegate, SIScreenDelegate, LMGameControllerManagerDelegate, JPDeviceDelegate, JPManagerDelegate>
 @end
 
 #pragma mark -
@@ -91,6 +92,7 @@ typedef enum _LMEmulatorAlert
 - (void)LM_options:(UIButton*)sender
 {
   SISetEmulationPaused(1);
+  [self setJoypadGameState:kJPGameStateMenu];
   
   _customView.iCadeControlView.active = NO;
   if([LMGameControllerManager gameControllersMightBeAvailable] == YES)
@@ -225,6 +227,7 @@ typedef enum _LMEmulatorAlert
   {
     _customView.iCadeControlView.active = YES;
     SISetEmulationPaused(0);
+    [self setJoypadGameState:kJPGameStateGameplay];
   }
   _actionSheet = nil;
 }
@@ -236,14 +239,20 @@ typedef enum _LMEmulatorAlert
   if(alertView.tag == LMEmulatorAlertReset)
   {
     if(buttonIndex == alertView.cancelButtonIndex)
+    {
       SISetEmulationPaused(0);
+      [self setJoypadGameState:kJPGameStateGameplay];
+    }
     else
       SIReset();
   }
   else if(alertView.tag == LMEmulatorAlertLoad)
   {
     if(buttonIndex == alertView.cancelButtonIndex)
+    {
       SISetEmulationPaused(0);
+      [self setJoypadGameState:kJPGameStateGameplay];
+    }
     else
     {
       SISetEmulationPaused(1);
@@ -255,7 +264,10 @@ typedef enum _LMEmulatorAlert
   else if(alertView.tag == LMEmulatorAlertSave)
   {
     if(buttonIndex == alertView.cancelButtonIndex)
+    {
       SISetEmulationPaused(0);
+      [self setJoypadGameState:kJPGameStateGameplay];
+    }
     else
     {
       SISetEmulationPaused(1);
@@ -270,101 +282,787 @@ typedef enum _LMEmulatorAlert
 
 - (void)settingsDidDismiss:(LMSettingsController*)settingsController
 {
-  [self LM_options:nil];
+    if(_actionSheet == nil)
+    {
+        [self LM_options:nil];
+    }
+}
+
+#pragma mark Joypad
+
+- (void)joypadManager:(JPManager *)manager deviceDidConnect:(JPDevice *)device
+{
+    NSLog(@"emulator did connect");
+    device.delegate = self;
+    
+    if(device.playerNumber > 1) {
+        
+        [_customView setButtonsAlpha:0];
+    }
+    
+    else {
+        
+        [_customView setButtonsAlpha:[[NSUserDefaults standardUserDefaults] doubleForKey:kLMSettingsHideButtons]];
+    }
+}
+
+- (void)joypadManager:(JPManager *)manager deviceDidDisconnect:(JPDevice *)device
+{
+    device.delegate = nil;
+    
+    if(_actionSheet == nil)
+    {
+        [self LM_options:nil];
+    }
+    
+    [_customView setButtonsAlpha:[[NSUserDefaults standardUserDefaults] doubleForKey:kLMSettingsHideButtons]];
+}
+
+- (void)joypadDevice:(JPDevice *)device dPad:(JPInputIdentifier)dpad buttonDown:(JPDpadButton)dpadButton
+{
+    int playerNumber = device.playerNumber;
+    
+    LMAppDelegate *delegate = (LMAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    if(delegate.skipPlayerOne)
+    {
+        playerNumber += 1;
+    }
+    else
+    {
+        if(playerNumber == delegate.playerOneNumber)
+        {
+            playerNumber -= playerNumber - 1;
+        }
+        else if(playerNumber < delegate.playerOneNumber)
+        {
+            playerNumber += 1;
+        }
+    }
+    
+    switch(playerNumber) {
+        case 1:
+            
+            switch(dpadButton)
+        {
+            case kJPDpadButtonRight:
+                SISetControllerPushButton(kSIOS_1PRight);
+                break;
+            case kJPDpadButtonUp:
+                SISetControllerPushButton(kSIOS_1PUp);
+                break;
+            case kJPDpadButtonLeft:
+                SISetControllerPushButton(kSIOS_1PLeft);
+                break;
+            case kJPDpadButtonDown:
+                SISetControllerPushButton(kSIOS_1PDown);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        case 2:
+            
+            switch(dpadButton)
+        {
+            case kJPDpadButtonRight:
+                SISetControllerPushButton(kSIOS_2PRight);
+                break;
+            case kJPDpadButtonUp:
+                SISetControllerPushButton(kSIOS_2PUp);
+                break;
+            case kJPDpadButtonLeft:
+                SISetControllerPushButton(kSIOS_2PLeft);
+                break;
+            case kJPDpadButtonDown:
+                SISetControllerPushButton(kSIOS_2PDown);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        case 3:
+            
+            switch(dpadButton)
+        {
+            case kJPDpadButtonRight:
+                SISetControllerPushButton(kSIOS_3PRight);
+                break;
+            case kJPDpadButtonUp:
+                SISetControllerPushButton(kSIOS_3PUp);
+                break;
+            case kJPDpadButtonLeft:
+                SISetControllerPushButton(kSIOS_3PLeft);
+                break;
+            case kJPDpadButtonDown:
+                SISetControllerPushButton(kSIOS_3PDown);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        case 4:
+            
+            switch(dpadButton)
+        {
+            case kJPDpadButtonRight:
+                SISetControllerPushButton(kSIOS_4PRight);
+                break;
+            case kJPDpadButtonUp:
+                SISetControllerPushButton(kSIOS_4PUp);
+                break;
+            case kJPDpadButtonLeft:
+                SISetControllerPushButton(kSIOS_4PLeft);
+                break;
+            case kJPDpadButtonDown:
+                SISetControllerPushButton(kSIOS_4PDown);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        case 5:
+            
+            switch(dpadButton)
+        {
+            case kJPDpadButtonRight:
+                SISetControllerPushButton(kSIOS_5PRight);
+                break;
+            case kJPDpadButtonUp:
+                SISetControllerPushButton(kSIOS_5PUp);
+                break;
+            case kJPDpadButtonLeft:
+                SISetControllerPushButton(kSIOS_5PLeft);
+                break;
+            case kJPDpadButtonDown:
+                SISetControllerPushButton(kSIOS_5PDown);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+}
+
+- (void)joypadDevice:(JPDevice *)device dPad:(JPInputIdentifier)dpad buttonUp:(JPDpadButton)dpadButton
+{
+    int playerNumber = device.playerNumber;
+    
+    LMAppDelegate *delegate = (LMAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    if(delegate.skipPlayerOne)
+    {
+        playerNumber += 1;
+    }
+    else
+    {
+        if(playerNumber == delegate.playerOneNumber)
+        {
+            playerNumber -= playerNumber - 1;
+        }
+        else if(playerNumber < delegate.playerOneNumber)
+        {
+            playerNumber += 1;
+        }
+    }
+    
+    switch(playerNumber) {
+        case 1:
+            
+            switch(dpadButton)
+        {
+            case kJPDpadButtonRight:
+                SISetControllerReleaseButton(kSIOS_1PRight);
+                break;
+            case kJPDpadButtonUp:
+                SISetControllerReleaseButton(kSIOS_1PUp);
+                break;
+            case kJPDpadButtonLeft:
+                SISetControllerReleaseButton(kSIOS_1PLeft);
+                break;
+            case kJPDpadButtonDown:
+                SISetControllerReleaseButton(kSIOS_1PDown);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        case 2:
+            
+            switch(dpadButton)
+        {
+            case kJPDpadButtonRight:
+                SISetControllerReleaseButton(kSIOS_2PRight);
+                break;
+            case kJPDpadButtonUp:
+                SISetControllerReleaseButton(kSIOS_2PUp);
+                break;
+            case kJPDpadButtonLeft:
+                SISetControllerReleaseButton(kSIOS_2PLeft);
+                break;
+            case kJPDpadButtonDown:
+                SISetControllerReleaseButton(kSIOS_2PDown);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        case 3:
+            
+            switch(dpadButton)
+        {
+            case kJPDpadButtonRight:
+                SISetControllerReleaseButton(kSIOS_3PRight);
+                break;
+            case kJPDpadButtonUp:
+                SISetControllerReleaseButton(kSIOS_3PUp);
+                break;
+            case kJPDpadButtonLeft:
+                SISetControllerReleaseButton(kSIOS_3PLeft);
+                break;
+            case kJPDpadButtonDown:
+                SISetControllerReleaseButton(kSIOS_3PDown);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        case 4:
+            
+            switch(dpadButton)
+        {
+            case kJPDpadButtonRight:
+                SISetControllerReleaseButton(kSIOS_4PRight);
+                break;
+            case kJPDpadButtonUp:
+                SISetControllerReleaseButton(kSIOS_4PUp);
+                break;
+            case kJPDpadButtonLeft:
+                SISetControllerReleaseButton(kSIOS_4PLeft);
+                break;
+            case kJPDpadButtonDown:
+                SISetControllerReleaseButton(kSIOS_4PDown);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        case 5:
+            
+            switch(dpadButton)
+        {
+            case kJPDpadButtonRight:
+                SISetControllerReleaseButton(kSIOS_5PRight);
+                break;
+            case kJPDpadButtonUp:
+                SISetControllerReleaseButton(kSIOS_5PUp);
+                break;
+            case kJPDpadButtonLeft:
+                SISetControllerReleaseButton(kSIOS_5PLeft);
+                break;
+            case kJPDpadButtonDown:
+                SISetControllerReleaseButton(kSIOS_5PDown);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)joypadDevice:(JPDevice *)device buttonDown:(JPInputIdentifier)button
+{
+    int playerNumber = device.playerNumber;
+    
+    LMAppDelegate *delegate = (LMAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    if(delegate.skipPlayerOne)
+    {
+        playerNumber += 1;
+    }
+    else
+    {
+        if(playerNumber == delegate.playerOneNumber)
+        {
+            playerNumber -= playerNumber - 1;
+        }
+        else if(playerNumber < delegate.playerOneNumber)
+        {
+            playerNumber += 1;
+        }
+    }
+    
+    switch(playerNumber) {
+        case 1:
+            switch(button)
+        {
+            case kJPInputXButton:
+                SISetControllerPushButton(kSIOS_1PX);
+                break;
+            case kJPInputBButton:
+                SISetControllerPushButton(kSIOS_1PB);
+                break;
+            case kJPInputAButton:
+                SISetControllerPushButton(kSIOS_1PA);
+                break;
+            case kJPInputStartButton:
+                SISetControllerPushButton(kSIOS_1PStart);
+                break;
+            case kJPInputYButton:
+                SISetControllerPushButton(kSIOS_1PY);
+                break;
+            case kJPInputSelectButton:
+                SISetControllerPushButton(kSIOS_1PSelect);
+                break;
+            case kJPInputLButton:
+                SISetControllerPushButton(kSIOS_1PL);
+                break;
+            case kJPInputRButton:
+                SISetControllerPushButton(kSIOS_1PR);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        case 2:
+            switch(button)
+        {
+            case kJPInputXButton:
+                SISetControllerPushButton(kSIOS_2PX);
+                break;
+            case kJPInputBButton:
+                SISetControllerPushButton(kSIOS_2PB);
+                break;
+            case kJPInputAButton:
+                SISetControllerPushButton(kSIOS_2PA);
+                break;
+            case kJPInputStartButton:
+                SISetControllerPushButton(kSIOS_2PStart);
+                break;
+            case kJPInputYButton:
+                SISetControllerPushButton(kSIOS_2PY);
+                break;
+            case kJPInputSelectButton:
+                SISetControllerPushButton(kSIOS_2PSelect);
+                break;
+            case kJPInputLButton:
+                SISetControllerPushButton(kSIOS_2PL);
+                break;
+            case kJPInputRButton:
+                SISetControllerPushButton(kSIOS_2PR);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        case 3:
+            
+            switch(button)
+        {
+            case kJPInputXButton:
+                SISetControllerPushButton(kSIOS_3PX);
+                break;
+            case kJPInputBButton:
+                SISetControllerPushButton(kSIOS_3PB);
+                break;
+            case kJPInputAButton:
+                SISetControllerPushButton(kSIOS_3PA);
+                break;
+            case kJPInputStartButton:
+                SISetControllerPushButton(kSIOS_3PStart);
+                break;
+            case kJPInputYButton:
+                SISetControllerPushButton(kSIOS_3PY);
+                break;
+            case kJPInputSelectButton:
+                SISetControllerPushButton(kSIOS_3PSelect);
+                break;
+            case kJPInputLButton:
+                SISetControllerPushButton(kSIOS_3PL);
+                break;
+            case kJPInputRButton:
+                SISetControllerPushButton(kSIOS_3PR);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        case 4:
+            
+            switch(button)
+        {
+            case kJPInputXButton:
+                SISetControllerPushButton(kSIOS_4PX);
+                break;
+            case kJPInputBButton:
+                SISetControllerPushButton(kSIOS_4PB);
+                break;
+            case kJPInputAButton:
+                SISetControllerPushButton(kSIOS_4PA);
+                break;
+            case kJPInputStartButton:
+                SISetControllerPushButton(kSIOS_4PStart);
+                break;
+            case kJPInputYButton:
+                SISetControllerPushButton(kSIOS_4PY);
+                break;
+            case kJPInputSelectButton:
+                SISetControllerPushButton(kSIOS_4PSelect);
+                break;
+            case kJPInputLButton:
+                SISetControllerPushButton(kSIOS_4PL);
+                break;
+            case kJPInputRButton:
+                SISetControllerPushButton(kSIOS_4PR);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        case 5:
+            switch(button)
+        {
+            case kJPInputXButton:
+                SISetControllerPushButton(kSIOS_5PX);
+                break;
+            case kJPInputBButton:
+                SISetControllerPushButton(kSIOS_5PB);
+                break;
+            case kJPInputAButton:
+                SISetControllerPushButton(kSIOS_5PA);
+                break;
+            case kJPInputStartButton:
+                SISetControllerPushButton(kSIOS_5PStart);
+                break;
+            case kJPInputYButton:
+                SISetControllerPushButton(kSIOS_5PY);
+                break;
+            case kJPInputSelectButton:
+                SISetControllerPushButton(kSIOS_5PSelect);
+                break;
+            case kJPInputLButton:
+                SISetControllerPushButton(kSIOS_5PL);
+                break;
+            case kJPInputRButton:
+                SISetControllerPushButton(kSIOS_5PR);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)joypadDevice:(JPDevice *)device buttonUp:(JPInputIdentifier)button
+{
+    int playerNumber = device.playerNumber;
+    
+    LMAppDelegate *delegate = (LMAppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    if(delegate.skipPlayerOne)
+    {
+        playerNumber += 1;
+    }
+    else
+    {
+        if(playerNumber == delegate.playerOneNumber)
+        {
+            playerNumber -= playerNumber - 1;
+        }
+        else if(playerNumber < delegate.playerOneNumber)
+        {
+            playerNumber += 1;
+        }
+    }
+    switch(playerNumber) {
+            
+        case 1:
+            switch(button)
+        {
+            case kJPInputXButton:
+                SISetControllerReleaseButton(kSIOS_1PX);
+                break;
+            case kJPInputBButton:
+                SISetControllerReleaseButton(kSIOS_1PB);
+                break;
+            case kJPInputAButton:
+                SISetControllerReleaseButton(kSIOS_1PA);
+                break;
+            case kJPInputStartButton:
+                SISetControllerReleaseButton(kSIOS_1PStart);
+                break;
+            case kJPInputYButton:
+                SISetControllerReleaseButton(kSIOS_1PY);
+                break;
+            case kJPInputSelectButton:
+                SISetControllerReleaseButton(kSIOS_1PSelect);
+                break;
+            case kJPInputLButton:
+                SISetControllerReleaseButton(kSIOS_1PL);
+                break;
+            case kJPInputRButton:
+                SISetControllerReleaseButton(kSIOS_1PR);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        case 2:
+            
+            switch(button)
+        {
+            case kJPInputXButton:
+                SISetControllerReleaseButton(kSIOS_2PX);
+                break;
+            case kJPInputBButton:
+                SISetControllerReleaseButton(kSIOS_2PB);
+                break;
+            case kJPInputAButton:
+                SISetControllerReleaseButton(kSIOS_2PA);
+                break;
+            case kJPInputStartButton:
+                SISetControllerReleaseButton(kSIOS_2PStart);
+                break;
+            case kJPInputYButton:
+                SISetControllerReleaseButton(kSIOS_2PY);
+                break;
+            case kJPInputSelectButton:
+                SISetControllerReleaseButton(kSIOS_2PSelect);
+                break;
+            case kJPInputLButton:
+                SISetControllerReleaseButton(kSIOS_2PL);
+                break;
+            case kJPInputRButton:
+                SISetControllerReleaseButton(kSIOS_2PR);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        case 3:
+            
+            switch(button)
+        {
+            case kJPInputXButton:
+                SISetControllerReleaseButton(kSIOS_3PX);
+                break;
+            case kJPInputBButton:
+                SISetControllerReleaseButton(kSIOS_3PB);
+                break;
+            case kJPInputAButton:
+                SISetControllerReleaseButton(kSIOS_3PA);
+                break;
+            case kJPInputStartButton:
+                SISetControllerReleaseButton(kSIOS_3PStart);
+                break;
+            case kJPInputYButton:
+                SISetControllerReleaseButton(kSIOS_3PY);
+                break;
+            case kJPInputSelectButton:
+                SISetControllerReleaseButton(kSIOS_3PSelect);
+                break;
+            case kJPInputLButton:
+                SISetControllerReleaseButton(kSIOS_3PL);
+                break;
+            case kJPInputRButton:
+                SISetControllerReleaseButton(kSIOS_3PR);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        case 4:
+            
+            switch(button)
+        {
+            case kJPInputXButton:
+                SISetControllerReleaseButton(kSIOS_4PX);
+                break;
+            case kJPInputBButton:
+                SISetControllerReleaseButton(kSIOS_4PB);
+                break;
+            case kJPInputAButton:
+                SISetControllerReleaseButton(kSIOS_4PA);
+                break;
+            case kJPInputStartButton:
+                SISetControllerReleaseButton(kSIOS_4PStart);
+                break;
+            case kJPInputYButton:
+                SISetControllerReleaseButton(kSIOS_4PY);
+                break;
+            case kJPInputSelectButton:
+                SISetControllerReleaseButton(kSIOS_4PSelect);
+                break;
+            case kJPInputLButton:
+                SISetControllerReleaseButton(kSIOS_4PL);
+                break;
+            case kJPInputRButton:
+                SISetControllerReleaseButton(kSIOS_4PR);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        case 5:
+            switch(button)
+        {
+            case kJPInputXButton:
+                SISetControllerReleaseButton(kSIOS_5PX);
+                break;
+            case kJPInputBButton:
+                SISetControllerReleaseButton(kSIOS_5PB);
+                break;
+            case kJPInputAButton:
+                SISetControllerReleaseButton(kSIOS_5PA);
+                break;
+            case kJPInputStartButton:
+                SISetControllerReleaseButton(kSIOS_5PStart);
+                break;
+            case kJPInputYButton:
+                SISetControllerReleaseButton(kSIOS_5PY);
+                break;
+            case kJPInputSelectButton:
+                SISetControllerReleaseButton(kSIOS_5PSelect);
+                break;
+            case kJPInputLButton:
+                SISetControllerReleaseButton(kSIOS_5PL);
+                break;
+            case kJPInputRButton:
+                SISetControllerReleaseButton(kSIOS_5PR);
+                break;
+            default:
+                break;
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)setJoypadGameState:(int)state
+{
+    [[JPManager sharedManager] setGameState:state];
 }
 
 #pragma mark iCadeEventDelegate
 
 - (void)buttonDown:(iCadeState)button
 {  
-  switch(button)
-  {
-    case iCadeJoystickRight:
-      SISetControllerPushButton(SIOS_RIGHT);
-      break;
-    case iCadeJoystickUp:
-      SISetControllerPushButton(SIOS_UP);
-      break;
-    case iCadeJoystickLeft:
-      SISetControllerPushButton(SIOS_LEFT);
-      break;
-    case iCadeJoystickDown:
-      SISetControllerPushButton(SIOS_DOWN);
-      break;
-    case iCadeButtonA:
-      SISetControllerPushButton(SIOS_SELECT);
-      break;
-    case iCadeButtonB:
-      SISetControllerPushButton(SIOS_START);
-      break;
-    case iCadeButtonC:
-      SISetControllerPushButton(SIOS_Y);
-      break;
-    case iCadeButtonD:
-      SISetControllerPushButton(SIOS_B);
-      break;
-    case iCadeButtonE:
-      SISetControllerPushButton(SIOS_X);
-      break;
-    case iCadeButtonF:
-      SISetControllerPushButton(SIOS_A);
-      break;
-    case iCadeButtonG:
-      SISetControllerPushButton(SIOS_L);
-      break;
-    case iCadeButtonH:
-      SISetControllerPushButton(SIOS_R);
-      break;
-    default:
-      break;
-  }
+    switch(button)
+    {
+        case iCadeJoystickRight:
+            SISetControllerPushButton(kSIOS_1PRight);
+            break;
+        case iCadeJoystickUp:
+            SISetControllerPushButton(kSIOS_1PUp);
+            break;
+        case iCadeJoystickLeft:
+            SISetControllerPushButton(kSIOS_1PLeft);
+            break;
+        case iCadeJoystickDown:
+            SISetControllerPushButton(kSIOS_1PDown);
+            break;
+        case iCadeButtonA:
+            SISetControllerPushButton(kSIOS_1PX);
+            break;
+        case iCadeButtonB:
+            SISetControllerPushButton(kSIOS_1PB);
+            break;
+        case iCadeButtonC:
+            SISetControllerPushButton(kSIOS_1PA);
+            break;
+        case iCadeButtonD:
+            SISetControllerPushButton(kSIOS_1PStart);
+            break;
+        case iCadeButtonE:
+            SISetControllerPushButton(kSIOS_1PY);
+            break;
+        case iCadeButtonF:
+            SISetControllerPushButton(kSIOS_1PSelect);
+            break;
+        case iCadeButtonG:
+            SISetControllerPushButton(kSIOS_1PL);
+            break;
+        case iCadeButtonH:
+            SISetControllerPushButton(kSIOS_1PR);
+            break;
+        default:
+            break;
+    }
   
   [_customView setControlsHidden:YES animated:YES];
 }
 
 - (void)buttonUp:(iCadeState)button
 {  
-  switch(button)
-  {
-    case iCadeJoystickRight:
-      SISetControllerReleaseButton(SIOS_RIGHT);
-      break;
-    case iCadeJoystickUp:
-      SISetControllerReleaseButton(SIOS_UP);
-      break;
-    case iCadeJoystickLeft:
-      SISetControllerReleaseButton(SIOS_LEFT);
-      break;
-    case iCadeJoystickDown:
-      SISetControllerReleaseButton(SIOS_DOWN);
-      break;
-    case iCadeButtonA:
-      SISetControllerReleaseButton(SIOS_SELECT);
-      break;
-    case iCadeButtonB:
-      SISetControllerReleaseButton(SIOS_START);
-      break;
-    case iCadeButtonC:
-      SISetControllerReleaseButton(SIOS_Y);
-      break;
-    case iCadeButtonD:
-      SISetControllerReleaseButton(SIOS_B);
-      break;
-    case iCadeButtonE:
-      SISetControllerReleaseButton(SIOS_X);
-      break;
-    case iCadeButtonF:
-      SISetControllerReleaseButton(SIOS_A);
-      break;
-    case iCadeButtonG:
-      SISetControllerReleaseButton(SIOS_L);
-      break;
-    case iCadeButtonH:
-      SISetControllerReleaseButton(SIOS_R);
-      break;
-    default:
-      break;
-  } 
+    switch(button)
+    {
+        case iCadeJoystickRight:
+            SISetControllerReleaseButton(kSIOS_1PRight);
+            break;
+        case iCadeJoystickUp:
+            SISetControllerReleaseButton(kSIOS_1PUp);
+            break;
+        case iCadeJoystickLeft:
+            SISetControllerReleaseButton(kSIOS_1PLeft);
+            break;
+        case iCadeJoystickDown:
+            SISetControllerReleaseButton(kSIOS_1PDown);
+            break;
+        case iCadeButtonA:
+            SISetControllerReleaseButton(kSIOS_1PX);
+            break;
+        case iCadeButtonB:
+            SISetControllerReleaseButton(kSIOS_1PB);
+            break;
+        case iCadeButtonC:
+            SISetControllerReleaseButton(kSIOS_1PA);
+            break;
+        case iCadeButtonD:
+            SISetControllerReleaseButton(kSIOS_1PStart);
+            break;
+        case iCadeButtonE:
+            SISetControllerReleaseButton(kSIOS_1PY);
+            break;
+        case iCadeButtonF:
+            SISetControllerReleaseButton(kSIOS_1PSelect);
+            break;
+        case iCadeButtonG:
+            SISetControllerReleaseButton(kSIOS_1PL);
+            break;
+        case iCadeButtonH:
+            SISetControllerReleaseButton(kSIOS_1PR);
+            break;
+        default:
+            break;
+    }
 }
 
 #pragma mark LMGameControllerManagerDelegate
@@ -513,6 +1211,15 @@ typedef enum _LMEmulatorAlert
   self.view = _customView;
   
   self.wantsFullScreenLayout = YES;
+    
+    // Joypad support
+    JPManager *manager = [JPManager sharedManager];
+    manager.delegate = self;
+    manager.gameState = kJPGameStateGameplay;
+    for(JPDevice *device in manager.connectedDevices)
+    {
+        device.delegate = self;
+    }
 }
 
 - (void)viewDidUnload
@@ -571,6 +1278,15 @@ typedef enum _LMEmulatorAlert
     if(_emulationThread == nil)
       [self startWithROM:_romFileName];
   }
+    
+    // Joypad support
+    JPManager *manager = [JPManager sharedManager];
+    manager.delegate = self;
+    manager.gameState = kJPGameStateGameplay;
+    for(JPDevice *device in manager.connectedDevices)
+    {
+        device.delegate = self;
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated

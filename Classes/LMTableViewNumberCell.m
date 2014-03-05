@@ -20,12 +20,17 @@
 
 - (void)updateLabel
 {
-  if(_allowsDefault == NO)
-    _defaultButton.enabled = NO;
-  if(_usesDefaultValue == YES)
-    [_defaultButton setTitle:NSLocalizedString(@"DEFAULT", nil) forState:UIControlStateNormal];
-  else
-    [_defaultButton setTitle:[NSString stringWithFormat:@"%i %@", _value, _suffix] forState:UIControlStateNormal];
+    if(_allowsDefault == NO) {
+        _defaultButton.enabled = NO;
+    }
+    if(_usesDefaultValue == YES) {
+        [_defaultButton setTitle:NSLocalizedString(@"DEFAULT", nil) forState:UIControlStateNormal];
+    }
+    else {
+        int valueAsInt = _value * 100;
+        [_defaultButton setTitle:[NSString stringWithFormat:@"%d %@", valueAsInt, _suffix] forState:UIControlStateNormal];
+        NSLog(@"default button text: %@", _defaultButton.titleLabel.text);
+    }
 }
 
 - (void)setup
@@ -142,7 +147,7 @@
   return _plusMinusAccessoryView;
 }
 @synthesize value = _value;
-- (void)setValue:(int)i
+- (void)setValue:(double)i
 {
   if(i != _value && i <= _maximumValue && i >= _minimumValue)
   {
@@ -184,15 +189,29 @@
 
 - (void)plus:(id)sender
 {
-  self.usesDefaultValue = NO;
-  self.value++;
+    self.usesDefaultValue = NO;
+    if(self.maximumValue == 1.0) {
+        self.value += 0.25;
+    }
+    
+    else
+    {
+        self.value += 0.01;
+    }
   [_delegate LM_cellValueChanged:self];
 }
 
 - (void)minus:(id)sender
 {
-  self.usesDefaultValue = NO;
-  self.value--;
+    self.usesDefaultValue = NO;
+    if(self.maximumValue == 1.0) {
+        self.value -= 0.25;
+    }
+    
+    else
+    {
+        self.value -= 0.01;
+    }
   [_delegate LM_cellValueChanged:self];
 }
 

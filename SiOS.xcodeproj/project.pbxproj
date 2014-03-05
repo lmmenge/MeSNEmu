@@ -7,6 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34DEFF4918C7C08D00F1248D /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34DEFF4818C7C08D00F1248D /* DropboxSDK.framework */; };
+		34DEFF5B18C7C0AF00F1248D /* libJoypad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34DEFF5318C7C0AF00F1248D /* libJoypad.a */; };
+		34DEFF5C18C7C0AF00F1248D /* JPalert_btn_dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 34DEFF5518C7C0AF00F1248D /* JPalert_btn_dark.png */; };
+		34DEFF5D18C7C0AF00F1248D /* JPalert_btn_dark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34DEFF5618C7C0AF00F1248D /* JPalert_btn_dark@2x.png */; };
+		34DEFF5E18C7C0AF00F1248D /* JPalert_btn_light.png in Resources */ = {isa = PBXBuildFile; fileRef = 34DEFF5718C7C0AF00F1248D /* JPalert_btn_light.png */; };
+		34DEFF5F18C7C0AF00F1248D /* JPalert_btn_light@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34DEFF5818C7C0AF00F1248D /* JPalert_btn_light@2x.png */; };
+		34DEFF6018C7C0AF00F1248D /* JPalert_caps.png in Resources */ = {isa = PBXBuildFile; fileRef = 34DEFF5918C7C0AF00F1248D /* JPalert_caps.png */; };
+		34DEFF6118C7C0AF00F1248D /* JPalert_caps@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34DEFF5A18C7C0AF00F1248D /* JPalert_caps@2x.png */; };
+		34DEFF6318C7C0E600F1248D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34DEFF6218C7C0E600F1248D /* CFNetwork.framework */; };
+		34DEFF6518C7C0F500F1248D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34DEFF6418C7C0F500F1248D /* Security.framework */; };
+		34DEFF6C18C7C14500F1248D /* CHBgDropboxSync.m in Sources */ = {isa = PBXBuildFile; fileRef = 34DEFF6918C7C14500F1248D /* CHBgDropboxSync.m */; };
+		34DEFF6D18C7C14500F1248D /* DropboxClearer.m in Sources */ = {isa = PBXBuildFile; fileRef = 34DEFF6B18C7C14500F1248D /* DropboxClearer.m */; };
+		34DEFF9A18C7C19F00F1248D /* ConciseKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 34DEFF9318C7C19F00F1248D /* ConciseKit.m */; };
+		34DEFF9B18C7C19F00F1248D /* NSArray+ConciseKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 34DEFF9518C7C19F00F1248D /* NSArray+ConciseKit.m */; };
+		34DEFF9C18C7C19F00F1248D /* NSDictionary+ConciseKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 34DEFF9718C7C19F00F1248D /* NSDictionary+ConciseKit.m */; };
+		34DEFF9D18C7C19F00F1248D /* NSString+ConciseKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 34DEFF9918C7C19F00F1248D /* NSString+ConciseKit.m */; };
+		34DEFFA318C7D1CB00F1248D /* ButtonDarkPurple@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34DEFF9E18C7D1CB00F1248D /* ButtonDarkPurple@2x.png */; };
+		34DEFFA418C7D1CB00F1248D /* ButtonDPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34DEFF9F18C7D1CB00F1248D /* ButtonDPad@2x.png */; };
+		34DEFFA518C7D1CB00F1248D /* ButtonGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34DEFFA018C7D1CB00F1248D /* ButtonGrey@2x.png */; };
+		34DEFFA618C7D1CB00F1248D /* ButtonLightPurple@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34DEFFA118C7D1CB00F1248D /* ButtonLightPurple@2x.png */; };
+		34DEFFA718C7D1CB00F1248D /* ButtonWide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 34DEFFA218C7D1CB00F1248D /* ButtonWide@2x.png */; };
 		66C1BD601866ACA800E5A833 /* LMGameControllerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 66C1BD5F1866ACA800E5A833 /* LMGameControllerManager.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		66C1BD621866AF9E00E5A833 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66C1BD611866AF9E00E5A833 /* GameController.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		A00403C114BE3E4D00FE28CE /* apu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00401E514BE3E4D00FE28CE /* apu.cpp */; };
@@ -102,11 +123,7 @@
 		A0B8685C14BE25F900663EBE /* ButtonDarkPurple.png in Resources */ = {isa = PBXBuildFile; fileRef = A0B8685914BE25F900663EBE /* ButtonDarkPurple.png */; };
 		A0B8685D14BE25F900663EBE /* ButtonLightPurple.png in Resources */ = {isa = PBXBuildFile; fileRef = A0B8685A14BE25F900663EBE /* ButtonLightPurple.png */; };
 		A0B8685E14BE25F900663EBE /* ButtonWide.png in Resources */ = {isa = PBXBuildFile; fileRef = A0B8685B14BE25F900663EBE /* ButtonWide.png */; };
-		A0B8686014BE2C9500663EBE /* ButtonDarkPurple@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0B8685F14BE2C9500663EBE /* ButtonDarkPurple@2x.png */; };
-		A0B8686214BE2C9900663EBE /* ButtonLightPurple@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0B8686114BE2C9900663EBE /* ButtonLightPurple@2x.png */; };
-		A0B8686414BE2C9E00663EBE /* ButtonWide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0B8686314BE2C9E00663EBE /* ButtonWide@2x.png */; };
 		A0B8686714BE391300663EBE /* ButtonDPad.png in Resources */ = {isa = PBXBuildFile; fileRef = A0B8686514BE391300663EBE /* ButtonDPad.png */; };
-		A0B8686814BE391300663EBE /* ButtonDPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0B8686614BE391300663EBE /* ButtonDPad@2x.png */; };
 		A0B8686B14BE3B3100663EBE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B8686914BE3B3100663EBE /* main.m */; };
 		A0B8687E14BE3B6800663EBE /* LMDPadView.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B8686E14BE3B6600663EBE /* LMDPadView.m */; };
 		A0B8687F14BE3B6800663EBE /* LMEmulatorController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B8686F14BE3B6600663EBE /* LMEmulatorController.m */; };
@@ -117,7 +134,6 @@
 		A0B8688514BE3B6800663EBE /* LMAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A0B8687C14BE3B6800663EBE /* LMAppDelegate.m */; };
 		A0BB592614E84BC000D12F97 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0BB592814E84BC000D12F97 /* Localizable.strings */; };
 		A0BF018E14E98A19006534F2 /* ButtonGrey.png in Resources */ = {isa = PBXBuildFile; fileRef = A0BF018C14E98A19006534F2 /* ButtonGrey.png */; };
-		A0BF018F14E98A19006534F2 /* ButtonGrey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A0BF018D14E98A19006534F2 /* ButtonGrey@2x.png */; };
 		A0BF01AA14EC42C8006534F2 /* Icon-114.png in Resources */ = {isa = PBXBuildFile; fileRef = A0BF01A714EC42C8006534F2 /* Icon-114.png */; };
 		A0BF01AB14EC42C8006534F2 /* Icon-57.png in Resources */ = {isa = PBXBuildFile; fileRef = A0BF01A814EC42C8006534F2 /* Icon-57.png */; };
 		A0BF01AC14EC42C8006534F2 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = A0BF01A914EC42C8006534F2 /* Icon-72.png */; };
@@ -154,6 +170,43 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		34DEFF4818C7C08D00F1248D /* DropboxSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DropboxSDK.framework; sourceTree = "<group>"; };
+		34DEFF4C18C7C0AF00F1248D /* JPAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPAlert.h; sourceTree = "<group>"; };
+		34DEFF4D18C7C0AF00F1248D /* JPConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPConstants.h; sourceTree = "<group>"; };
+		34DEFF4E18C7C0AF00F1248D /* JPControllerLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPControllerLayout.h; sourceTree = "<group>"; };
+		34DEFF4F18C7C0AF00F1248D /* JPDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPDevice.h; sourceTree = "<group>"; };
+		34DEFF5018C7C0AF00F1248D /* JPManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPManager.h; sourceTree = "<group>"; };
+		34DEFF5118C7C0AF00F1248D /* JPSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPSDK.h; sourceTree = "<group>"; };
+		34DEFF5218C7C0AF00F1248D /* JPUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPUtils.h; sourceTree = "<group>"; };
+		34DEFF5318C7C0AF00F1248D /* libJoypad.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libJoypad.a; sourceTree = "<group>"; };
+		34DEFF5518C7C0AF00F1248D /* JPalert_btn_dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = JPalert_btn_dark.png; sourceTree = "<group>"; };
+		34DEFF5618C7C0AF00F1248D /* JPalert_btn_dark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "JPalert_btn_dark@2x.png"; sourceTree = "<group>"; };
+		34DEFF5718C7C0AF00F1248D /* JPalert_btn_light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = JPalert_btn_light.png; sourceTree = "<group>"; };
+		34DEFF5818C7C0AF00F1248D /* JPalert_btn_light@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "JPalert_btn_light@2x.png"; sourceTree = "<group>"; };
+		34DEFF5918C7C0AF00F1248D /* JPalert_caps.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = JPalert_caps.png; sourceTree = "<group>"; };
+		34DEFF5A18C7C0AF00F1248D /* JPalert_caps@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "JPalert_caps@2x.png"; sourceTree = "<group>"; };
+		34DEFF6218C7C0E600F1248D /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		34DEFF6418C7C0F500F1248D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		34DEFF6818C7C14500F1248D /* CHBgDropboxSync.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CHBgDropboxSync.h; sourceTree = SOURCE_ROOT; };
+		34DEFF6918C7C14500F1248D /* CHBgDropboxSync.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CHBgDropboxSync.m; sourceTree = SOURCE_ROOT; };
+		34DEFF6A18C7C14500F1248D /* DropboxClearer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropboxClearer.h; sourceTree = SOURCE_ROOT; };
+		34DEFF6B18C7C14500F1248D /* DropboxClearer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropboxClearer.m; sourceTree = SOURCE_ROOT; };
+		34DEFF8F18C7C19F00F1248D /* CKAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKAdditions.h; sourceTree = SOURCE_ROOT; };
+		34DEFF9018C7C19F00F1248D /* CKMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKMacros.h; sourceTree = SOURCE_ROOT; };
+		34DEFF9118C7C19F00F1248D /* CKSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CKSingleton.h; sourceTree = SOURCE_ROOT; };
+		34DEFF9218C7C19F00F1248D /* ConciseKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConciseKit.h; sourceTree = SOURCE_ROOT; };
+		34DEFF9318C7C19F00F1248D /* ConciseKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConciseKit.m; sourceTree = SOURCE_ROOT; };
+		34DEFF9418C7C19F00F1248D /* NSArray+ConciseKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+ConciseKit.h"; sourceTree = SOURCE_ROOT; };
+		34DEFF9518C7C19F00F1248D /* NSArray+ConciseKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+ConciseKit.m"; sourceTree = SOURCE_ROOT; };
+		34DEFF9618C7C19F00F1248D /* NSDictionary+ConciseKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+ConciseKit.h"; sourceTree = SOURCE_ROOT; };
+		34DEFF9718C7C19F00F1248D /* NSDictionary+ConciseKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+ConciseKit.m"; sourceTree = SOURCE_ROOT; };
+		34DEFF9818C7C19F00F1248D /* NSString+ConciseKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+ConciseKit.h"; sourceTree = SOURCE_ROOT; };
+		34DEFF9918C7C19F00F1248D /* NSString+ConciseKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+ConciseKit.m"; sourceTree = SOURCE_ROOT; };
+		34DEFF9E18C7D1CB00F1248D /* ButtonDarkPurple@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonDarkPurple@2x.png"; sourceTree = "<group>"; };
+		34DEFF9F18C7D1CB00F1248D /* ButtonDPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonDPad@2x.png"; sourceTree = "<group>"; };
+		34DEFFA018C7D1CB00F1248D /* ButtonGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonGrey@2x.png"; sourceTree = "<group>"; };
+		34DEFFA118C7D1CB00F1248D /* ButtonLightPurple@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonLightPurple@2x.png"; sourceTree = "<group>"; };
+		34DEFFA218C7D1CB00F1248D /* ButtonWide@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonWide@2x.png"; sourceTree = "<group>"; };
 		66C1BD5E1866ACA800E5A833 /* LMGameControllerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMGameControllerManager.h; path = Classes/LMGameControllerManager.h; sourceTree = SOURCE_ROOT; };
 		66C1BD5F1866ACA800E5A833 /* LMGameControllerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMGameControllerManager.m; path = Classes/LMGameControllerManager.m; sourceTree = SOURCE_ROOT; };
 		66C1BD611866AF9E00E5A833 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
@@ -352,11 +405,7 @@
 		A0B8685914BE25F900663EBE /* ButtonDarkPurple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonDarkPurple.png; sourceTree = "<group>"; };
 		A0B8685A14BE25F900663EBE /* ButtonLightPurple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonLightPurple.png; sourceTree = "<group>"; };
 		A0B8685B14BE25F900663EBE /* ButtonWide.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonWide.png; sourceTree = "<group>"; };
-		A0B8685F14BE2C9500663EBE /* ButtonDarkPurple@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonDarkPurple@2x.png"; sourceTree = "<group>"; };
-		A0B8686114BE2C9900663EBE /* ButtonLightPurple@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonLightPurple@2x.png"; sourceTree = "<group>"; };
-		A0B8686314BE2C9E00663EBE /* ButtonWide@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonWide@2x.png"; sourceTree = "<group>"; };
 		A0B8686514BE391300663EBE /* ButtonDPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonDPad.png; sourceTree = "<group>"; };
-		A0B8686614BE391300663EBE /* ButtonDPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonDPad@2x.png"; sourceTree = "<group>"; };
 		A0B8686914BE3B3100663EBE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Classes/main.m; sourceTree = SOURCE_ROOT; };
 		A0B8686A14BE3B3100663EBE /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = Classes/Prefix.pch; sourceTree = SOURCE_ROOT; };
 		A0B8686E14BE3B6600663EBE /* LMDPadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMDPadView.m; path = Classes/LMDPadView.m; sourceTree = SOURCE_ROOT; };
@@ -377,7 +426,6 @@
 		A0BB592714E84BC000D12F97 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A0BB592914E84BD100D12F97 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A0BF018C14E98A19006534F2 /* ButtonGrey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonGrey.png; sourceTree = "<group>"; };
-		A0BF018D14E98A19006534F2 /* ButtonGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonGrey@2x.png"; sourceTree = "<group>"; };
 		A0BF01A714EC42C8006534F2 /* Icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-114.png"; sourceTree = "<group>"; };
 		A0BF01A814EC42C8006534F2 /* Icon-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-57.png"; sourceTree = "<group>"; };
 		A0BF01A914EC42C8006534F2 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
@@ -421,8 +469,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				34DEFF6518C7C0F500F1248D /* Security.framework in Frameworks */,
+				34DEFF6318C7C0E600F1248D /* CFNetwork.framework in Frameworks */,
+				34DEFF4918C7C08D00F1248D /* DropboxSDK.framework in Frameworks */,
 				66C1BD621866AF9E00E5A833 /* GameController.framework in Frameworks */,
 				A0A8A0FC14B25409003C5688 /* libz.dylib in Frameworks */,
+				34DEFF5B18C7C0AF00F1248D /* libJoypad.a in Frameworks */,
 				A0A8A0FA14B25401003C5688 /* AudioToolbox.framework in Frameworks */,
 				A050663214B21DDB003E0C5E /* QuartzCore.framework in Frameworks */,
 				A050660C14B21C7F003E0C5E /* UIKit.framework in Frameworks */,
@@ -434,6 +486,82 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		34DEFF4A18C7C0AF00F1248D /* Joypad-0.3.5 */ = {
+			isa = PBXGroup;
+			children = (
+				34DEFF4B18C7C0AF00F1248D /* include */,
+				34DEFF5318C7C0AF00F1248D /* libJoypad.a */,
+				34DEFF5418C7C0AF00F1248D /* Resources */,
+			);
+			path = "Joypad-0.3.5";
+			sourceTree = "<group>";
+		};
+		34DEFF4B18C7C0AF00F1248D /* include */ = {
+			isa = PBXGroup;
+			children = (
+				34DEFF4C18C7C0AF00F1248D /* JPAlert.h */,
+				34DEFF4D18C7C0AF00F1248D /* JPConstants.h */,
+				34DEFF4E18C7C0AF00F1248D /* JPControllerLayout.h */,
+				34DEFF4F18C7C0AF00F1248D /* JPDevice.h */,
+				34DEFF5018C7C0AF00F1248D /* JPManager.h */,
+				34DEFF5118C7C0AF00F1248D /* JPSDK.h */,
+				34DEFF5218C7C0AF00F1248D /* JPUtils.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		34DEFF5418C7C0AF00F1248D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				34DEFF5518C7C0AF00F1248D /* JPalert_btn_dark.png */,
+				34DEFF5618C7C0AF00F1248D /* JPalert_btn_dark@2x.png */,
+				34DEFF5718C7C0AF00F1248D /* JPalert_btn_light.png */,
+				34DEFF5818C7C0AF00F1248D /* JPalert_btn_light@2x.png */,
+				34DEFF5918C7C0AF00F1248D /* JPalert_caps.png */,
+				34DEFF5A18C7C0AF00F1248D /* JPalert_caps@2x.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		34DEFF6618C7C0FD00F1248D /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				34DEFF8E18C7C19300F1248D /* ConciseKit */,
+				34DEFF6718C7C12C00F1248D /* CHBgDropboxSync */,
+			);
+			name = Extensions;
+			path = ../SNES9X;
+			sourceTree = "<group>";
+		};
+		34DEFF6718C7C12C00F1248D /* CHBgDropboxSync */ = {
+			isa = PBXGroup;
+			children = (
+				34DEFF6818C7C14500F1248D /* CHBgDropboxSync.h */,
+				34DEFF6918C7C14500F1248D /* CHBgDropboxSync.m */,
+				34DEFF6A18C7C14500F1248D /* DropboxClearer.h */,
+				34DEFF6B18C7C14500F1248D /* DropboxClearer.m */,
+			);
+			name = CHBgDropboxSync;
+			sourceTree = "<group>";
+		};
+		34DEFF8E18C7C19300F1248D /* ConciseKit */ = {
+			isa = PBXGroup;
+			children = (
+				34DEFF8F18C7C19F00F1248D /* CKAdditions.h */,
+				34DEFF9018C7C19F00F1248D /* CKMacros.h */,
+				34DEFF9118C7C19F00F1248D /* CKSingleton.h */,
+				34DEFF9218C7C19F00F1248D /* ConciseKit.h */,
+				34DEFF9318C7C19F00F1248D /* ConciseKit.m */,
+				34DEFF9418C7C19F00F1248D /* NSArray+ConciseKit.h */,
+				34DEFF9518C7C19F00F1248D /* NSArray+ConciseKit.m */,
+				34DEFF9618C7C19F00F1248D /* NSDictionary+ConciseKit.h */,
+				34DEFF9718C7C19F00F1248D /* NSDictionary+ConciseKit.m */,
+				34DEFF9818C7C19F00F1248D /* NSString+ConciseKit.h */,
+				34DEFF9918C7C19F00F1248D /* NSString+ConciseKit.m */,
+			);
+			name = ConciseKit;
+			sourceTree = "<group>";
+		};
 		A00401E214BE3E4D00FE28CE /* SNES9X */ = {
 			isa = PBXGroup;
 			children = (
@@ -651,6 +779,10 @@
 		A050660A14B21C7F003E0C5E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				34DEFF6418C7C0F500F1248D /* Security.framework */,
+				34DEFF6218C7C0E600F1248D /* CFNetwork.framework */,
+				34DEFF4A18C7C0AF00F1248D /* Joypad-0.3.5 */,
+				34DEFF4818C7C08D00F1248D /* DropboxSDK.framework */,
 				66C1BD611866AF9E00E5A833 /* GameController.framework */,
 				A0A8A0F914B25401003C5688 /* AudioToolbox.framework */,
 				A050660F14B21C7F003E0C5E /* CoreGraphics.framework */,
@@ -678,6 +810,7 @@
 				A0B8685814BE25F900663EBE /* Artwork */,
 				A0995BCF14B5087600F7C44F /* SNES9XBridge */,
 				A00401E214BE3E4D00FE28CE /* SNES9X */,
+				34DEFF6618C7C0FD00F1248D /* Extensions */,
 			);
 			name = SiOS;
 			path = pixelbuffertest;
@@ -726,15 +859,15 @@
 			isa = PBXGroup;
 			children = (
 				A0BF018C14E98A19006534F2 /* ButtonGrey.png */,
-				A0BF018D14E98A19006534F2 /* ButtonGrey@2x.png */,
 				A0B8685914BE25F900663EBE /* ButtonDarkPurple.png */,
-				A0B8685F14BE2C9500663EBE /* ButtonDarkPurple@2x.png */,
 				A0B8685A14BE25F900663EBE /* ButtonLightPurple.png */,
-				A0B8686114BE2C9900663EBE /* ButtonLightPurple@2x.png */,
 				A0B8685B14BE25F900663EBE /* ButtonWide.png */,
-				A0B8686314BE2C9E00663EBE /* ButtonWide@2x.png */,
 				A0B8686514BE391300663EBE /* ButtonDPad.png */,
-				A0B8686614BE391300663EBE /* ButtonDPad@2x.png */,
+				34DEFF9E18C7D1CB00F1248D /* ButtonDarkPurple@2x.png */,
+				34DEFF9F18C7D1CB00F1248D /* ButtonDPad@2x.png */,
+				34DEFFA018C7D1CB00F1248D /* ButtonGrey@2x.png */,
+				34DEFFA118C7D1CB00F1248D /* ButtonLightPurple@2x.png */,
+				34DEFFA218C7D1CB00F1248D /* ButtonWide@2x.png */,
 				A0F1F105184D5A6A000D6CE9 /* NumberControl */,
 			);
 			path = Artwork;
@@ -909,33 +1042,38 @@
 				A0B8685C14BE25F900663EBE /* ButtonDarkPurple.png in Resources */,
 				A0F1F120184D5A6B000D6CE9 /* ButtonNumberMinus.png in Resources */,
 				A0F1F121184D5A6B000D6CE9 /* ButtonNumberMinus@2x.png in Resources */,
-				A0B8686014BE2C9500663EBE /* ButtonDarkPurple@2x.png in Resources */,
+				34DEFF5E18C7C0AF00F1248D /* JPalert_btn_light.png in Resources */,
 				A0F1F134184D5EE3000D6CE9 /* Default-Landscape@2x.png in Resources */,
 				A0F1F135184D5EE3000D6CE9 /* Default-Portrait.png in Resources */,
 				A0F1F125184D5A6B000D6CE9 /* ButtonNumberPlus-7@2x.png in Resources */,
+				34DEFF5F18C7C0AF00F1248D /* JPalert_btn_light@2x.png in Resources */,
 				A0B8685D14BE25F900663EBE /* ButtonLightPurple.png in Resources */,
-				A0B8686214BE2C9900663EBE /* ButtonLightPurple@2x.png in Resources */,
 				A0B8685E14BE25F900663EBE /* ButtonWide.png in Resources */,
 				A0F1F122184D5A6B000D6CE9 /* ButtonNumberMinusDown-7.png in Resources */,
 				A0F1F138184D5EE3000D6CE9 /* Default@2x.png in Resources */,
-				A0B8686414BE2C9E00663EBE /* ButtonWide@2x.png in Resources */,
 				A0B8686714BE391300663EBE /* ButtonDPad.png in Resources */,
-				A0B8686814BE391300663EBE /* ButtonDPad@2x.png in Resources */,
 				A0F1F133184D5EE3000D6CE9 /* Default-Landscape.png in Resources */,
+				34DEFF5C18C7C0AF00F1248D /* JPalert_btn_dark.png in Resources */,
 				A0F1F11F184D5A6B000D6CE9 /* ButtonNumberMinus-7@2x.png in Resources */,
 				A0F1F129184D5A6B000D6CE9 /* ButtonNumberPlusDown-7@2x.png in Resources */,
 				A0F1F119184D5A6B000D6CE9 /* ButtonNumberDefault-7@2x.png in Resources */,
+				34DEFFA418C7D1CB00F1248D /* ButtonDPad@2x.png in Resources */,
 				A0BB592614E84BC000D12F97 /* Localizable.strings in Resources */,
 				A0F1F136184D5EE3000D6CE9 /* Default-Portrait@2x.png in Resources */,
 				A0F1F127184D5A6B000D6CE9 /* ButtonNumberPlus@2x.png in Resources */,
+				34DEFFA518C7D1CB00F1248D /* ButtonGrey@2x.png in Resources */,
+				34DEFFA318C7D1CB00F1248D /* ButtonDarkPurple@2x.png in Resources */,
 				A0BF018E14E98A19006534F2 /* ButtonGrey.png in Resources */,
+				34DEFF5D18C7C0AF00F1248D /* JPalert_btn_dark@2x.png in Resources */,
 				A0F1F11D184D5A6B000D6CE9 /* ButtonNumberDefaultDown-7@2x.png in Resources */,
-				A0BF018F14E98A19006534F2 /* ButtonGrey@2x.png in Resources */,
+				34DEFFA718C7D1CB00F1248D /* ButtonWide@2x.png in Resources */,
 				A0BF01AA14EC42C8006534F2 /* Icon-114.png in Resources */,
 				A0BF01AB14EC42C8006534F2 /* Icon-57.png in Resources */,
 				A0F1F128184D5A6B000D6CE9 /* ButtonNumberPlusDown-7.png in Resources */,
 				A0BF01AC14EC42C8006534F2 /* Icon-72.png in Resources */,
 				A0F1F118184D5A6B000D6CE9 /* ButtonNumberDefault-7.png in Resources */,
+				34DEFFA618C7D1CB00F1248D /* ButtonLightPurple@2x.png in Resources */,
+				34DEFF6118C7C0AF00F1248D /* JPalert_caps@2x.png in Resources */,
 				A0F1F11A184D5A6B000D6CE9 /* ButtonNumberDefault.png in Resources */,
 				A0F1F126184D5A6B000D6CE9 /* ButtonNumberPlus.png in Resources */,
 				A0C41FED160224FB0038CF06 /* CHANGELOG.TXT in Resources */,
@@ -944,6 +1082,7 @@
 				A0F1F124184D5A6B000D6CE9 /* ButtonNumberPlus-7.png in Resources */,
 				A0C41FFE160229E20038CF06 /* Icon-144.png in Resources */,
 				A093243217CED06400A93B6B /* Icon-76.png in Resources */,
+				34DEFF6018C7C0AF00F1248D /* JPalert_caps.png in Resources */,
 				A093243417CED06900A93B6B /* Icon-120.png in Resources */,
 				A0F1F132184D5EE3000D6CE9 /* Default-568h@2x.png in Resources */,
 				A0F1F11E184D5A6B000D6CE9 /* ButtonNumberMinus-7.png in Resources */,
@@ -963,9 +1102,11 @@
 				A0995BD714B508AC00F7C44F /* iOSAudio.cpp in Sources */,
 				A0995C1214B525D200F7C44F /* Snes9xMain.cpp in Sources */,
 				A0995F8014B679FF00F7C44F /* Snes9xCallbacks.cpp in Sources */,
+				34DEFF6D18C7C14500F1248D /* DropboxClearer.m in Sources */,
 				A0995F8614B6884F00F7C44F /* SIScreenDelegate.m in Sources */,
 				A0B8687E14BE3B6800663EBE /* LMDPadView.m in Sources */,
 				A0B8687F14BE3B6800663EBE /* LMEmulatorController.m in Sources */,
+				34DEFF9C18C7C19F00F1248D /* NSDictionary+ConciseKit.m in Sources */,
 				A0B8688014BE3B6800663EBE /* LMButtonView.m in Sources */,
 				A0B8688214BE3B6800663EBE /* LMROMBrowserController.m in Sources */,
 				A0B8688314BE3B6800663EBE /* LMPixelView.m in Sources */,
@@ -1005,6 +1146,7 @@
 				A00403EC14BE3E4D00FE28CE /* fxemu.cpp in Sources */,
 				A00403ED14BE3E4D00FE28CE /* fxinst.cpp in Sources */,
 				A00403EE14BE3E4D00FE28CE /* gfx.cpp in Sources */,
+				34DEFF9A18C7C19F00F1248D /* ConciseKit.m in Sources */,
 				A00403EF14BE3E4D00FE28CE /* globals.cpp in Sources */,
 				A004042914BE3E4E00FE28CE /* 7zlzma.cpp in Sources */,
 				A004042A14BE3E4E00FE28CE /* crc32.cpp in Sources */,
@@ -1028,6 +1170,7 @@
 				A004048514BE3E4E00FE28CE /* sa1cpu.cpp in Sources */,
 				A004048714BE3E4E00FE28CE /* sdd1.cpp in Sources */,
 				A004048814BE3E4E00FE28CE /* sdd1emu.cpp in Sources */,
+				34DEFF9B18C7C19F00F1248D /* NSArray+ConciseKit.m in Sources */,
 				A004048914BE3E4E00FE28CE /* server.cpp in Sources */,
 				A004048A14BE3E4E00FE28CE /* seta.cpp in Sources */,
 				A004048B14BE3E4E00FE28CE /* seta010.cpp in Sources */,
@@ -1041,10 +1184,12 @@
 				A00404A314BE3E4E00FE28CE /* mztools.c in Sources */,
 				A00404DD14BE3F1F00FE28CE /* unzip.c in Sources */,
 				A00404DE14BE3F1F00FE28CE /* zip.c in Sources */,
+				34DEFF9D18C7C19F00F1248D /* NSString+ConciseKit.m in Sources */,
 				A00404E014BE41ED00FE28CE /* srtc.cpp in Sources */,
 				A03C087414BF7AB2003FAEB9 /* LMSettingsController.m in Sources */,
 				A03C087814BF7E43003FAEB9 /* LMTableViewSwitchCell.m in Sources */,
 				A03C087B14BF89CC003FAEB9 /* LMTableViewNumberCell.m in Sources */,
+				34DEFF6C18C7C14500F1248D /* CHBgDropboxSync.m in Sources */,
 				A027AC1914C78F3D00F177F7 /* LMSaveManager.mm in Sources */,
 				A027AC2F14C8456D00F177F7 /* SISaveDelegate.m in Sources */,
 				A0B8686B14BE3B3100663EBE /* main.m in Sources */,
@@ -1133,12 +1278,17 @@
 		A050662914B21C7F003E0C5E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/lipe/Developer/SiOS,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Classes/Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/SNES9X/macosx\"",
+					"\\\"$(SRCROOT)/SNES9X/macosx\\\"",
+					"/Users/lipe/Developer/SiOS/Joypad-0.3.5",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SNES_CFLAGS = "-funsigned-char -ffast-math -fexpensive-optimizations -mstructure-size-boundary=32 -falign-functions=32 -falign-loops -falign-labels -falign-jumps -finline -finline-functions -fno-builtin -fno-common -fomit-frame-pointer -fpeel-loops -fstrength-reduce -funroll-loops -fstrict-aliasing";
@@ -1149,12 +1299,17 @@
 		A050662A14B21C7F003E0C5E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/lipe/Developer/SiOS,
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Classes/Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/SNES9X/macosx\"",
+					"\\\"$(SRCROOT)/SNES9X/macosx\\\"",
+					"/Users/lipe/Developer/SiOS/Joypad-0.3.5",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SNES_CFLAGS = "-funsigned-char -ffast-math -fexpensive-optimizations -mstructure-size-boundary=32 -falign-functions=32 -falign-loops -falign-labels -falign-jumps -finline -finline-functions -fno-builtin -fno-common -fomit-frame-pointer -fpeel-loops -fstrength-reduce -funroll-loops -fstrict-aliasing";

@@ -7,6 +7,7 @@
 //
 
 #import "LMSettingsController.h"
+#import <DropboxSDK/DropboxSDK.h>
 
 #import "../SNES9X/snes9x.h"
 
@@ -21,6 +22,8 @@ NSString* const kLMSettingsBluetoothController = @"BluetoothController";
 
 NSString* const kLMSettingsSmoothScaling = @"SmoothScaling";
 NSString* const kLMSettingsFullScreen = @"FullScreen";
+NSString* const kLMSettingsHideButtons = @"HideButtons";
+NSString* const kLMSettingsOldTransparencyValue = @"OldTransparencyValue";
 
 NSString* const kLMSettingsSound = @"Sound";
 NSString* const kLMSettingsAutoFrameskip = @"AutoFrameskip";
@@ -60,6 +63,22 @@ typedef enum _LMSettingsSections
   [[NSUserDefaults standardUserDefaults] setBool:sender.on forKey:kLMSettingsFullScreen];
 }
 
+- (void)toggleDropbox:(UISwitch*)sender
+{
+    _changed = YES;
+    
+    if (![[DBSession sharedSession] isLinked]) {
+		[[DBSession sharedSession] linkFromController:self];
+    } else {
+        [[DBSession sharedSession] unlinkAll];
+        [[[[UIAlertView alloc]
+           initWithTitle:@"Account Unlinked!" message:@"Your dropbox account has been unlinked"
+           delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]
+          autorelease]
+         show];
+    }
+}
+
 - (void)LM_toggleSound:(UISwitch*)sender
 {
   _changed = YES;
@@ -75,8 +94,14 @@ typedef enum _LMSettingsSections
 - (void)LM_cellValueChanged:(UITableViewCell*)cell
 {
   _changed = YES;
-  if([[self.tableView indexPathForCell:cell] compare:_frameskipValueIndexPath] == NSOrderedSame)
+  if([[self.tableView indexPathForCell:cell] compare:_frameskipValueIndexPath] == NSOrderedSame) {
     [[NSUserDefaults standardUserDefaults] setInteger:((LMTableViewNumberCell*)cell).value forKey:kLMSettingsFrameskipValue];
+  }
+    
+  else if([[self.tableView indexPathForCell:cell] compare:_hideButtonsIndexPath] == NSOrderedSame) {
+      [[NSUserDefaults standardUserDefaults] setDouble:((LMTableViewNumberCell*)cell).value forKey:kLMSettingsHideButtons];
+      NSLog(@"cell value: %f", ((LMTableViewNumberCell*)cell).value);
+  }
 }
 
 - (LMTableViewNumberCell*)LM_numberCell
@@ -154,6 +179,9 @@ typedef enum _LMSettingsSections
   
   if([[NSUserDefaults standardUserDefaults] objectForKey:kLMSettingsFrameskipValue] == nil)
     [[NSUserDefaults standardUserDefaults] setInteger:0 forKey:kLMSettingsFrameskipValue];
+    
+  if([[NSUserDefaults standardUserDefaults] objectForKey:kLMSettingsHideButtons] == nil)
+        [[NSUserDefaults standardUserDefaults] setDouble:0.5 forKey:kLMSettingsHideButtons];
 }
 
 @end
@@ -184,7 +212,7 @@ typedef enum _LMSettingsSections
   if(section == LMSettingsSectionBluetoothController)
     return 1;
   else if(section == LMSettingsSectionScreen)
-    return 2;
+    return 4;
   else if(section == LMSettingsSectionEmulation)
   {
     if(_soundIndexPath == nil)
@@ -264,6 +292,24 @@ typedef enum _LMSettingsSections
       c.switchView.on = [[NSUserDefaults standardUserDefaults] boolForKey:kLMSettingsFullScreen];
       [c.switchView addTarget:self action:@selector(LM_toggleFullScreen:) forControlEvents:UIControlEventValueChanged];
       c.textLabel.text = NSLocalizedString(@"FULL_SCREEN", nil);
+    }
+    else if([indexPath compare:_hideButtonsIndexPath] == NSOrderedSame)
+    {
+        LMTableViewNumberCell* c = (LMTableViewNumberCell*)(cell = [self LM_numberCell]);
+        c.textLabel.text = @"Controls Transparency";
+        c.minimumValue = 0.0;
+        c.maximumValue = 1.0;
+        c.suffix = @"%";
+        c.allowsDefault = NO;
+        c.value = [[NSUserDefaults standardUserDefaults] doubleForKey:kLMSettingsHideButtons];
+        c.delegate = self;
+    }
+    else if([indexPath compare:_dropboxIndexPath] == NSOrderedSame)
+    {
+        LMTableViewSwitchCell* c = (LMTableViewSwitchCell*)(cell = [self LM_switchCell]);
+        c.textLabel.text = @"Sync using Dropbox";
+        c.switchView.on = [[DBSession sharedSession] isLinked];
+        [c.switchView addTarget:self action:@selector(toggleDropbox:) forControlEvents:UIControlEventValueChanged];
     }
   }
   else if(section == LMSettingsSectionEmulation)
@@ -394,8 +440,10 @@ typedef enum _LMSettingsSections
   self.navigationItem.rightBarButtonItem = doneButton;
   [doneButton release];
   
-  _smoothScalingIndexPath = [[NSIndexPath indexPathForRow:0 inSection:LMSettingsSectionScreen] retain];
-  _fullScreenIndexPath = [[NSIndexPath indexPathForRow:1 inSection:LMSettingsSectionScreen] retain];
+  _dropboxIndexPath = [[NSIndexPath indexPathForRow:0 inSection:LMSettingsSectionScreen] retain];
+  _smoothScalingIndexPath = [[NSIndexPath indexPathForRow:1 inSection:LMSettingsSectionScreen] retain];
+  _hideButtonsIndexPath = [[NSIndexPath indexPathForRow:2 inSection:LMSettingsSectionScreen] retain];
+  _fullScreenIndexPath = [[NSIndexPath indexPathForRow:3 inSection:LMSettingsSectionScreen] retain];
   
   if(_hideSettingsThatRequireReset == NO)
   {

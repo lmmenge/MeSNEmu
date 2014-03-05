@@ -13,6 +13,7 @@
 #import "LMEmulatorController.h"
 #import "LMSaveManager.h"
 #import "LMSettingsController.h"
+#import <DropboxSDK/DropboxSDK.h>
 
 static NSString* const LMFileOrganizationVersion = @"LMFileOrganizationVersion";
 static int const LMFileOrganizationVersionNumber = 1;
@@ -29,6 +30,7 @@ static int const LMFileOrganizationVersionNumber = 1;
 @property (retain) NSString* displayName;
 @property (retain) NSString* displayDetails;
 @property (retain) NSString* fileName;
+@property (assign) DBRestClient *restClient;
 
 + (BOOL)isROMExtension:(NSString*)lowerCaseExtension;
 @end
@@ -414,7 +416,34 @@ static int const LMFileOrganizationVersionNumber = 1;
 
 @implementation LMROMBrowserController(UITableViewController)
 
-- (NSArray*)sectionIndexTitlesForTableView:(UITableView*)tableView
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    NSLog(@"romsbrowser view did appear");
+    // Joypad support
+    JPManager *manager = [JPManager sharedManager];
+    manager.delegate = self;
+    manager.gameState = kJPGameStateMenu;
+    for(JPDevice *device in manager.connectedDevices)
+    {
+        device.delegate = self;
+    }
+}
+
+- (void)joypadManager:(JPManager *)manager deviceDidConnect:(JPDevice *)device
+{
+    NSLog(@"rombrowser did connect");
+    device.delegate = self;
+}
+
+- (void)joypadManager:(JPManager *)manager deviceDidDisconnect:(JPDevice *)device
+{
+    NSLog(@"rombrowser did disconnect");
+    device.delegate = nil;
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
 {
   if(_detailsItem != nil)
     return nil;
@@ -634,11 +663,6 @@ static int const LMFileOrganizationVersionNumber = 1;
   //[[NSRunLoop mainRunLoop] addTimer:_fsTimer forMode:NSDefaultRunLoopMode];
   
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(LM_reloadROMList) name:UIApplicationDidBecomeActiveNotification object:nil];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-  [super viewDidAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
