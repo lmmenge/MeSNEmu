@@ -13,9 +13,9 @@
 
 @interface LMTableViewNumberCell : UITableViewCell
 {
-  int _value;
-  int _minimumValue;
-  int _maximumValue;
+  double _value;
+  double _minimumValue;
+  double _maximumValue;
   NSString* _suffix;
   BOOL _usesDefaultValue;
   BOOL _allowsDefault;
@@ -29,9 +29,9 @@
 }
 
 @property (readonly) UIView* plusMinusAccessoryView;
-@property (nonatomic) int value;
-@property int minimumValue;
-@property int maximumValue;
+@property (nonatomic) double value;
+@property double minimumValue;
+@property double maximumValue;
 @property (nonatomic, copy) NSString* suffix;
 @property (nonatomic) BOOL usesDefaultValue;
 @property (nonatomic) BOOL allowsDefault;

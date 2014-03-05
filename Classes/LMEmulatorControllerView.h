@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JPSDK.h"
 
 @class LMBTControllerView;
 
@@ -61,6 +62,7 @@ typedef enum _LMEmulatorControllerViewMode
 @property (readonly) LMBTControllerView* iCadeControlView;
 @property (nonatomic) LMEmulatorControllerViewMode viewMode;
 
+- (void)setButtonsAlpha:(double)percentage;
 - (void)setControlsHidden:(BOOL)value animated:(BOOL)animated;
 - (void)setMinMagFilter:(NSString*)filter;
 

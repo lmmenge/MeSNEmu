@@ -17,38 +17,38 @@
   UITouch* touch = [touches anyObject];
   if(touch.phase == UITouchPhaseCancelled || touch.phase == UITouchPhaseEnded || touch == nil)
   {
-    SISetControllerReleaseButton(SIOS_UP);
-    SISetControllerReleaseButton(SIOS_LEFT);
-    SISetControllerReleaseButton(SIOS_RIGHT);
-    SISetControllerReleaseButton(SIOS_DOWN);
+    SISetControllerReleaseButton(kSIOS_1PUp);
+    SISetControllerReleaseButton(kSIOS_1PLeft);
+    SISetControllerReleaseButton(kSIOS_1PRight);
+    SISetControllerReleaseButton(kSIOS_1PDown);
     return;
   }
-  SISetControllerReleaseButton(SIOS_UP);
-  SISetControllerReleaseButton(SIOS_LEFT);
-  SISetControllerReleaseButton(SIOS_RIGHT);
-  SISetControllerReleaseButton(SIOS_DOWN);
+  SISetControllerReleaseButton(kSIOS_1PUp);
+  SISetControllerReleaseButton(kSIOS_1PLeft);
+  SISetControllerReleaseButton(kSIOS_1PRight);
+  SISetControllerReleaseButton(kSIOS_1PDown);
   CGPoint location = [touch locationInView:self];
   if(location.x < 50)
   {
     if(location.y < 50)
     {
-      SISetControllerPushButton(SIOS_UP);
-      SISetControllerPushButton(SIOS_LEFT);
+      SISetControllerPushButton(kSIOS_1PUp);
+      SISetControllerPushButton(kSIOS_1PLeft);
     }
     else if(location.y < 100)
-      SISetControllerPushButton(SIOS_LEFT);
+      SISetControllerPushButton(kSIOS_1PLeft);
     else
     {
-      SISetControllerPushButton(SIOS_DOWN);
-      SISetControllerPushButton(SIOS_LEFT);
+      SISetControllerPushButton(kSIOS_1PDown);
+      SISetControllerPushButton(kSIOS_1PLeft);
     }
   }
   else if(location.x < 100)
   {
     if(location.y < 50)
-      SISetControllerPushButton(SIOS_UP);
+      SISetControllerPushButton(kSIOS_1PUp);
     else if(location.y > 100)
-      SISetControllerPushButton(SIOS_DOWN);
+      SISetControllerPushButton(kSIOS_1PDown);
     else
     {
       // inside the middle square things get "tricky"
@@ -61,17 +61,17 @@
         {
           // right or down
           if(x > y)
-            SISetControllerPushButton(SIOS_RIGHT);
+            SISetControllerPushButton(kSIOS_1PRight);
           else
-            SISetControllerPushButton(SIOS_DOWN);
+            SISetControllerPushButton(kSIOS_1PDown);
         }
         else
         {
           // right or up
           if(x > -y)
-            SISetControllerPushButton(SIOS_RIGHT);
+            SISetControllerPushButton(kSIOS_1PRight);
           else
-            SISetControllerPushButton(SIOS_UP);
+            SISetControllerPushButton(kSIOS_1PUp);
         }
       }
       else
@@ -81,17 +81,17 @@
         {
           // left or down
           if(-x > y)
-            SISetControllerPushButton(SIOS_LEFT);
+            SISetControllerPushButton(kSIOS_1PLeft);
           else
-            SISetControllerPushButton(SIOS_DOWN);
+            SISetControllerPushButton(kSIOS_1PDown);
         }
         else
         {
           // left or up
           if(-x > -y)
-            SISetControllerPushButton(SIOS_LEFT);
+            SISetControllerPushButton(kSIOS_1PLeft);
           else
-            SISetControllerPushButton(SIOS_UP);
+            SISetControllerPushButton(kSIOS_1PUp);
         }
       }
     }
@@ -100,15 +100,15 @@
   {
     if(location.y < 50)
     {
-      SISetControllerPushButton(SIOS_UP);
-      SISetControllerPushButton(SIOS_RIGHT);
+      SISetControllerPushButton(kSIOS_1PUp);
+      SISetControllerPushButton(kSIOS_1PRight);
     }
     else if(location.y < 100)
-      SISetControllerPushButton(SIOS_RIGHT);
+      SISetControllerPushButton(kSIOS_1PRight);
     else
     {
-      SISetControllerPushButton(SIOS_DOWN);
-      SISetControllerPushButton(SIOS_RIGHT);
+      SISetControllerPushButton(kSIOS_1PDown);
+      SISetControllerPushButton(kSIOS_1PRight);
     }
   }
 }
@@ -130,7 +130,7 @@
   {
     self.userInteractionEnabled = YES;
     
-    self.image = [UIImage imageNamed:@"ButtonDPad.png"];
+    self.image = [UIImage imageNamed:@"ButtonDPad"];
     self.contentMode = UIViewContentModeCenter;
   }
   return self;

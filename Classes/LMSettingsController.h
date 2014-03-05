@@ -21,6 +21,9 @@ extern NSString* const kLMSettingsSound;
 extern NSString* const kLMSettingsAutoFrameskip;
 extern NSString* const kLMSettingsFrameskipValue;
 
+extern NSString* const kLMSettingsHideButtons;
+extern NSString* const kLMSettingsOldTransparencyValue;
+
 @class LMSettingsController;
 
 @protocol LMSettingsControllerDelegate <NSObject>
@@ -38,7 +41,9 @@ extern NSString* const kLMSettingsFrameskipValue;
   
   NSIndexPath* _smoothScalingIndexPath;
   NSIndexPath* _fullScreenIndexPath;
-  
+  NSIndexPath* _hideButtonsIndexPath;
+    
+  NSIndexPath* _dropboxIndexPath;
   NSIndexPath* _soundIndexPath;
   NSIndexPath* _autoFrameskipIndexPath;
   NSIndexPath* _frameskipValueIndexPath;

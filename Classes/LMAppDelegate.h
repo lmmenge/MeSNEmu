@@ -7,13 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <DropboxSDK/DropboxSDK.h>
+#import "CHBgDropboxSync.h"
 
 @class LMEmulatorController;
 
-@interface LMAppDelegate : UIResponder <UIApplicationDelegate>
+@interface LMAppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate, DBRestClientDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
 @property (strong, nonatomic) UIViewController *viewController;
+
+@property (nonatomic) BOOL skipPlayerOne;
+@property (nonatomic) BOOL askToReplacePlayerOneAgain;
+@property (nonatomic) int playerOneNumber;
 
 @end

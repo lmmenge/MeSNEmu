@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "JPSDK.h"
 
 @class LMFileListItem;
 
-@interface LMROMBrowserController : UITableViewController
-{
+@interface LMROMBrowserController : UITableViewController <JPDeviceDelegate, JPManagerDelegate> {
   LMFileListItem* _detailsItem;
   NSString* _romPath;
   NSString* _sramPath;
