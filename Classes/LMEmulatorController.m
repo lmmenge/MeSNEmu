@@ -282,7 +282,10 @@ typedef enum _LMEmulatorAlert
 
 - (void)settingsDidDismiss:(LMSettingsController*)settingsController
 {
-  [self LM_options:nil];
+    if(_actionSheet == nil)
+    {
+        [self LM_options:nil];
+    }
 }
 
 #pragma mark Joypad
@@ -294,7 +297,7 @@ typedef enum _LMEmulatorAlert
     
     if(device.playerNumber > 1) {
         
-        [_customView setButtonsAlpha:100];
+        [_customView setButtonsAlpha:0];
     }
     
     else {
@@ -306,7 +309,11 @@ typedef enum _LMEmulatorAlert
 - (void)joypadManager:(JPManager *)manager deviceDidDisconnect:(JPDevice *)device
 {
     device.delegate = nil;
-    [self LM_options:nil];
+    
+    if(_actionSheet == nil)
+    {
+        [self LM_options:nil];
+    }
     
     [_customView setButtonsAlpha:[[NSUserDefaults standardUserDefaults] doubleForKey:kLMSettingsHideButtons]];
 }
