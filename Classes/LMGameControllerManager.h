@@ -13,6 +13,7 @@
 @required
 - (void)gameControllerManagerGamepadDidConnect:(LMGameControllerManager*)controllerManager;
 - (void)gameControllerManagerGamepadDidDisconnect:(LMGameControllerManager*)controllerManager;
+- (void)gameControllerManagerGamepadPausePressed:(LMGameControllerManager*)controllerManager;
 
 @end
 

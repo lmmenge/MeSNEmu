@@ -95,6 +95,20 @@
       else {
         SISetControllerReleaseButton(SIOS_R);
       }
+
+      if (extendedGamepad.leftTrigger.pressed) {
+        SISetControllerPushButton(SIOS_SELECT);
+      }
+      else {
+        SISetControllerReleaseButton(SIOS_SELECT);
+      }
+
+      if (extendedGamepad.rightTrigger.pressed) {
+        SISetControllerPushButton(SIOS_START);
+      }
+      else {
+        SISetControllerReleaseButton(SIOS_START);
+      }
       
       // This feels super awkward
       /*
@@ -131,9 +145,11 @@
       else {
         SISetControllerReleaseButton(SIOS_RIGHT);
       }
-    }
-    
-    if(_gameController.gamepad)
+        
+      extendedGamepad.controller.controllerPausedHandler = ^(GCController *controller) {
+        [self.delegate gameControllerManagerGamepadPausePressed:self];
+      };
+    } else if(_gameController.gamepad)
     {
       GCGamepad* gamepad = _gameController.gamepad;
       
@@ -163,6 +179,20 @@
         SISetControllerReleaseButton(SIOS_X);
       }
       
+      if (gamepad.leftShoulder.pressed) {
+        SISetControllerPushButton(SIOS_L);
+      }
+      else {
+        SISetControllerReleaseButton(SIOS_L);
+      }
+    
+      if (gamepad.rightShoulder.pressed) {
+        SISetControllerPushButton(SIOS_R);
+      }
+      else {
+        SISetControllerReleaseButton(SIOS_R);
+      }
+        
       // Extended Gamepad gets a thumbstick as well
       if (gamepad.dpad.up.pressed) {
         SISetControllerPushButton(SIOS_UP);
@@ -188,8 +218,32 @@
       else {
         SISetControllerReleaseButton(SIOS_RIGHT);
       }
+        
+      gamepad.controller.controllerPausedHandler = ^(GCController *controller) {
+          if (gamepad.leftShoulder.pressed) {
+              SISetControllerPushButton(SIOS_SELECT);
+              // Release button after a delay otherwise it will get stuck or not register at all
+              [self performSelector:@selector(releaseSelect) withObject:nil afterDelay:0.1];
+          }
+          else if (gamepad.rightShoulder.pressed) {
+              SISetControllerPushButton(SIOS_START);
+              // Release button after a delay otherwise it will get stuck or not register at all
+              [self performSelector:@selector(releaseStart) withObject:nil afterDelay:0.1];
+          }
+          else {
+              [self.delegate gameControllerManagerGamepadPausePressed:self];
+          }
+      };
     }
   }
+}
+
+- (void)releaseSelect {
+    SISetControllerReleaseButton(SIOS_SELECT);
+}
+
+- (void)releaseStart {
+    SISetControllerReleaseButton(SIOS_START);
 }
 
 @end
