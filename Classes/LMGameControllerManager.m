@@ -145,9 +145,18 @@
       else {
         SISetControllerReleaseButton(SIOS_RIGHT);
       }
-        
+      
       extendedGamepad.controller.controllerPausedHandler = ^(GCController *controller) {
-        [self.delegate gameControllerManagerGamepadPausePressed:self];
+        if (extendedGamepad.leftShoulder.pressed) {
+            SISetControllerPushButton(SIOS_SELECT);
+            // Release button after a delay otherwise it will get stuck or not register at all
+            [self performSelector:@selector(releaseSelect) withObject:nil afterDelay:0.1];
+        }
+        else {
+            SISetControllerPushButton(SIOS_START);
+            // Release button after a delay otherwise it will get stuck or not register at all
+            [self performSelector:@selector(releaseStart) withObject:nil afterDelay:0.1];
+        }
       };
     } else if(_gameController.gamepad)
     {
@@ -218,20 +227,17 @@
       else {
         SISetControllerReleaseButton(SIOS_RIGHT);
       }
-        
+      
       gamepad.controller.controllerPausedHandler = ^(GCController *controller) {
           if (gamepad.leftShoulder.pressed) {
               SISetControllerPushButton(SIOS_SELECT);
               // Release button after a delay otherwise it will get stuck or not register at all
               [self performSelector:@selector(releaseSelect) withObject:nil afterDelay:0.1];
           }
-          else if (gamepad.rightShoulder.pressed) {
+          else {
               SISetControllerPushButton(SIOS_START);
               // Release button after a delay otherwise it will get stuck or not register at all
               [self performSelector:@selector(releaseStart) withObject:nil afterDelay:0.1];
-          }
-          else {
-              [self.delegate gameControllerManagerGamepadPausePressed:self];
           }
       };
     }

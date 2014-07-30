@@ -379,15 +379,6 @@ typedef enum _LMEmulatorAlert
   [_customView setControlsHidden:NO animated:YES];
 }
 
-- (void)gameControllerManagerGamepadPausePressed:(LMGameControllerManager*)controllerManager
-{
-    if([_actionSheet isVisible]) {
-        [_actionSheet dismissWithClickedButtonIndex:_actionSheet.cancelButtonIndex animated:YES];
-    } else {
-        [self LM_options:nil];
-    }
-}
-
 #pragma mark Notifications
 
 - (void)LM_didBecomeInactive
