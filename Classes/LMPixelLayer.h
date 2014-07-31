@@ -25,6 +25,7 @@
 }
 
 @property (readonly) unsigned char* imageBuffer;
+@property (readonly) unsigned char* imageBufferAlt;
 @property (readonly) unsigned int bufferWidth;
 @property (readonly) unsigned int bufferHeight;
 @property (readonly) unsigned short bufferBitsPerComponent;
@@ -34,5 +35,6 @@
 
 - (void)setImageBuffer:(unsigned char*)imageBuffer width:(unsigned int)width height:(unsigned int)height bitsPerComponent:(unsigned short)bitsPerComponent bytesPerRow:(unsigned int)bytesPerRow bitmapInfo:(CGBitmapInfo)bitmapInfo;
 - (void)addAltImageBuffer:(unsigned char*)imageBuffer;
+- (void)updateBufferCropWidth:(unsigned int)width height:(unsigned int)height;
 
 @end

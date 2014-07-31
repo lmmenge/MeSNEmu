@@ -21,7 +21,7 @@
 #pragma mark - External Forward Declarations
 
 // client-implemented functions called up by the emulator
-extern "C" void SIFlipFramebufferClient();
+extern "C" void SIFlipFramebufferClient(int width, int height);
 extern "C" void SILoadRunningStateForGameNamed(const char* romFileName);
 extern "C" void SISaveRunningStateForGameNamed(const char* romFileName);
 
@@ -55,10 +55,10 @@ char SI_SRAMPath[1024];
 
 #pragma mark - Emulator-Client internal interfaces
 
-void SIFlipFramebuffer(int flip, int sync)
+void SIFlipFramebuffer(int width, int height)
 {
   //memcpy(screenPixels, vrambuffer, 256*224*2);
-  SIFlipFramebufferClient();
+  SIFlipFramebufferClient(width, height);
 }
 
 const char* SIGetFilename(const char* ex)
@@ -423,7 +423,7 @@ extern "C" int SIStartWithROM(char* rom_filename)
 	sigaction(SIGINT, &sa, NULL);
 #endif
   
-  GFX.Pitch = SNES_WIDTH*2;
+  GFX.Pitch = 512*2;
   /*vrambuffer = (uint8*) malloc (GFX.Pitch * SNES_HEIGHT_EXTENDED*2);
 	memset (vrambuffer, 0, GFX.Pitch * SNES_HEIGHT_EXTENDED*2);
   GFX.Screen = (uint16*)vrambuffer;*/

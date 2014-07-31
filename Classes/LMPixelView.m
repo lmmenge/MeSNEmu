@@ -12,6 +12,11 @@
 
 @implementation LMPixelView
 
+- (void)updateBufferCropResWidth:(unsigned int)width height:(unsigned int)height
+{
+  [(LMPixelLayer*)self.layer updateBufferCropWidth:width height:height];
+}
+
 @end
 
 #pragma mark -

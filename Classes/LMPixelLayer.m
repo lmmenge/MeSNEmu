@@ -8,9 +8,68 @@
 
 #import "LMPixelLayer.h"
 
+@implementation LMPixelLayer(Privates)
+
+- (void)recreateBitmapContext
+{
+  // release
+  if(_bitmapContext != nil)
+    CGContextRelease(_bitmapContext);
+  _bitmapContext = nil;
+  
+  // create our context
+  if(_imageBuffer != nil)
+  {
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    _bitmapContext = CGBitmapContextCreate(
+                                           _imageBuffer,
+                                           _bufferWidth,
+                                           _bufferHeight,
+                                           _bufferBitsPerComponent,
+                                           _bufferBytesPerRow,
+                                           colorSpace,
+                                           _bufferBitmapInfo
+                                           );
+    
+    CGColorSpaceRelease(colorSpace);
+  }
+}
+
+- (void)recreateBitmapContextAlt
+{
+  // release
+  if(_bitmapContextAlt != nil)
+    CGContextRelease(_bitmapContextAlt);
+  _bitmapContextAlt = nil;
+  
+  // create our context
+  if(_imageBufferAlt != nil)
+  {
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    _bitmapContextAlt = CGBitmapContextCreate(
+                                              _imageBufferAlt,
+                                              _bufferWidth,
+                                              _bufferHeight,
+                                              _bufferBitsPerComponent,
+                                              _bufferBytesPerRow,
+                                              colorSpace,
+                                              _bufferBitmapInfo
+                                              );
+    
+    CGColorSpaceRelease(colorSpace);
+  }
+}
+
+@end
+
+#pragma mark -
+
 @implementation LMPixelLayer
 
 @synthesize imageBuffer = _imageBuffer;
+@synthesize imageBufferAlt = _imageBufferAlt;
 @synthesize bufferWidth = _bufferWidth;
 @synthesize bufferHeight = _bufferHeight;
 @synthesize bufferBitsPerComponent = _bufferBitsPerComponent;
@@ -33,23 +92,7 @@
   _bufferBytesPerRow = bytesPerRow;
   _bufferBitmapInfo = bitmapInfo;
   
-  // create our context
-  if(_imageBuffer != nil)
-  {
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    
-    _bitmapContext = CGBitmapContextCreate(
-                                           _imageBuffer,
-                                           _bufferWidth,
-                                           _bufferHeight,
-                                           _bufferBitsPerComponent,
-                                           _bufferBytesPerRow,
-                                           colorSpace,
-                                           _bufferBitmapInfo
-                                           );
-    
-    CGColorSpaceRelease(colorSpace);
-  }
+  [self recreateBitmapContext];
 }
 
 - (void)addAltImageBuffer:(unsigned char*)imageBuffer
@@ -61,27 +104,23 @@
   // set new values
   _imageBufferAlt = imageBuffer;
   
-  // create our context
-  if(_imageBufferAlt != nil)
-  {
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    
-    _bitmapContextAlt = CGBitmapContextCreate(
-                                           _imageBufferAlt,
-                                           _bufferWidth,
-                                           _bufferHeight,
-                                           _bufferBitsPerComponent,
-                                           _bufferBytesPerRow,
-                                           colorSpace,
-                                           _bufferBitmapInfo
-                                           );
-    
-    CGColorSpaceRelease(colorSpace);
-  }
+  [self recreateBitmapContextAlt];
   
   // set scaling parameters
   self.magnificationFilter = kCAFilterNearest;
   self.minificationFilter = kCAFilterNearest;
+}
+
+- (void)updateBufferCropWidth:(unsigned int)width height:(unsigned int)height
+{
+  if(_bufferWidth != width || _bufferHeight != height)
+  {
+    _bufferWidth = width;
+    _bufferHeight = height;
+    
+    [self recreateBitmapContext];
+    [self recreateBitmapContextAlt];
+  }
 }
 
 @end

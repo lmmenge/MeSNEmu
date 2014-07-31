@@ -65,6 +65,6 @@ typedef enum _LMEmulatorControllerViewMode
 - (void)setMinMagFilter:(NSString*)filter;
 
 - (void)setPrimaryBuffer;
-- (void)flipFrontBuffer;
+- (void)flipFrontBufferWidth:(int)width height:(int)height;
 
 @end

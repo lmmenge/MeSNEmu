@@ -117,9 +117,9 @@ typedef enum _LMEmulatorAlert
 
 #pragma mark SIScreenDelegate
 
-- (void)flipFrontbuffer
+- (void)flipFrontbuffer:(NSArray*)dimensions
 {
-  [_customView flipFrontBuffer];
+  [_customView flipFrontBufferWidth:[[dimensions objectAtIndex:0] intValue] height:[[dimensions objectAtIndex:1] intValue]];
 }
 
 #pragma mark SISaveDelegate

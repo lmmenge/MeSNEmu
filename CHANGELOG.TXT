@@ -1,3 +1,7 @@
+1.4.3.1
+=======
+- Fixed some high resolution games not displaying properly.
+
 1.4.3
 =====
 - Fixes for MFi GameControllers (thanks to RobMSantos);

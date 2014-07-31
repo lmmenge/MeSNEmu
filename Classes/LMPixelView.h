@@ -10,4 +10,6 @@
 
 @interface LMPixelView : UIView
 
+- (void)updateBufferCropResWidth:(unsigned int)width height:(unsigned int)height;
+
 @end

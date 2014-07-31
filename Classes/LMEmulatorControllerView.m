@@ -135,10 +135,13 @@
   SISetScreen(_imageBuffer);
 }
 
-- (void)flipFrontBuffer
+- (void)flipFrontBufferWidth:(int)width height:(int)height
 {
   if(_imageBuffer == nil || _565ImageBuffer == nil)
     return;
+  
+  // make sure we're showing the proper amount of image
+  [_screenView updateBufferCropResWidth:width height:height];
   
   // we use two framebuffers to avoid copy-on-write due to us using UIImage. Little memory overhead, no speed overhead at all compared to that nasty IOSurface and SDK-safe, to boot
   if(((LMPixelLayer*)_screenView.layer).displayMainBuffer == YES)
@@ -227,9 +230,9 @@
     _iCadeControlView.active = YES;
     
     // creating our buffers
-    _bufferWidth = 256;
-    _bufferHeight = 224;
-    _bufferHeightExtended = 239*2; // we're using double the extended height because the screenshot loading writes black to a MUCH larger portion of data in the screen variable. Wondering if I should fix the SNES9X code...
+    _bufferWidth = 512;
+    _bufferHeight = 480;
+    _bufferHeightExtended = 480;
     
     // RGBA888 format
     unsigned short defaultComponentCount = 4;

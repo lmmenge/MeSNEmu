@@ -28,7 +28,7 @@
 
 #pragma mark - External Forward Declarations
 
-extern void SIFlipFramebuffer(int flip, int sync);
+extern void SIFlipFramebuffer(int width, int height);
 
 extern int SI_SoundOn;
 
@@ -193,9 +193,8 @@ bool8_32 S9xInitUpdate ()
 
 bool8 S9xDeinitUpdate (int width, int height)
 {
-  
   // TODO clear Z buffer if not in fastsprite mode
-  SIFlipFramebuffer(0,0);
+  SIFlipFramebuffer(width, height);
   
   return (TRUE);
 }

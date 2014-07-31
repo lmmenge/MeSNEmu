@@ -17,7 +17,7 @@ void SISetScreenDelegate(NSObject<SIScreenDelegate>* value)
 
 #pragma mark - Internal Flip Callback
 
-void SIFlipFramebufferClient()
+void SIFlipFramebufferClient(int width, int height)
 {
-  [delegate performSelectorOnMainThread:@selector(flipFrontbuffer) withObject:nil waitUntilDone:NO];
+  [delegate performSelectorOnMainThread:@selector(flipFrontbuffer:) withObject:@[[NSNumber numberWithInt:width], [NSNumber numberWithInt:height]] waitUntilDone:NO];
 }

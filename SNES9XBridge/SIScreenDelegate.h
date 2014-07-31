@@ -11,7 +11,7 @@
 // Delegate for the class that will handle screen update notifications from the emulator
 @protocol SIScreenDelegate <NSObject>
 
-- (void)flipFrontbuffer;
+- (void)flipFrontbuffer:(NSArray*)dimensions;
 
 @end
 
