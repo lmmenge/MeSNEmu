@@ -9,22 +9,12 @@
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleTypeName</key>
-			<string>Freeze Files</string>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>LSHandlerRank</key>
-			<string>Alternate</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>public.data</string>
-			</array>
-		</dict>
-		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array/>
 			<key>CFBundleTypeName</key>
 			<string>SNES Games</string>
 			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
+			<string>Viewer</string>
 			<key>LSHandlerRank</key>
 			<string>Owner</string>
 			<key>LSItemContentTypes</key>
@@ -33,10 +23,12 @@
 			</array>
 		</dict>
 		<dict>
+			<key>CFBundleTypeIconFiles</key>
+			<array/>
 			<key>CFBundleTypeName</key>
 			<string>SNES9x Freeze Files</string>
 			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
+			<string>Editor</string>
 			<key>LSHandlerRank</key>
 			<string>Owner</string>
 			<key>LSItemContentTypes</key>
@@ -96,11 +88,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.4.2</string>
+	<string>1.4.3</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.4.2</string>
+	<string>1.4.3</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIFileSharingEnabled</key>
@@ -141,7 +133,9 @@
 					<string>smc</string>
 				</array>
 				<key>public.mime-type</key>
-				<string>application/octet-stream</string>
+				<array>
+					<string>application/octet-stream</string>
+				</array>
 			</dict>
 		</dict>
 		<dict>
@@ -153,12 +147,17 @@
 			<string>SNES9x Freeze Files</string>
 			<key>UTTypeIdentifier</key>
 			<string>com.lmmenge.sios.freeze</string>
-			<key>public.filename-extension</key>
-			<array>
-				<string>frz</string>
-			</array>
-			<key>public.mime-type</key>
-			<string>application/octet-stream</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>frz</string>
+				</array>
+				<key>public.mime-type</key>
+				<array>
+					<string>application/octet-stream</string>
+				</array>
+			</dict>
 		</dict>
 		<dict>
 			<key>UTTypeConformsTo</key>
@@ -169,12 +168,17 @@
 			<string>SNES SRAM</string>
 			<key>UTTypeIdentifier</key>
 			<string>com.lmmenge.sios.sram</string>
-			<key>public.filename-extension</key>
-			<array>
-				<string>srm</string>
-			</array>
-			<key>public.mime-type</key>
-			<string>application/octet-stream</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>srm</string>
+				</array>
+				<key>public.mime-type</key>
+				<array>
+					<string>application/octet-stream</string>
+				</array>
+			</dict>
 		</dict>
 	</array>
 </dict>

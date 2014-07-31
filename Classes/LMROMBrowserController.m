@@ -278,6 +278,7 @@ static int const LMFileOrganizationVersionNumber = 1;
       LMFileListItem* sramItem = [[LMFileListItem alloc] init];
       sramItem.displayName = NSLocalizedString(@"SRAM_FILE", nil);
       sramItem.fileName = [sramPath lastPathComponent];
+      sramItem.displayDetails = sramItem.fileName;
       [itemsList addObject:sramItem];
       [sramItem release];
     }
@@ -299,6 +300,7 @@ static int const LMFileOrganizationVersionNumber = 1;
         else
           saveItem.displayName = [NSString stringWithFormat:NSLocalizedString(@"SAVE_FILE_SLOT_%i", nil), i];
         saveItem.fileName = [[LMSaveManager pathForSaveOfROMName:_detailsItem.fileName slot:i] lastPathComponent];
+        saveItem.displayDetails = saveItem.fileName;
         [itemsList addObject:saveItem];
         [saveItem release];
       }
@@ -474,7 +476,7 @@ static int const LMFileOrganizationVersionNumber = 1;
   
   UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
   if(cell == nil)
-    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
   
   LMFileListItem* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
   cell.textLabel.text = item.displayName;
@@ -535,12 +537,21 @@ static int const LMFileOrganizationVersionNumber = 1;
     LMFileListItem* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
     [[NSFileManager defaultManager] removeItemAtPath:[_romPath stringByAppendingPathComponent:item.fileName] error:nil];
     [self LM_reloadROMList:NO];
+    
+    BOOL isROMDetail = (_detailsItem != nil);
+    if(isROMDetail == YES)
+    {
+      if([_romList count] == 0
+         || (indexPath.section == 0 && indexPath.row == 0))
+      {
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+      }
+    }
     if(amount == 1)
-      [tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
+      [tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
     else
-      [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    if([_romList count] == 0)
-      [self.navigationController popViewControllerAnimated:YES];
+      [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
   }
 }
 
