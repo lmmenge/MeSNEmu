@@ -235,6 +235,7 @@ typedef enum _LMSettingsSections
           break;
         case LMBTControllerType_SteelSeriesFree:
           controllerName = @"SteelSeries Free";
+          break;
         case LMBTControllerType_iMpulse:
           controllerName = @"iMpulse";
           break;

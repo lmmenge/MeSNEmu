@@ -1,5 +1,6 @@
 1.4.3
 =====
+- Fixes for MFi GameControllers (thanks to RobMSantos);
 - Showing respective file names for "Internal Memory" and "Save Points" in the ROM detail screen;
 - Fixed crashes when deleting a ROM from its detail screen;
 - Fixed some filetype associations which caused SiOS to appear as an option for unsupported filetypes.
