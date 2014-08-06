@@ -21,11 +21,13 @@
 - (void)updateLabel
 {
   if(_allowsDefault == NO)
-    _defaultButton.enabled = NO;
+    _defaultButton.userInteractionEnabled = NO;
   if(_usesDefaultValue == YES)
     [_defaultButton setTitle:NSLocalizedString(@"DEFAULT", nil) forState:UIControlStateNormal];
   else
+  {
     [_defaultButton setTitle:[NSString stringWithFormat:@"%i %@", _value, _suffix] forState:UIControlStateNormal];
+  }
 }
 
 - (void)setup
@@ -135,7 +137,9 @@
     _plusButton.frame = (CGRect){minusImage.size.width+defaultImage.size.width,0, plusImage.size};
     [_plusButton addTarget:self action:@selector(plus:) forControlEvents:UIControlEventTouchUpInside];
     [_plusMinusAccessoryView addSubview:_plusButton];
-    
+  }
+  if(self.accessoryView != _plusMinusAccessoryView)
+  {
     self.accessoryView = _plusMinusAccessoryView;
     self.selectionStyle = UITableViewCellSelectionStyleNone;
   }
