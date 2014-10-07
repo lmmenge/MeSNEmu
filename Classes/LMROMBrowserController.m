@@ -374,7 +374,7 @@ static int const LMFileOrganizationVersionNumber = 1;
   LMSettingsController* c = [[LMSettingsController alloc] init];
   UINavigationController* n = [[UINavigationController alloc] initWithRootViewController:c];
   n.modalPresentationStyle = UIModalPresentationFormSheet;
-  [self presentModalViewController:n animated:YES];
+  [self presentViewController:n animated:YES completion:nil];
   [c release];
   [n release];
 }
@@ -514,8 +514,7 @@ static int const LMFileOrganizationVersionNumber = 1;
     }
   }
   [self.searchDisplayController setActive:NO];
-  [self.navigationController presentModalViewController:emulator animated:YES];
-  //[self.navigationController pushViewController:emulator animated:YES];
+  [self.navigationController presentViewController:emulator animated:YES completion:nil];
   [emulator release];
 }
 
@@ -635,9 +634,6 @@ static int const LMFileOrganizationVersionNumber = 1;
 - (void)viewWillAppear:(BOOL)animated
 {
   [super viewWillAppear:animated];
-  
-  [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
-  [self.navigationController setNavigationBarHidden:NO animated:YES];
   
   [self LM_reloadROMList];
   

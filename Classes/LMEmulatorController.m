@@ -81,9 +81,12 @@ typedef enum _LMEmulatorAlert
   [_externalWindow release];
   _externalWindow = nil;
   
-  [UIView animateWithDuration:0.3 animations:^{
-    [_customView layoutIfNeeded];
-  }];
+  if(_customView.superview != nil)
+  {
+    [UIView animateWithDuration:0.3 animations:^{
+      [_customView layoutIfNeeded];
+    }];
+  }
 }
 
 #pragma mark UI Interaction Handling
@@ -174,8 +177,7 @@ typedef enum _LMEmulatorAlert
     [self LM_dismantleExternalScreen];
     SISetEmulationRunning(0);
     SIWaitForEmulationEnd();
-    //[self.navigationController popViewControllerAnimated:YES];
-    [self dismissModalViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
   }
   else if(buttonIndex == resetIndex)
   {
@@ -217,7 +219,7 @@ typedef enum _LMEmulatorAlert
     c.delegate = self;
     UINavigationController* n = [[UINavigationController alloc] initWithRootViewController:c];
     n.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentModalViewController:n animated:YES];
+    [self presentViewController:n animated:YES completion:nil];
     [c release];
     [n release];
   }
@@ -507,7 +509,7 @@ typedef enum _LMEmulatorAlert
 
 - (void)loadView
 {
-  _customView = [[LMEmulatorControllerView alloc] initWithFrame:(CGRect){0,0,100,200}];
+  _customView = [[LMEmulatorControllerView alloc] initWithFrame:CGRectZero];
   _customView.iCadeControlView.delegate = self;
   [_customView.optionsButton addTarget:self action:@selector(LM_options:) forControlEvents:UIControlEventTouchUpInside];
   self.view = _customView;
@@ -527,8 +529,6 @@ typedef enum _LMEmulatorAlert
 {  
   [super viewWillAppear:animated];
   
-  [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-  [self.navigationController setNavigationBarHidden:YES animated:YES];
   [UIApplication sharedApplication].idleTimerDisabled = YES;
   
   if(_isMirror == NO)
@@ -577,7 +577,7 @@ typedef enum _LMEmulatorAlert
 {
 	[super viewWillDisappear:animated];
   
-    [UIApplication sharedApplication].idleTimerDisabled = NO;
+  [UIApplication sharedApplication].idleTimerDisabled = NO;
   
   if([LMGameControllerManager gameControllersMightBeAvailable] == YES)
   {
