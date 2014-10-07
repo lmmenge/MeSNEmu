@@ -1,3 +1,7 @@
+1.4.4
+=====
+- Fixed some iOS 8 oddities.
+
 1.4.3.1
 =======
 - Fixed some high resolution games not displaying properly.
