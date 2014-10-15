@@ -1,6 +1,6 @@
 //
 //  LMBTControllerView.h
-//  SiOS
+//  MeSNEmu
 //
 //  Created by Lucas Menge on 7/25/13.
 //  Copyright (c) 2013 Lucas Menge. All rights reserved.

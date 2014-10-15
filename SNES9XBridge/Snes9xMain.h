@@ -1,33 +1,33 @@
 //
 //  Snes9xMain.h
-//  SiOS
+//  MeSNEmu
 //
 //  Created by Lucas Menge on 1/2/12.
 //  Copyright (c) 2012 Lucas Menge. All rights reserved.
 //
 
-#ifndef SiOS_Snes9xMain_h
-#define SiOS_Snes9xMain_h
+#ifndef MeSNEmu_Snes9xMain_h
+#define MeSNEmu_Snes9xMain_h
 
 #include "../SNES9X/port.h"
 
 enum
 {
-  SIOS_UP=0x1,
-  SIOS_LEFT=0x4,
-  SIOS_DOWN=0x10,
-  SIOS_RIGHT=0x40,
-  SIOS_START=1<<8,
-  SIOS_SELECT=1<<9,
-  SIOS_L=1<<10,
-  SIOS_R=1<<11,
-  SIOS_A=1<<12,
-  SIOS_B=1<<13,
-  SIOS_X=1<<14,
-  SIOS_Y=1<<15,
-  SIOS_VOL_UP=1<<23,
-  SIOS_VOL_DOWN=1<<22,
-  SIOS_PUSH=1<<27
+  SI_BUTTON_UP=0x1,
+  SI_BUTTON_LEFT=0x4,
+  SI_BUTTON_DOWN=0x10,
+  SI_BUTTON_RIGHT=0x40,
+  SI_BUTTON_START=1<<8,
+  SI_BUTTON_SELECT=1<<9,
+  SI_BUTTON_L=1<<10,
+  SI_BUTTON_R=1<<11,
+  SI_BUTTON_A=1<<12,
+  SI_BUTTON_B=1<<13,
+  SI_BUTTON_X=1<<14,
+  SI_BUTTON_Y=1<<15,
+  SI_BUTTON_VOL_UP=1<<23,
+  SI_BUTTON_VOL_DOWN=1<<22,
+  SI_BUTTON_PUSH=1<<27
 };
 
 #ifdef __cplusplus

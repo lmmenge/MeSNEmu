@@ -314,18 +314,18 @@ extern "C" int SIStartWithROM(char* rom_filename)
   
   s9xcommand_t	cmd;
   
-	ASSIGN_BUTTONf(SIOS_X,         "Joypad1 X");
-	ASSIGN_BUTTONf(SIOS_A,         "Joypad1 A");
-	ASSIGN_BUTTONf(SIOS_B,         "Joypad1 B");
-	ASSIGN_BUTTONf(SIOS_Y,         "Joypad1 Y");
-	ASSIGN_BUTTONf(SIOS_L,         "Joypad1 L");
-	ASSIGN_BUTTONf(SIOS_R,         "Joypad1 R");
-	ASSIGN_BUTTONf(SIOS_SELECT,    "Joypad1 Select");
-	ASSIGN_BUTTONf(SIOS_START,     "Joypad1 Start");
-	ASSIGN_BUTTONf(SIOS_UP,        "Joypad1 Up");
-	ASSIGN_BUTTONf(SIOS_DOWN,      "Joypad1 Down");
-	ASSIGN_BUTTONf(SIOS_LEFT,      "Joypad1 Left");
-	ASSIGN_BUTTONf(SIOS_RIGHT,     "Joypad1 Right");
+	ASSIGN_BUTTONf(SI_BUTTON_X,         "Joypad1 X");
+	ASSIGN_BUTTONf(SI_BUTTON_A,         "Joypad1 A");
+	ASSIGN_BUTTONf(SI_BUTTON_B,         "Joypad1 B");
+	ASSIGN_BUTTONf(SI_BUTTON_Y,         "Joypad1 Y");
+	ASSIGN_BUTTONf(SI_BUTTON_L,         "Joypad1 L");
+	ASSIGN_BUTTONf(SI_BUTTON_R,         "Joypad1 R");
+	ASSIGN_BUTTONf(SI_BUTTON_SELECT,    "Joypad1 Select");
+	ASSIGN_BUTTONf(SI_BUTTON_START,     "Joypad1 Start");
+	ASSIGN_BUTTONf(SI_BUTTON_UP,        "Joypad1 Up");
+	ASSIGN_BUTTONf(SI_BUTTON_DOWN,      "Joypad1 Down");
+	ASSIGN_BUTTONf(SI_BUTTON_LEFT,      "Joypad1 Left");
+	ASSIGN_BUTTONf(SI_BUTTON_RIGHT,     "Joypad1 Right");
   
 	S9xReportControllers();
   

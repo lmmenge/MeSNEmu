@@ -1,6 +1,6 @@
 //
 //  LMDPadView.h
-//  SiOS
+//  MeSNEmu
 //
 //  Created by Lucas Menge on 1/4/12.
 //  Copyright (c) 2012 Lucas Menge. All rights reserved.

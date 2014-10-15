@@ -1,6 +1,6 @@
 //
 //  LMGameControllerManager.h
-//  SiOS
+//  MeSNEmu
 //
 //  Created by Adam Bell on 12/22/2013.
 //

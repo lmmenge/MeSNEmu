@@ -154,8 +154,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		66C1BD5E1866ACA800E5A833 /* LMGameControllerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMGameControllerManager.h; path = Classes/LMGameControllerManager.h; sourceTree = SOURCE_ROOT; };
-		66C1BD5F1866ACA800E5A833 /* LMGameControllerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMGameControllerManager.m; path = Classes/LMGameControllerManager.m; sourceTree = SOURCE_ROOT; };
+		66C1BD5E1866ACA800E5A833 /* LMGameControllerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = LMGameControllerManager.h; path = Classes/LMGameControllerManager.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		66C1BD5F1866ACA800E5A833 /* LMGameControllerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = LMGameControllerManager.m; path = Classes/LMGameControllerManager.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		66C1BD611866AF9E00E5A833 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
 		A00401E314BE3E4D00FE28CE /* 65c816.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 65c816.h; sourceTree = "<group>"; };
 		A00401E514BE3E4D00FE28CE /* apu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = apu.cpp; sourceTree = "<group>"; };
@@ -315,18 +315,18 @@
 		A00404DB14BE3F1F00FE28CE /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
 		A00404DC14BE3F1F00FE28CE /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		A00404DF14BE41ED00FE28CE /* srtc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = srtc.cpp; sourceTree = "<group>"; };
-		A027AC1714C78F3B00F177F7 /* LMSaveManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMSaveManager.h; path = Classes/LMSaveManager.h; sourceTree = SOURCE_ROOT; };
-		A027AC1814C78F3C00F177F7 /* LMSaveManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = LMSaveManager.mm; path = Classes/LMSaveManager.mm; sourceTree = SOURCE_ROOT; };
-		A027AC2D14C8456D00F177F7 /* SISaveDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SISaveDelegate.h; path = SNES9XBridge/SISaveDelegate.h; sourceTree = SOURCE_ROOT; };
-		A027AC2E14C8456D00F177F7 /* SISaveDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SISaveDelegate.m; path = SNES9XBridge/SISaveDelegate.m; sourceTree = SOURCE_ROOT; };
-		A03C087214BF7AB2003FAEB9 /* LMSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMSettingsController.h; path = Classes/LMSettingsController.h; sourceTree = SOURCE_ROOT; };
-		A03C087314BF7AB2003FAEB9 /* LMSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMSettingsController.m; path = Classes/LMSettingsController.m; sourceTree = SOURCE_ROOT; };
-		A03C087614BF7E43003FAEB9 /* LMTableViewSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMTableViewSwitchCell.h; path = Classes/LMTableViewSwitchCell.h; sourceTree = SOURCE_ROOT; };
-		A03C087714BF7E43003FAEB9 /* LMTableViewSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMTableViewSwitchCell.m; path = Classes/LMTableViewSwitchCell.m; sourceTree = SOURCE_ROOT; };
-		A03C087914BF89CC003FAEB9 /* LMTableViewNumberCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMTableViewNumberCell.m; path = Classes/LMTableViewNumberCell.m; sourceTree = SOURCE_ROOT; };
-		A03C087A14BF89CC003FAEB9 /* LMTableViewNumberCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMTableViewNumberCell.h; path = Classes/LMTableViewNumberCell.h; sourceTree = SOURCE_ROOT; };
-		A03C087C14BF89E3003FAEB9 /* LMTableViewCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMTableViewCellDelegate.h; path = Classes/LMTableViewCellDelegate.h; sourceTree = SOURCE_ROOT; };
-		A050660714B21C7F003E0C5E /* SiOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A027AC1714C78F3B00F177F7 /* LMSaveManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = LMSaveManager.h; path = Classes/LMSaveManager.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A027AC1814C78F3C00F177F7 /* LMSaveManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; name = LMSaveManager.mm; path = Classes/LMSaveManager.mm; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A027AC2D14C8456D00F177F7 /* SISaveDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = SISaveDelegate.h; path = SNES9XBridge/SISaveDelegate.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A027AC2E14C8456D00F177F7 /* SISaveDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SISaveDelegate.m; path = SNES9XBridge/SISaveDelegate.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		A03C087214BF7AB2003FAEB9 /* LMSettingsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = LMSettingsController.h; path = Classes/LMSettingsController.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A03C087314BF7AB2003FAEB9 /* LMSettingsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = LMSettingsController.m; path = Classes/LMSettingsController.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		A03C087614BF7E43003FAEB9 /* LMTableViewSwitchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = LMTableViewSwitchCell.h; path = Classes/LMTableViewSwitchCell.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A03C087714BF7E43003FAEB9 /* LMTableViewSwitchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = LMTableViewSwitchCell.m; path = Classes/LMTableViewSwitchCell.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		A03C087914BF89CC003FAEB9 /* LMTableViewNumberCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = LMTableViewNumberCell.m; path = Classes/LMTableViewNumberCell.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		A03C087A14BF89CC003FAEB9 /* LMTableViewNumberCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = LMTableViewNumberCell.h; path = Classes/LMTableViewNumberCell.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A03C087C14BF89E3003FAEB9 /* LMTableViewCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = LMTableViewCellDelegate.h; path = Classes/LMTableViewCellDelegate.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A050660714B21C7F003E0C5E /* MeSNEmu.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeSNEmu.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A050660B14B21C7F003E0C5E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A050660D14B21C7F003E0C5E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A050660F14B21C7F003E0C5E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -334,19 +334,19 @@
 		A093242617CE590200A93B6B /* LMMultipleChoicePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMMultipleChoicePicker.h; path = Classes/LMMultipleChoicePicker.h; sourceTree = SOURCE_ROOT; };
 		A093242717CE590200A93B6B /* LMMultipleChoicePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMMultipleChoicePicker.m; path = Classes/LMMultipleChoicePicker.m; sourceTree = SOURCE_ROOT; };
 		A093242817CE590200A93B6B /* LMMultipleChoicePickerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMMultipleChoicePickerDelegate.h; path = Classes/LMMultipleChoicePickerDelegate.h; sourceTree = SOURCE_ROOT; };
-		A093242E17CE6B3000A93B6B /* LMEmulatorControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMEmulatorControllerView.h; path = Classes/LMEmulatorControllerView.h; sourceTree = SOURCE_ROOT; };
-		A093242F17CE6B3000A93B6B /* LMEmulatorControllerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMEmulatorControllerView.m; path = Classes/LMEmulatorControllerView.m; sourceTree = SOURCE_ROOT; };
+		A093242E17CE6B3000A93B6B /* LMEmulatorControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = LMEmulatorControllerView.h; path = Classes/LMEmulatorControllerView.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A093242F17CE6B3000A93B6B /* LMEmulatorControllerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = LMEmulatorControllerView.m; path = Classes/LMEmulatorControllerView.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A093243117CED06400A93B6B /* Icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76.png"; sourceTree = "<group>"; };
 		A093243317CED06900A93B6B /* Icon-120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-120.png"; sourceTree = "<group>"; };
 		A093243517CED06E00A93B6B /* Icon-152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-152.png"; sourceTree = "<group>"; };
 		A0995BD314B508AC00F7C44F /* iOSAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = iOSAudio.cpp; path = SNES9XBridge/iOSAudio.cpp; sourceTree = SOURCE_ROOT; };
-		A0995C1114B525D200F7C44F /* Snes9xMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Snes9xMain.cpp; path = SNES9XBridge/Snes9xMain.cpp; sourceTree = SOURCE_ROOT; };
-		A0995F7F14B679F300F7C44F /* Snes9xCallbacks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Snes9xCallbacks.cpp; path = SNES9XBridge/Snes9xCallbacks.cpp; sourceTree = SOURCE_ROOT; };
-		A0995F8114B67AAB00F7C44F /* Snes9xCallbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Snes9xCallbacks.h; path = SNES9XBridge/Snes9xCallbacks.h; sourceTree = SOURCE_ROOT; };
-		A0995F8214B67B7E00F7C44F /* Snes9xMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Snes9xMain.h; path = SNES9XBridge/Snes9xMain.h; sourceTree = SOURCE_ROOT; };
-		A0995F8314B67E2100F7C44F /* iOSAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iOSAudio.h; path = SNES9XBridge/iOSAudio.h; sourceTree = SOURCE_ROOT; };
-		A0995F8414B6883200F7C44F /* SIScreenDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SIScreenDelegate.h; path = SNES9XBridge/SIScreenDelegate.h; sourceTree = SOURCE_ROOT; };
-		A0995F8514B6883E00F7C44F /* SIScreenDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SIScreenDelegate.m; path = SNES9XBridge/SIScreenDelegate.m; sourceTree = SOURCE_ROOT; };
+		A0995C1114B525D200F7C44F /* Snes9xMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; name = Snes9xMain.cpp; path = SNES9XBridge/Snes9xMain.cpp; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		A0995F7F14B679F300F7C44F /* Snes9xCallbacks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; name = Snes9xCallbacks.cpp; path = SNES9XBridge/Snes9xCallbacks.cpp; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		A0995F8114B67AAB00F7C44F /* Snes9xCallbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = Snes9xCallbacks.h; path = SNES9XBridge/Snes9xCallbacks.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A0995F8214B67B7E00F7C44F /* Snes9xMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = Snes9xMain.h; path = SNES9XBridge/Snes9xMain.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A0995F8314B67E2100F7C44F /* iOSAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = iOSAudio.h; path = SNES9XBridge/iOSAudio.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A0995F8414B6883200F7C44F /* SIScreenDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = SIScreenDelegate.h; path = SNES9XBridge/SIScreenDelegate.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A0995F8514B6883E00F7C44F /* SIScreenDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SIScreenDelegate.m; path = SNES9XBridge/SIScreenDelegate.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A0A8A0F914B25401003C5688 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		A0A8A0FB14B25409003C5688 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		A0B8685914BE25F900663EBE /* ButtonDarkPurple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonDarkPurple.png; sourceTree = "<group>"; };
@@ -357,32 +357,32 @@
 		A0B8686314BE2C9E00663EBE /* ButtonWide@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonWide@2x.png"; sourceTree = "<group>"; };
 		A0B8686514BE391300663EBE /* ButtonDPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonDPad.png; sourceTree = "<group>"; };
 		A0B8686614BE391300663EBE /* ButtonDPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonDPad@2x.png"; sourceTree = "<group>"; };
-		A0B8686914BE3B3100663EBE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Classes/main.m; sourceTree = SOURCE_ROOT; };
-		A0B8686A14BE3B3100663EBE /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Prefix.pch; path = Classes/Prefix.pch; sourceTree = SOURCE_ROOT; };
-		A0B8686E14BE3B6600663EBE /* LMDPadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMDPadView.m; path = Classes/LMDPadView.m; sourceTree = SOURCE_ROOT; };
-		A0B8686F14BE3B6600663EBE /* LMEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMEmulatorController.m; path = Classes/LMEmulatorController.m; sourceTree = SOURCE_ROOT; };
-		A0B8687014BE3B6600663EBE /* LMButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMButtonView.m; path = Classes/LMButtonView.m; sourceTree = SOURCE_ROOT; };
-		A0B8687114BE3B6600663EBE /* LMButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMButtonView.h; path = Classes/LMButtonView.h; sourceTree = SOURCE_ROOT; };
-		A0B8687214BE3B6600663EBE /* LMEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMEmulatorController.h; path = Classes/LMEmulatorController.h; sourceTree = SOURCE_ROOT; };
-		A0B8687514BE3B6700663EBE /* LMROMBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMROMBrowserController.m; path = Classes/LMROMBrowserController.m; sourceTree = SOURCE_ROOT; };
-		A0B8687614BE3B6700663EBE /* LMROMBrowserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMROMBrowserController.h; path = Classes/LMROMBrowserController.h; sourceTree = SOURCE_ROOT; };
-		A0B8687714BE3B6700663EBE /* LMPixelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMPixelView.m; path = Classes/LMPixelView.m; sourceTree = SOURCE_ROOT; };
-		A0B8687814BE3B6700663EBE /* LMPixelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMPixelView.h; path = Classes/LMPixelView.h; sourceTree = SOURCE_ROOT; };
-		A0B8687914BE3B6700663EBE /* LMPixelLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMPixelLayer.m; path = Classes/LMPixelLayer.m; sourceTree = SOURCE_ROOT; };
-		A0B8687A14BE3B6700663EBE /* LMPixelLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMPixelLayer.h; path = Classes/LMPixelLayer.h; sourceTree = SOURCE_ROOT; };
-		A0B8687B14BE3B6700663EBE /* LMDPadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMDPadView.h; path = Classes/LMDPadView.h; sourceTree = SOURCE_ROOT; };
-		A0B8687C14BE3B6800663EBE /* LMAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMAppDelegate.m; path = Classes/LMAppDelegate.m; sourceTree = SOURCE_ROOT; };
-		A0B8687D14BE3B6800663EBE /* LMAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMAppDelegate.h; path = Classes/LMAppDelegate.h; sourceTree = SOURCE_ROOT; };
+		A0B8686914BE3B3100663EBE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = main.m; path = Classes/main.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		A0B8686A14BE3B3100663EBE /* Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = Prefix.pch; path = Classes/Prefix.pch; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		A0B8686E14BE3B6600663EBE /* LMDPadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = LMDPadView.m; path = Classes/LMDPadView.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		A0B8686F14BE3B6600663EBE /* LMEmulatorController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = LMEmulatorController.m; path = Classes/LMEmulatorController.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		A0B8687014BE3B6600663EBE /* LMButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = LMButtonView.m; path = Classes/LMButtonView.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		A0B8687114BE3B6600663EBE /* LMButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = LMButtonView.h; path = Classes/LMButtonView.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A0B8687214BE3B6600663EBE /* LMEmulatorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = LMEmulatorController.h; path = Classes/LMEmulatorController.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A0B8687514BE3B6700663EBE /* LMROMBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = LMROMBrowserController.m; path = Classes/LMROMBrowserController.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		A0B8687614BE3B6700663EBE /* LMROMBrowserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = LMROMBrowserController.h; path = Classes/LMROMBrowserController.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A0B8687714BE3B6700663EBE /* LMPixelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = LMPixelView.m; path = Classes/LMPixelView.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		A0B8687814BE3B6700663EBE /* LMPixelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = LMPixelView.h; path = Classes/LMPixelView.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A0B8687914BE3B6700663EBE /* LMPixelLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = LMPixelLayer.m; path = Classes/LMPixelLayer.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		A0B8687A14BE3B6700663EBE /* LMPixelLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = LMPixelLayer.h; path = Classes/LMPixelLayer.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A0B8687B14BE3B6700663EBE /* LMDPadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = LMDPadView.h; path = Classes/LMDPadView.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A0B8687C14BE3B6800663EBE /* LMAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = LMAppDelegate.m; path = Classes/LMAppDelegate.m; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		A0B8687D14BE3B6800663EBE /* LMAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = LMAppDelegate.h; path = Classes/LMAppDelegate.h; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		A0B8688914BE3BE300663EBE /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
-		A0BB592714E84BC000D12F97 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		A0BB592914E84BD100D12F97 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A0BB592714E84BC000D12F97 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
+		A0BB592914E84BD100D12F97 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; lineEnding = 0; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.simpleColoring; };
 		A0BF018C14E98A19006534F2 /* ButtonGrey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ButtonGrey.png; sourceTree = "<group>"; };
 		A0BF018D14E98A19006534F2 /* ButtonGrey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ButtonGrey@2x.png"; sourceTree = "<group>"; };
 		A0BF01A714EC42C8006534F2 /* Icon-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-114.png"; sourceTree = "<group>"; };
 		A0BF01A814EC42C8006534F2 /* Icon-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-57.png"; sourceTree = "<group>"; };
 		A0BF01A914EC42C8006534F2 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
-		A0C41FEB160224FB0038CF06 /* CHANGELOG.TXT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG.TXT; sourceTree = SOURCE_ROOT; };
-		A0C41FEC160224FB0038CF06 /* README.TXT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.TXT; sourceTree = SOURCE_ROOT; };
+		A0C41FEB160224FB0038CF06 /* CHANGELOG.TXT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = CHANGELOG.TXT; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = "<none>"; };
+		A0C41FEC160224FB0038CF06 /* README.TXT */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; lineEnding = 0; path = README.TXT; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = "<none>"; };
 		A0C41FFD160229E10038CF06 /* Icon-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-144.png"; sourceTree = "<group>"; };
 		A0D287B5172959A300CD6C6A /* iCadeReaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iCadeReaderView.h; sourceTree = "<group>"; };
 		A0D287B6172959A300CD6C6A /* iCadeReaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCadeReaderView.m; sourceTree = "<group>"; };
@@ -412,8 +412,8 @@
 		A0F1F12F184D5EE3000D6CE9 /* Default-Portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x.png"; sourceTree = "<group>"; };
 		A0F1F130184D5EE3000D6CE9 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		A0F1F131184D5EE3000D6CE9 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		A0FE5CB117A1EC5D0001EA30 /* LMBTControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LMBTControllerView.h; sourceTree = "<group>"; };
-		A0FE5CB217A1EC5D0001EA30 /* LMBTControllerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LMBTControllerView.m; sourceTree = "<group>"; };
+		A0FE5CB117A1EC5D0001EA30 /* LMBTControllerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = LMBTControllerView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		A0FE5CB217A1EC5D0001EA30 /* LMBTControllerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = LMBTControllerView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -634,7 +634,7 @@
 		A05065FC14B21C7E003E0C5E = {
 			isa = PBXGroup;
 			children = (
-				A050661114B21C7F003E0C5E /* SiOS */,
+				A050661114B21C7F003E0C5E /* MeSNEmu */,
 				A050660A14B21C7F003E0C5E /* Frameworks */,
 				A050660814B21C7F003E0C5E /* Products */,
 			);
@@ -643,7 +643,7 @@
 		A050660814B21C7F003E0C5E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A050660714B21C7F003E0C5E /* SiOS.app */,
+				A050660714B21C7F003E0C5E /* MeSNEmu.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -663,7 +663,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		A050661114B21C7F003E0C5E /* SiOS */ = {
+		A050661114B21C7F003E0C5E /* MeSNEmu */ = {
 			isa = PBXGroup;
 			children = (
 				A0C41FE9160224F30038CF06 /* Docs */,
@@ -679,7 +679,7 @@
 				A0995BCF14B5087600F7C44F /* SNES9XBridge */,
 				A00401E214BE3E4D00FE28CE /* SNES9X */,
 			);
-			name = SiOS;
+			name = MeSNEmu;
 			path = pixelbuffertest;
 			sourceTree = "<group>";
 		};
@@ -855,9 +855,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A050660614B21C7F003E0C5E /* SiOS */ = {
+		A050660614B21C7F003E0C5E /* MeSNEmu */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A050662814B21C7F003E0C5E /* Build configuration list for PBXNativeTarget "SiOS" */;
+			buildConfigurationList = A050662814B21C7F003E0C5E /* Build configuration list for PBXNativeTarget "MeSNEmu" */;
 			buildPhases = (
 				A050660314B21C7F003E0C5E /* Sources */,
 				A050660414B21C7F003E0C5E /* Frameworks */,
@@ -867,9 +867,9 @@
 			);
 			dependencies = (
 			);
-			name = SiOS;
+			name = MeSNEmu;
 			productName = pixelbuffertest;
-			productReference = A050660714B21C7F003E0C5E /* SiOS.app */;
+			productReference = A050660714B21C7F003E0C5E /* MeSNEmu.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -881,7 +881,7 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Lucas Menge";
 			};
-			buildConfigurationList = A050660114B21C7E003E0C5E /* Build configuration list for PBXProject "SiOS" */;
+			buildConfigurationList = A050660114B21C7E003E0C5E /* Build configuration list for PBXProject "MeSNEmu" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -895,7 +895,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A050660614B21C7F003E0C5E /* SiOS */,
+				A050660614B21C7F003E0C5E /* MeSNEmu */,
 			);
 		};
 /* End PBXProject section */
@@ -1142,7 +1142,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/SNES9X/macosx\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = MeSNEmu;
 				SNES_CFLAGS = "-funsigned-char -ffast-math -fexpensive-optimizations -falign-functions=32 -finline -finline-functions -fno-builtin -fno-common -fomit-frame-pointer -fstrength-reduce -funroll-loops -fstrict-aliasing";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1158,7 +1158,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/SNES9X/macosx\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = MeSNEmu;
 				SNES_CFLAGS = "-funsigned-char -ffast-math -fexpensive-optimizations -falign-functions=32 -finline -finline-functions -fno-builtin -fno-common -fomit-frame-pointer -fstrength-reduce -funroll-loops -fstrict-aliasing";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1167,7 +1167,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A050660114B21C7E003E0C5E /* Build configuration list for PBXProject "SiOS" */ = {
+		A050660114B21C7E003E0C5E /* Build configuration list for PBXProject "MeSNEmu" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A050662614B21C7F003E0C5E /* Debug */,
@@ -1176,7 +1176,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A050662814B21C7F003E0C5E /* Build configuration list for PBXNativeTarget "SiOS" */ = {
+		A050662814B21C7F003E0C5E /* Build configuration list for PBXNativeTarget "MeSNEmu" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A050662914B21C7F003E0C5E /* Debug */,

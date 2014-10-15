@@ -1,6 +1,6 @@
 //
 //  LMDPadView.m
-//  SiOS
+//  MeSNEmu
 //
 //  Created by Lucas Menge on 1/4/12.
 //  Copyright (c) 2012 Lucas Menge. All rights reserved.
@@ -17,38 +17,38 @@
   UITouch* touch = [touches anyObject];
   if(touch.phase == UITouchPhaseCancelled || touch.phase == UITouchPhaseEnded || touch == nil)
   {
-    SISetControllerReleaseButton(SIOS_UP);
-    SISetControllerReleaseButton(SIOS_LEFT);
-    SISetControllerReleaseButton(SIOS_RIGHT);
-    SISetControllerReleaseButton(SIOS_DOWN);
+    SISetControllerReleaseButton(SI_BUTTON_UP);
+    SISetControllerReleaseButton(SI_BUTTON_LEFT);
+    SISetControllerReleaseButton(SI_BUTTON_RIGHT);
+    SISetControllerReleaseButton(SI_BUTTON_DOWN);
     return;
   }
-  SISetControllerReleaseButton(SIOS_UP);
-  SISetControllerReleaseButton(SIOS_LEFT);
-  SISetControllerReleaseButton(SIOS_RIGHT);
-  SISetControllerReleaseButton(SIOS_DOWN);
+  SISetControllerReleaseButton(SI_BUTTON_UP);
+  SISetControllerReleaseButton(SI_BUTTON_LEFT);
+  SISetControllerReleaseButton(SI_BUTTON_RIGHT);
+  SISetControllerReleaseButton(SI_BUTTON_DOWN);
   CGPoint location = [touch locationInView:self];
   if(location.x < 50)
   {
     if(location.y < 50)
     {
-      SISetControllerPushButton(SIOS_UP);
-      SISetControllerPushButton(SIOS_LEFT);
+      SISetControllerPushButton(SI_BUTTON_UP);
+      SISetControllerPushButton(SI_BUTTON_LEFT);
     }
     else if(location.y < 100)
-      SISetControllerPushButton(SIOS_LEFT);
+      SISetControllerPushButton(SI_BUTTON_LEFT);
     else
     {
-      SISetControllerPushButton(SIOS_DOWN);
-      SISetControllerPushButton(SIOS_LEFT);
+      SISetControllerPushButton(SI_BUTTON_DOWN);
+      SISetControllerPushButton(SI_BUTTON_LEFT);
     }
   }
   else if(location.x < 100)
   {
     if(location.y < 50)
-      SISetControllerPushButton(SIOS_UP);
+      SISetControllerPushButton(SI_BUTTON_UP);
     else if(location.y > 100)
-      SISetControllerPushButton(SIOS_DOWN);
+      SISetControllerPushButton(SI_BUTTON_DOWN);
     else
     {
       // inside the middle square things get "tricky"
@@ -61,17 +61,17 @@
         {
           // right or down
           if(x > y)
-            SISetControllerPushButton(SIOS_RIGHT);
+            SISetControllerPushButton(SI_BUTTON_RIGHT);
           else
-            SISetControllerPushButton(SIOS_DOWN);
+            SISetControllerPushButton(SI_BUTTON_DOWN);
         }
         else
         {
           // right or up
           if(x > -y)
-            SISetControllerPushButton(SIOS_RIGHT);
+            SISetControllerPushButton(SI_BUTTON_RIGHT);
           else
-            SISetControllerPushButton(SIOS_UP);
+            SISetControllerPushButton(SI_BUTTON_UP);
         }
       }
       else
@@ -81,17 +81,17 @@
         {
           // left or down
           if(-x > y)
-            SISetControllerPushButton(SIOS_LEFT);
+            SISetControllerPushButton(SI_BUTTON_LEFT);
           else
-            SISetControllerPushButton(SIOS_DOWN);
+            SISetControllerPushButton(SI_BUTTON_DOWN);
         }
         else
         {
           // left or up
           if(-x > -y)
-            SISetControllerPushButton(SIOS_LEFT);
+            SISetControllerPushButton(SI_BUTTON_LEFT);
           else
-            SISetControllerPushButton(SIOS_UP);
+            SISetControllerPushButton(SI_BUTTON_UP);
         }
       }
     }
@@ -100,15 +100,15 @@
   {
     if(location.y < 50)
     {
-      SISetControllerPushButton(SIOS_UP);
-      SISetControllerPushButton(SIOS_RIGHT);
+      SISetControllerPushButton(SI_BUTTON_UP);
+      SISetControllerPushButton(SI_BUTTON_RIGHT);
     }
     else if(location.y < 100)
-      SISetControllerPushButton(SIOS_RIGHT);
+      SISetControllerPushButton(SI_BUTTON_RIGHT);
     else
     {
-      SISetControllerPushButton(SIOS_DOWN);
-      SISetControllerPushButton(SIOS_RIGHT);
+      SISetControllerPushButton(SI_BUTTON_DOWN);
+      SISetControllerPushButton(SI_BUTTON_RIGHT);
     }
   }
 }

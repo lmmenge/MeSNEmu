@@ -1,6 +1,6 @@
 //
 //  LMViewController.m
-//  SiOS
+//  MeSNEmu
 //
 //  Created by Lucas Menge on 1/2/12.
 //  Copyright (c) 2012 Lucas Menge. All rights reserved.
@@ -282,40 +282,40 @@ typedef enum _LMEmulatorAlert
   switch(button)
   {
     case iCadeJoystickRight:
-      SISetControllerPushButton(SIOS_RIGHT);
+      SISetControllerPushButton(SI_BUTTON_RIGHT);
       break;
     case iCadeJoystickUp:
-      SISetControllerPushButton(SIOS_UP);
+      SISetControllerPushButton(SI_BUTTON_UP);
       break;
     case iCadeJoystickLeft:
-      SISetControllerPushButton(SIOS_LEFT);
+      SISetControllerPushButton(SI_BUTTON_LEFT);
       break;
     case iCadeJoystickDown:
-      SISetControllerPushButton(SIOS_DOWN);
+      SISetControllerPushButton(SI_BUTTON_DOWN);
       break;
     case iCadeButtonA:
-      SISetControllerPushButton(SIOS_SELECT);
+      SISetControllerPushButton(SI_BUTTON_SELECT);
       break;
     case iCadeButtonB:
-      SISetControllerPushButton(SIOS_START);
+      SISetControllerPushButton(SI_BUTTON_START);
       break;
     case iCadeButtonC:
-      SISetControllerPushButton(SIOS_Y);
+      SISetControllerPushButton(SI_BUTTON_Y);
       break;
     case iCadeButtonD:
-      SISetControllerPushButton(SIOS_B);
+      SISetControllerPushButton(SI_BUTTON_B);
       break;
     case iCadeButtonE:
-      SISetControllerPushButton(SIOS_X);
+      SISetControllerPushButton(SI_BUTTON_X);
       break;
     case iCadeButtonF:
-      SISetControllerPushButton(SIOS_A);
+      SISetControllerPushButton(SI_BUTTON_A);
       break;
     case iCadeButtonG:
-      SISetControllerPushButton(SIOS_L);
+      SISetControllerPushButton(SI_BUTTON_L);
       break;
     case iCadeButtonH:
-      SISetControllerPushButton(SIOS_R);
+      SISetControllerPushButton(SI_BUTTON_R);
       break;
     default:
       break;
@@ -329,40 +329,40 @@ typedef enum _LMEmulatorAlert
   switch(button)
   {
     case iCadeJoystickRight:
-      SISetControllerReleaseButton(SIOS_RIGHT);
+      SISetControllerReleaseButton(SI_BUTTON_RIGHT);
       break;
     case iCadeJoystickUp:
-      SISetControllerReleaseButton(SIOS_UP);
+      SISetControllerReleaseButton(SI_BUTTON_UP);
       break;
     case iCadeJoystickLeft:
-      SISetControllerReleaseButton(SIOS_LEFT);
+      SISetControllerReleaseButton(SI_BUTTON_LEFT);
       break;
     case iCadeJoystickDown:
-      SISetControllerReleaseButton(SIOS_DOWN);
+      SISetControllerReleaseButton(SI_BUTTON_DOWN);
       break;
     case iCadeButtonA:
-      SISetControllerReleaseButton(SIOS_SELECT);
+      SISetControllerReleaseButton(SI_BUTTON_SELECT);
       break;
     case iCadeButtonB:
-      SISetControllerReleaseButton(SIOS_START);
+      SISetControllerReleaseButton(SI_BUTTON_START);
       break;
     case iCadeButtonC:
-      SISetControllerReleaseButton(SIOS_Y);
+      SISetControllerReleaseButton(SI_BUTTON_Y);
       break;
     case iCadeButtonD:
-      SISetControllerReleaseButton(SIOS_B);
+      SISetControllerReleaseButton(SI_BUTTON_B);
       break;
     case iCadeButtonE:
-      SISetControllerReleaseButton(SIOS_X);
+      SISetControllerReleaseButton(SI_BUTTON_X);
       break;
     case iCadeButtonF:
-      SISetControllerReleaseButton(SIOS_A);
+      SISetControllerReleaseButton(SI_BUTTON_A);
       break;
     case iCadeButtonG:
-      SISetControllerReleaseButton(SIOS_L);
+      SISetControllerReleaseButton(SI_BUTTON_L);
       break;
     case iCadeButtonH:
-      SISetControllerReleaseButton(SIOS_R);
+      SISetControllerReleaseButton(SI_BUTTON_R);
       break;
     default:
       break;

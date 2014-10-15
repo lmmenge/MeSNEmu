@@ -1,13 +1,13 @@
 //
 //  iOSAudio.h
-//  SiOS
+//  MeSNEmu
 //
 //  Created by Lucas Menge on 1/2/12.
 //  Copyright (c) 2012 Lucas Menge. All rights reserved.
 //
 
-#ifndef SiOS_iOSAudio_h
-#define SiOS_iOSAudio_h
+#ifndef MeSNEmu_iOSAudio_h
+#define MeSNEmu_iOSAudio_h
 
 #ifdef __cplusplus
 extern "C" {

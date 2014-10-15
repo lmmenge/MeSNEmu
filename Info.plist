@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>SiOS</string>
+	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -19,7 +19,7 @@
 			<string>Owner</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>com.lmmenge.sios.games</string>
+				<string>com.lmmenge.mesnemu.games</string>
 			</array>
 		</dict>
 		<dict>
@@ -33,7 +33,7 @@
 			<string>Owner</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>com.lmmenge.sios.freeze</string>
+				<string>com.lmmenge.mesnemu.freeze</string>
 			</array>
 		</dict>
 		<dict>
@@ -45,7 +45,7 @@
 			<string>Owner</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>com.lmmenge.sios.sram</string>
+				<string>com.lmmenge.mesnemu.sram</string>
 			</array>
 		</dict>
 	</array>
@@ -124,7 +124,7 @@
 			<key>UTTypeDescription</key>
 			<string>SNES Games</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.lmmenge.sios.games</string>
+			<string>com.lmmenge.mesnemu.games</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -146,7 +146,7 @@
 			<key>UTTypeDescription</key>
 			<string>SNES9x Freeze Files</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.lmmenge.sios.freeze</string>
+			<string>com.lmmenge.mesnemu.freeze</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>
@@ -167,7 +167,7 @@
 			<key>UTTypeDescription</key>
 			<string>SNES SRAM</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.lmmenge.sios.sram</string>
+			<string>com.lmmenge.mesnemu.sram</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>

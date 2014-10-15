@@ -1,6 +1,6 @@
 //
 //  LMButtonView.m
-//  SiOS
+//  MeSNEmu
 //
 //  Created by Lucas Menge on 1/11/12.
 //  Copyright (c) 2012 Lucas Menge. All rights reserved.

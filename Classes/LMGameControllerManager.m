@@ -1,6 +1,6 @@
 //
 //  LMGameControllerManager.m
-//  SiOS
+//  MeSNEmu
 //
 //  Created by Adam Bell on 12/22/2013.
 //
@@ -58,56 +58,56 @@
       
       // You should swap A+B / X+Y because it feels awkward on Gamepad
       if (extendedGamepad.buttonA.pressed) {
-        SISetControllerPushButton(SIOS_B);
+        SISetControllerPushButton(SI_BUTTON_B);
       }
       else {
-        SISetControllerReleaseButton(SIOS_B);
+        SISetControllerReleaseButton(SI_BUTTON_B);
       }
       if (extendedGamepad.buttonB.pressed) {
-        SISetControllerPushButton(SIOS_A);
+        SISetControllerPushButton(SI_BUTTON_A);
       }
       else {
-        SISetControllerReleaseButton(SIOS_A);
+        SISetControllerReleaseButton(SI_BUTTON_A);
       }
       if (extendedGamepad.buttonX.pressed) {
-        SISetControllerPushButton(SIOS_Y);
+        SISetControllerPushButton(SI_BUTTON_Y);
       }
       else {
-        SISetControllerReleaseButton(SIOS_Y);
+        SISetControllerReleaseButton(SI_BUTTON_Y);
       }
       if (extendedGamepad.buttonY.pressed) {
-        SISetControllerPushButton(SIOS_X);
+        SISetControllerPushButton(SI_BUTTON_X);
       }
       else {
-        SISetControllerReleaseButton(SIOS_X);
+        SISetControllerReleaseButton(SI_BUTTON_X);
       }
       
       if (extendedGamepad.leftShoulder.pressed) {
-        SISetControllerPushButton(SIOS_L);
+        SISetControllerPushButton(SI_BUTTON_L);
       }
       else {
-        SISetControllerReleaseButton(SIOS_L);
+        SISetControllerReleaseButton(SI_BUTTON_L);
       }
       
       if (extendedGamepad.rightShoulder.pressed) {
-        SISetControllerPushButton(SIOS_R);
+        SISetControllerPushButton(SI_BUTTON_R);
       }
       else {
-        SISetControllerReleaseButton(SIOS_R);
+        SISetControllerReleaseButton(SI_BUTTON_R);
       }
 
       if (extendedGamepad.leftTrigger.pressed) {
-        SISetControllerPushButton(SIOS_SELECT);
+        SISetControllerPushButton(SI_BUTTON_SELECT);
       }
       else {
-        SISetControllerReleaseButton(SIOS_SELECT);
+        SISetControllerReleaseButton(SI_BUTTON_SELECT);
       }
 
       if (extendedGamepad.rightTrigger.pressed) {
-        SISetControllerPushButton(SIOS_START);
+        SISetControllerPushButton(SI_BUTTON_START);
       }
       else {
-        SISetControllerReleaseButton(SIOS_START);
+        SISetControllerReleaseButton(SI_BUTTON_START);
       }
       
       // This feels super awkward
@@ -122,38 +122,38 @@
       
       // Extended Gamepad gets a thumbstick as well
       if (extendedGamepad.dpad.up.pressed || extendedGamepad.leftThumbstick.up.pressed) {
-        SISetControllerPushButton(SIOS_UP);
+        SISetControllerPushButton(SI_BUTTON_UP);
       }
       else {
-        SISetControllerReleaseButton(SIOS_UP);
+        SISetControllerReleaseButton(SI_BUTTON_UP);
       }
       if (extendedGamepad.dpad.down.pressed || extendedGamepad.leftThumbstick.down.pressed) {
-        SISetControllerPushButton(SIOS_DOWN);
+        SISetControllerPushButton(SI_BUTTON_DOWN);
       }
       else {
-        SISetControllerReleaseButton(SIOS_DOWN);
+        SISetControllerReleaseButton(SI_BUTTON_DOWN);
       }
       if (extendedGamepad.dpad.left.pressed || extendedGamepad.leftThumbstick.left.pressed) {
-        SISetControllerPushButton(SIOS_LEFT);
+        SISetControllerPushButton(SI_BUTTON_LEFT);
       }
       else {
-        SISetControllerReleaseButton(SIOS_LEFT);
+        SISetControllerReleaseButton(SI_BUTTON_LEFT);
       }
       if (extendedGamepad.dpad.right.pressed || extendedGamepad.leftThumbstick.right.pressed) {
-        SISetControllerPushButton(SIOS_RIGHT);
+        SISetControllerPushButton(SI_BUTTON_RIGHT);
       }
       else {
-        SISetControllerReleaseButton(SIOS_RIGHT);
+        SISetControllerReleaseButton(SI_BUTTON_RIGHT);
       }
       
       extendedGamepad.controller.controllerPausedHandler = ^(GCController *controller) {
         if (extendedGamepad.leftShoulder.pressed) {
-            SISetControllerPushButton(SIOS_SELECT);
+            SISetControllerPushButton(SI_BUTTON_SELECT);
             // Release button after a delay otherwise it will get stuck or not register at all
             [self performSelector:@selector(releaseSelect) withObject:nil afterDelay:0.1];
         }
         else {
-            SISetControllerPushButton(SIOS_START);
+            SISetControllerPushButton(SI_BUTTON_START);
             // Release button after a delay otherwise it will get stuck or not register at all
             [self performSelector:@selector(releaseStart) withObject:nil afterDelay:0.1];
         }
@@ -164,78 +164,78 @@
       
       // You should swap A+B / X+Y because it feels awkward on Gamepad
       if (gamepad.buttonA.pressed) {
-        SISetControllerPushButton(SIOS_B);
+        SISetControllerPushButton(SI_BUTTON_B);
       }
       else {
-        SISetControllerReleaseButton(SIOS_B);
+        SISetControllerReleaseButton(SI_BUTTON_B);
       }
       if (gamepad.buttonB.pressed) {
-        SISetControllerPushButton(SIOS_A);
+        SISetControllerPushButton(SI_BUTTON_A);
       }
       else {
-        SISetControllerReleaseButton(SIOS_A);
+        SISetControllerReleaseButton(SI_BUTTON_A);
       }
       if (gamepad.buttonX.pressed) {
-        SISetControllerPushButton(SIOS_Y);
+        SISetControllerPushButton(SI_BUTTON_Y);
       }
       else {
-        SISetControllerReleaseButton(SIOS_Y);
+        SISetControllerReleaseButton(SI_BUTTON_Y);
       }
       if (gamepad.buttonY.pressed) {
-        SISetControllerPushButton(SIOS_X);
+        SISetControllerPushButton(SI_BUTTON_X);
       }
       else {
-        SISetControllerReleaseButton(SIOS_X);
+        SISetControllerReleaseButton(SI_BUTTON_X);
       }
       
       if (gamepad.leftShoulder.pressed) {
-        SISetControllerPushButton(SIOS_L);
+        SISetControllerPushButton(SI_BUTTON_L);
       }
       else {
-        SISetControllerReleaseButton(SIOS_L);
+        SISetControllerReleaseButton(SI_BUTTON_L);
       }
     
       if (gamepad.rightShoulder.pressed) {
-        SISetControllerPushButton(SIOS_R);
+        SISetControllerPushButton(SI_BUTTON_R);
       }
       else {
-        SISetControllerReleaseButton(SIOS_R);
+        SISetControllerReleaseButton(SI_BUTTON_R);
       }
         
       // Extended Gamepad gets a thumbstick as well
       if (gamepad.dpad.up.pressed) {
-        SISetControllerPushButton(SIOS_UP);
+        SISetControllerPushButton(SI_BUTTON_UP);
       }
       else {
-        SISetControllerReleaseButton(SIOS_UP);
+        SISetControllerReleaseButton(SI_BUTTON_UP);
       }
       if (gamepad.dpad.down.pressed) {
-        SISetControllerPushButton(SIOS_DOWN);
+        SISetControllerPushButton(SI_BUTTON_DOWN);
       }
       else {
-        SISetControllerReleaseButton(SIOS_DOWN);
+        SISetControllerReleaseButton(SI_BUTTON_DOWN);
       }
       if (gamepad.dpad.left.pressed) {
-        SISetControllerPushButton(SIOS_LEFT);
+        SISetControllerPushButton(SI_BUTTON_LEFT);
       }
       else {
-        SISetControllerReleaseButton(SIOS_LEFT);
+        SISetControllerReleaseButton(SI_BUTTON_LEFT);
       }
       if (gamepad.dpad.right.pressed) {
-        SISetControllerPushButton(SIOS_RIGHT);
+        SISetControllerPushButton(SI_BUTTON_RIGHT);
       }
       else {
-        SISetControllerReleaseButton(SIOS_RIGHT);
+        SISetControllerReleaseButton(SI_BUTTON_RIGHT);
       }
       
       gamepad.controller.controllerPausedHandler = ^(GCController *controller) {
           if (gamepad.leftShoulder.pressed) {
-              SISetControllerPushButton(SIOS_SELECT);
+              SISetControllerPushButton(SI_BUTTON_SELECT);
               // Release button after a delay otherwise it will get stuck or not register at all
               [self performSelector:@selector(releaseSelect) withObject:nil afterDelay:0.1];
           }
           else {
-              SISetControllerPushButton(SIOS_START);
+              SISetControllerPushButton(SI_BUTTON_START);
               // Release button after a delay otherwise it will get stuck or not register at all
               [self performSelector:@selector(releaseStart) withObject:nil afterDelay:0.1];
           }
@@ -245,11 +245,11 @@
 }
 
 - (void)releaseSelect {
-    SISetControllerReleaseButton(SIOS_SELECT);
+    SISetControllerReleaseButton(SI_BUTTON_SELECT);
 }
 
 - (void)releaseStart {
-    SISetControllerReleaseButton(SIOS_START);
+    SISetControllerReleaseButton(SI_BUTTON_START);
 }
 
 @end

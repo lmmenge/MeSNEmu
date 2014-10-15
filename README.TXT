@@ -31,7 +31,7 @@ How to build:
 =============
 
 - Download the source code;
-- Open the SiOS.xcodeproj in Xcode (version 4.2 was used in this project);
+- Open the MeSNEmu.xcodeproj in Xcode (version 4.2 was used in this project);
 - Change the "Code Signing Identity" under "Build Settings" to your own;
 - Choose your device in the Scheme selector;
 - "Product" > "Profile" will deploy a Release build with all the optimizations available.
@@ -47,11 +47,11 @@ Since this project is based on SNES9X 1.53 code which is mostly C++, it is slowe
 License:
 ========
 
-Permission to use, copy, modify and/or distribute Snes9x/SiOS in both binary and source form, for non-commercial purposes, is hereby granted without fee, providing that this license information and copyright notice appear with all copies and any derived work.
+Permission to use, copy, modify and/or distribute Snes9x/MeSNEmu in both binary and source form, for non-commercial purposes, is hereby granted without fee, providing that this license information and copyright notice appear with all copies and any derived work.
 
 This software is provided 'as-is', without any express or implied warranty. In no event shall the authors be held liable for any damages arising from the use of this software or it's derivatives.
 
-Snes9x/SiOS is freeware for PERSONAL USE only. Commercial users should seek permission of the copyright holders first. Commercial use includes, but is not limited to, charging money for Snes9x/SiOS or software derived from Snes9x/SiOS, including Snes9x/SiOS or derivatives in commercial game bundles, and/or using Snes9x/SiOS as a promotion for your commercial product.
+Snes9x/MeSNEmu is freeware for PERSONAL USE only. Commercial users should seek permission of the copyright holders first. Commercial use includes, but is not limited to, charging money for Snes9x/MeSNEmu or software derived from Snes9x/MeSNEmu, including Snes9x/MeSNEmu or derivatives in commercial game bundles, and/or using Snes9x/MeSNEmu as a promotion for your commercial product.
 
 The copyright holders request that bug fixes and improvements to the code should be forwarded to them so everyone can benefit from the modifications in future versions.
 

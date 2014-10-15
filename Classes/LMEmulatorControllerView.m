@@ -1,6 +1,6 @@
 //
 //  LMEmulatorControllerView.m
-//  SiOS
+//  MeSNEmu
 //
 //  Created by Lucas Menge on 8/28/13.
 //  Copyright (c) 2013 Lucas Menge. All rights reserved.
@@ -39,9 +39,9 @@
   button.label.shadowOffset = CGSizeMake(0, -1);
   button.label.font = [UIFont systemFontOfSize:10];
   button.button = buttonMap;
-  if(buttonMap == SIOS_START)
+  if(buttonMap == SI_BUTTON_START)
     button.label.text = @"Start";
-  else if(buttonMap == SIOS_SELECT)
+  else if(buttonMap == SI_BUTTON_SELECT)
     button.label.text = @"Select";
   return [button autorelease];
 }
@@ -55,37 +55,37 @@
   LMButtonView* button = [[LMButtonView alloc] initWithFrame:(CGRect){0,0, side,side}];
   button.button = buttonMap;
   button.label.font = [UIFont boldSystemFontOfSize:27.0];
-  if(buttonMap == SIOS_A || buttonMap == SIOS_B)
+  if(buttonMap == SI_BUTTON_A || buttonMap == SI_BUTTON_B)
   {
     button.image = [UIImage imageNamed:@"ButtonDarkPurple.png"];
     button.label.textColor = [UIColor colorWithRed:63/255.0 green:32/255.0 blue:127/255.0 alpha:0.75];
     button.label.shadowColor = [UIColor colorWithWhite:1 alpha:0.25];
     button.label.shadowOffset = CGSizeMake(0, 1);
-    if(buttonMap == SIOS_A)
+    if(buttonMap == SI_BUTTON_A)
       button.label.text = @"A";
-    else if(buttonMap == SIOS_B)
+    else if(buttonMap == SI_BUTTON_B)
       button.label.text = @"B";
   }
-  else if(buttonMap == SIOS_X || buttonMap == SIOS_Y)
+  else if(buttonMap == SI_BUTTON_X || buttonMap == SI_BUTTON_Y)
   {
     button.image = [UIImage imageNamed:@"ButtonLightPurple.png"];
     button.label.textColor = [UIColor colorWithRed:122/255.0 green:101/255.0 blue:208/255.0 alpha:0.75];
     button.label.shadowColor = [UIColor colorWithWhite:1 alpha:0.25];
     button.label.shadowOffset = CGSizeMake(0, 1);
-    if(buttonMap == SIOS_X)
+    if(buttonMap == SI_BUTTON_X)
       button.label.text = @"X";
-    else if(buttonMap == SIOS_Y)
+    else if(buttonMap == SI_BUTTON_Y)
       button.label.text = @"Y";
   }
-  else if(buttonMap == SIOS_L || buttonMap == SIOS_R)
+  else if(buttonMap == SI_BUTTON_L || buttonMap == SI_BUTTON_R)
   {
     button.image = [UIImage imageNamed:@"ButtonGrey.png"];
     button.label.textColor = [UIColor colorWithRed:136/255.0 green:140/255.0 blue:148/255.0 alpha:0.75];
     button.label.shadowColor = [UIColor colorWithWhite:1 alpha:0.25];
     button.label.shadowOffset = CGSizeMake(0, 1);
-    if(buttonMap == SIOS_L)
+    if(buttonMap == SI_BUTTON_L)
       button.label.text = @"L";
-    else if(buttonMap == SIOS_R)
+    else if(buttonMap == SI_BUTTON_R)
       button.label.text = @"R";
   }
   return [button autorelease];
@@ -184,10 +184,10 @@
     [self addSubview:_screenView];
     
     // start / select buttons
-    _startButton = [[self LM_smallButtonWithButton:SIOS_START] retain];
+    _startButton = [[self LM_smallButtonWithButton:SI_BUTTON_START] retain];
     [self addSubview:_startButton];
     
-    _selectButton = [[self LM_smallButtonWithButton:SIOS_SELECT] retain];
+    _selectButton = [[self LM_smallButtonWithButton:SI_BUTTON_SELECT] retain];
     [self addSubview:_selectButton];
     
     // menu button
@@ -201,23 +201,23 @@
     [self addSubview:_optionsButton];
     
     // ABXY buttons
-    _aButton = [[self LM_buttonWithButton:SIOS_A] retain];
+    _aButton = [[self LM_buttonWithButton:SI_BUTTON_A] retain];
     [self addSubview:_aButton];
     
-    _bButton = [[self LM_buttonWithButton:SIOS_B] retain];
+    _bButton = [[self LM_buttonWithButton:SI_BUTTON_B] retain];
     [self addSubview:_bButton];
     
-    _xButton = [[self LM_buttonWithButton:SIOS_X] retain];
+    _xButton = [[self LM_buttonWithButton:SI_BUTTON_X] retain];
     [self addSubview:_xButton];
     
-    _yButton = [[self LM_buttonWithButton:SIOS_Y] retain];
+    _yButton = [[self LM_buttonWithButton:SI_BUTTON_Y] retain];
     [self addSubview:_yButton];
     
     // L/R buttons
-    _lButton = [[self LM_buttonWithButton:SIOS_L] retain];
+    _lButton = [[self LM_buttonWithButton:SI_BUTTON_L] retain];
     [self addSubview:_lButton];
     
-    _rButton = [[self LM_buttonWithButton:SIOS_R] retain];
+    _rButton = [[self LM_buttonWithButton:SI_BUTTON_R] retain];
     [self addSubview:_rButton];
     
     // d-pad
