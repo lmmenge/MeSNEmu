@@ -1,6 +1,9 @@
 1.4.4
 =====
-- Fixed some iOS 8 oddities.
+- Now requiring iOS 7.1;
+- iPhone 6 and iPhone 6 Plus support;
+- Fixed some iOS 8 oddities;
+- Renamed project. Buttons defines have changed.
 
 1.4.3.1
 =======

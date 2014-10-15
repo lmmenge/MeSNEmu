@@ -513,8 +513,6 @@ typedef enum _LMEmulatorAlert
   _customView.iCadeControlView.delegate = self;
   [_customView.optionsButton addTarget:self action:@selector(LM_options:) forControlEvents:UIControlEventTouchUpInside];
   self.view = _customView;
-  
-  self.wantsFullScreenLayout = YES;
 }
 
 - (void)viewDidUnload

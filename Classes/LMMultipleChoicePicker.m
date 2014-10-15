@@ -78,7 +78,6 @@
   [super viewDidLoad];
   
   [self.tableView reloadData];
-  self.contentSizeForViewInPopover = CGSizeMake(320, self.tableView.contentSize.height);
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
