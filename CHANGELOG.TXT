@@ -1,3 +1,7 @@
+1.4.4.1
+=======
+- Fixed a tiny bug with settings on iPad.
+
 1.4.4
 =====
 - Now requiring iOS 7.1;

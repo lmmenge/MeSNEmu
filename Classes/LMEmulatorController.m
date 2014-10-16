@@ -89,6 +89,18 @@ typedef enum _LMEmulatorAlert
   }
 }
 
+- (void)LM_showSettings
+{
+  LMSettingsController* c = [[LMSettingsController alloc] init];
+  [c hideSettingsThatRequireReset];
+  c.delegate = self;
+  UINavigationController* n = [[UINavigationController alloc] initWithRootViewController:c];
+  n.modalPresentationStyle = UIModalPresentationFormSheet;
+  [self presentViewController:n animated:YES completion:nil];
+  [c release];
+  [n release];
+}
+
 #pragma mark UI Interaction Handling
 
 - (void)LM_options:(UIButton*)sender
@@ -159,8 +171,11 @@ typedef enum _LMEmulatorAlert
 
 #pragma mark UIActionSheetDelegate
 
-- (void)actionSheet:(UIActionSheet*)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
+- (void)actionSheet:(UIActionSheet*)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
+  if(_actionSheet != actionSheet)
+    return;
+  
   NSLog(@"UIActionSheet button index: %i", buttonIndex);
   int resetIndex = 1;
 #ifdef SI_ENABLE_SAVES
@@ -214,14 +229,7 @@ typedef enum _LMEmulatorAlert
   }
   else if(buttonIndex == settingsIndex)
   {
-    LMSettingsController* c = [[LMSettingsController alloc] init];
-    [c hideSettingsThatRequireReset];
-    c.delegate = self;
-    UINavigationController* n = [[UINavigationController alloc] initWithRootViewController:c];
-    n.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self presentViewController:n animated:YES completion:nil];
-    [c release];
-    [n release];
+    [self LM_showSettings];
   }
   else
   {
