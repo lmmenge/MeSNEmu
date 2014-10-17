@@ -1,3 +1,7 @@
+1.4.4.2
+=======
+- Restored MeSNEmu to ZIP files' "Open in..." menu.
+
 1.4.4.1
 =======
 - Fixed a tiny bug with settings on iPad.
