@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LMDPadView : UIButton
+@interface LMDPadView : UIImageView
 
 @end

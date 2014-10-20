@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LMButtonView : UIButton
+@interface LMButtonView : UIImageView
 {
-	uint32_t _button;
+  uint32_t _button;
+  UILabel* _label;
 }
 
 @property uint32_t button;
-
-- (id)initWithFrame:(CGRect)frame border:(CGFloat)border radius:(CGFloat)radius;
+@property (readonly) UILabel* label;
 
 @end

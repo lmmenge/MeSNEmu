@@ -16,10 +16,10 @@
 + (NSString*)pathForSaveOfROMName:(NSString*)romFileName slot:(int)slot;
 + (BOOL)hasStateForROMNamed:(NSString*)romFileName slot:(int)slot;
 
-+ (void)saveRunningStateForROMNamed:(NSString*)romFileName screenshot:(UIImage*)screenshot;
++ (void)saveRunningStateForROMNamed:(NSString*)romFileName;
 + (void)loadRunningStateForROMNamed:(NSString*)romFileName;
 
-+ (void)saveStateForROMNamed:(NSString*)romFileName slot:(int)slot screenshot:(UIImage*)screenshot;
++ (void)saveStateForROMNamed:(NSString*)romFileName slot:(int)slot;
 + (void)loadStateForROMNamed:(NSString*)romFileName slot:(int)slot;
 
 @end
