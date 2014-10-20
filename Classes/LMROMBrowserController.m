@@ -23,12 +23,14 @@ static int const LMFileOrganizationVersionNumber = 1;
   NSString* _displayName;
   NSString* _displayDetails;
   NSString* _fileName;
+  NSString* _imageFilePath;
 }
 
 @property BOOL hasDetails;
 @property (retain) NSString* displayName;
 @property (retain) NSString* displayDetails;
 @property (retain) NSString* fileName;
+@property (retain) NSString* imageFilePath;
 
 + (BOOL)isROMExtension:(NSString*)lowerCaseExtension;
 @end
@@ -41,6 +43,7 @@ static int const LMFileOrganizationVersionNumber = 1;
 @synthesize displayName = _displayName;
 @synthesize displayDetails = _displayDetails;
 @synthesize fileName = _fileName;
+@synthesize imageFilePath = _imageFilePath;
 
 + (BOOL)isROMExtension:(NSString*)lowerCaseExtension
 {
@@ -57,6 +60,7 @@ static int const LMFileOrganizationVersionNumber = 1;
   self.displayName = nil;
   self.displayDetails = nil;
   self.fileName = nil;
+  self.imageFilePath = nil;
   [super dealloc];
 }
 
@@ -152,7 +156,7 @@ static int const LMFileOrganizationVersionNumber = 1;
 {
   if([[NSUserDefaults standardUserDefaults] integerForKey:LMFileOrganizationVersion] != LMFileOrganizationVersionNumber)
     [self LM_moveLegacyFilesToDocumentsFolder];
-    
+  
   BOOL searching = self.searchDisplayController.isActive;
   NSString* filterString = self.searchDisplayController.searchBar.text;
   
@@ -200,9 +204,10 @@ static int const LMFileOrganizationVersionNumber = 1;
           item.hasDetails = YES;
         else
         {
-          for(int i=0; i<10; i++)
+          for(NSString* file2 in proposedFileList)
           {
-            if([LMSaveManager hasStateForROMNamed:file slot:i] == YES)
+            NSString* extension2 = [[file2 pathExtension] lowercaseString];
+            if([file2 hasPrefix:item.displayName] && [extension2 compare:@"frz"] == NSOrderedSame)
             {
               item.hasDetails = YES;
               break;
@@ -284,9 +289,11 @@ static int const LMFileOrganizationVersionNumber = 1;
     }
     // saves
     BOOL hasSaves = NO;
-    for(int i=0; i<10; i++)
+    NSArray* proposedFileList = [fm contentsOfDirectoryAtPath:_romPath error:nil];
+    for(NSString* file in proposedFileList)
     {
-      if([LMSaveManager hasStateForROMNamed:_detailsItem.fileName slot:i] == YES)
+      NSString* extension = [[file pathExtension] lowercaseString];
+      if([file hasPrefix:_detailsItem.displayName] && [extension compare:@"frz"] == NSOrderedSame)
       {
         if(hasSaves == NO)
         {
@@ -295,17 +302,25 @@ static int const LMFileOrganizationVersionNumber = 1;
           hasSaves = YES;
         }
         LMFileListItem* saveItem = [[LMFileListItem alloc] init];
-        if(i == 0)
+        int slot = [[[file stringByDeletingPathExtension] pathExtension] integerValue];
+        if(slot == 0)
           saveItem.displayName = NSLocalizedString(@"LAST_PLAYED_SPOT", nil);
-        else
-          saveItem.displayName = [NSString stringWithFormat:NSLocalizedString(@"SAVE_FILE_SLOT_%i", nil), i];
-        saveItem.fileName = [[LMSaveManager pathForSaveOfROMName:_detailsItem.fileName slot:i] lastPathComponent];
+        else {
+          NSDate* date = [[NSDate alloc] initWithTimeIntervalSince1970:slot];
+          saveItem.displayName = [NSDateFormatter localizedStringFromDate:date dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterMediumStyle];
+          [date release];
+        }
+        
+        saveItem.fileName = file;
         saveItem.displayDetails = saveItem.fileName;
+        NSString* imagePath = [_romPath stringByAppendingPathComponent:[[file stringByDeletingPathExtension] stringByAppendingPathExtension:@"png"]];
+        if([fm fileExistsAtPath:imagePath] == YES)
+        {
+          saveItem.imageFilePath = imagePath;
+        }
         [itemsList addObject:saveItem];
         [saveItem release];
       }
-      else if(i > 0)
-        break;
     }
     
     tempItemList = itemsList;
@@ -486,6 +501,12 @@ static int const LMFileOrganizationVersionNumber = 1;
   else
     cell.accessoryType = UITableViewCellAccessoryNone;
   
+  if(_detailsItem != nil && item.imageFilePath) {
+    cell.imageView.image = [UIImage imageWithContentsOfFile:item.imageFilePath];
+  } else {
+    cell.imageView.image = nil;
+  }
+  
   return cell;
 }
 
@@ -534,7 +555,11 @@ static int const LMFileOrganizationVersionNumber = 1;
     // Delete the row from the data source
     int amount = [self tableView:tableView numberOfRowsInSection:indexPath.section];
     LMFileListItem* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
+    NSString* extension = [[item.fileName pathExtension] lowercaseString];
     [[NSFileManager defaultManager] removeItemAtPath:[_romPath stringByAppendingPathComponent:item.fileName] error:nil];
+    if ([extension compare:@"frz"] == NSOrderedSame && item.imageFilePath != nil) {
+      [[NSFileManager defaultManager] removeItemAtPath:item.imageFilePath error:nil];
+    }
     [self LM_reloadROMList:NO];
     
     BOOL isROMDetail = (_detailsItem != nil);
@@ -551,6 +576,16 @@ static int const LMFileOrganizationVersionNumber = 1;
       [tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
     else
       [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+  }
+}
+
+-(CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+  LMFileListItem* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
+  if(item.imageFilePath) {
+    return 100.0;
+  } else {
+    return 44.0;
   }
 }
 

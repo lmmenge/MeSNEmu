@@ -67,4 +67,6 @@ typedef enum _LMEmulatorControllerViewMode
 - (void)setPrimaryBuffer;
 - (void)flipFrontBufferWidth:(int)width height:(int)height;
 
+- (UIImage*)getScreen;
+
 @end
