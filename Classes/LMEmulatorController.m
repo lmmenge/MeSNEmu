@@ -108,7 +108,10 @@ typedef enum _LMEmulatorAlert
   SISetEmulationPaused(1);
   
   _customView.iCadeControlView.active = NO;
-  [_customView setControlsHidden:NO animated:YES];
+  if([LMGameControllerManager gameControllersMightBeAvailable] == YES)
+    [_customView setControlsHidden:[LMGameControllerManager sharedInstance].gameControllerConnected animated:NO];
+  else
+    [_customView setControlsHidden:NO animated:YES];
   
   UIActionSheet* sheet = [[UIActionSheet alloc] initWithTitle:nil
                                                      delegate:self
