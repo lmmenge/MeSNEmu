@@ -207,7 +207,7 @@ static int const LMFileOrganizationVersionNumber = 1;
           for(NSString* file2 in proposedFileList)
           {
             NSString* extension2 = [[file2 pathExtension] lowercaseString];
-            if([file2 hasPrefix:item.displayName] && [extension2 compare:@"frz"] == NSOrderedSame)
+            if([file2 hasPrefix:[item.displayName stringByAppendingString:@"."]] && [extension2 compare:@"frz"] == NSOrderedSame)
             {
               item.hasDetails = YES;
               break;
@@ -293,7 +293,7 @@ static int const LMFileOrganizationVersionNumber = 1;
     for(NSString* file in proposedFileList)
     {
       NSString* extension = [[file pathExtension] lowercaseString];
-      if([file hasPrefix:_detailsItem.displayName] && [extension compare:@"frz"] == NSOrderedSame)
+      if([file hasPrefix:[_detailsItem.displayName stringByAppendingString:@"."]] && [extension compare:@"frz"] == NSOrderedSame)
       {
         if(hasSaves == NO)
         {
