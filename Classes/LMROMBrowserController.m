@@ -202,15 +202,18 @@ static int const LMFileOrganizationVersionNumber = 1;
         NSString* sramPath = [_sramPath stringByAppendingPathComponent:[[file stringByDeletingPathExtension] stringByAppendingPathExtension:@"srm"]];
         if([fm fileExistsAtPath:sramPath] == YES)
           item.hasDetails = YES;
-        else
+        for(NSString* file2 in proposedFileList)
         {
-          for(NSString* file2 in proposedFileList)
+          NSString* extension2 = [[file2 pathExtension] lowercaseString];
+          if([file2 hasPrefix:[item.displayName stringByAppendingString:@"."]] && [extension2 compare:@"frz"] == NSOrderedSame)
           {
-            NSString* extension2 = [[file2 pathExtension] lowercaseString];
-            if([file2 hasPrefix:[item.displayName stringByAppendingString:@"."]] && [extension2 compare:@"frz"] == NSOrderedSame)
+            item.hasDetails = YES;
+            NSString* imagePath = [_romPath stringByAppendingPathComponent:[[file2 stringByDeletingPathExtension] stringByAppendingPathExtension:@"png"]];
+            if([fm fileExistsAtPath:imagePath] == YES)
             {
-              item.hasDetails = YES;
-              break;
+              item.imageFilePath = imagePath;
+              int slot = [[[file stringByDeletingPathExtension] pathExtension] integerValue];
+              if(slot == 0) break;
             }
           }
         }
@@ -495,13 +498,13 @@ static int const LMFileOrganizationVersionNumber = 1;
   
   LMFileListItem* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
   cell.textLabel.text = item.displayName;
-  cell.detailTextLabel.text = item.displayDetails;
+  //cell.detailTextLabel.text = item.displayDetails;
   if(item.hasDetails)
     cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
   else
     cell.accessoryType = UITableViewCellAccessoryNone;
   
-  if(_detailsItem != nil && item.imageFilePath) {
+  if(item.imageFilePath) {
     cell.imageView.image = [UIImage imageWithContentsOfFile:item.imageFilePath];
   } else {
     cell.imageView.image = nil;
@@ -582,10 +585,10 @@ static int const LMFileOrganizationVersionNumber = 1;
 -(CGFloat)tableView:(UITableView*)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
   LMFileListItem* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
-  if(item.imageFilePath) {
+  if(!item.hasDetails && item.imageFilePath) {
     return 100.0;
   } else {
-    return 44.0;
+    return 50.0;
   }
 }
 
