@@ -226,14 +226,14 @@ typedef enum _LMEmulatorAlert
   }
   else if(buttonIndex == snsIndex)
   {
-    UIImage *__image = [_customView getScreen];
-    NSArray *__items = [NSArray arrayWithObjects:__image, nil];
-    UIActivityViewController *__activityView = [[[UIActivityViewController alloc] initWithActivityItems:__items applicationActivities:nil] autorelease];
+    UIImage *image = [_customView getScreen];
+    NSArray *items = [NSArray arrayWithObjects:image, nil];
+    UIActivityViewController *activityView = [[[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil] autorelease];
     void (^completionHandler)(NSString *_activityType, BOOL _completed) = ^(NSString *_activityType, BOOL _completed){
       SISetEmulationPaused(0);
     };
-    __activityView.completionHandler = completionHandler;
-    [self presentViewController:__activityView animated:YES completion:^{
+    activityView.completionHandler = completionHandler;
+    [self presentViewController:activityView animated:YES completion:^{
       //
     }];
   }

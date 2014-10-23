@@ -55,12 +55,12 @@ extern "C" volatile int SI_AudioIsOnHold;
   
   NSString* savePath = [LMSaveManager pathForSaveOfROMName:romFileName slot:slot];
   
-  NSString* imagePath = [[savePath stringByDeletingPathExtension] stringByAppendingPathExtension:@"png"];
-  NSData *data = UIImagePNGRepresentation(screenshot);
-  [data writeToFile:imagePath atomically:YES];
-  
-  if(S9xFreezeGame([savePath UTF8String]))
+  if(S9xFreezeGame([savePath UTF8String])) {
+    NSString* imagePath = [[savePath stringByDeletingPathExtension] stringByAppendingPathExtension:@"png"];
+    NSData *data = UIImagePNGRepresentation(screenshot);
+    [data writeToFile:imagePath atomically:YES];
     NSLog(@"Saved to %@", savePath);
+  }
   else
     NSLog(@"Failed to save to %@", savePath);
 }
