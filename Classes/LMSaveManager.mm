@@ -112,7 +112,7 @@ extern "C" volatile int SI_AudioIsOnHold;
     [[NSFileManager defaultManager] createDirectoryAtPath:saveFolderPath withIntermediateDirectories:YES attributes:nil error:nil];
   
   NSString* romFileNameWithoutExtension = [romFileName stringByDeletingPathExtension];
-  NSString* saveFileName = [[romFileNameWithoutExtension stringByAppendingPathExtension:[NSString stringWithFormat:@"%014d", slot]] stringByAppendingPathExtension:@"frz"];
+  NSString* saveFileName = [[romFileNameWithoutExtension stringByAppendingPathExtension:[NSString stringWithFormat:@"%03d", slot]] stringByAppendingPathExtension:@"frz"];
   return [saveFolderPath stringByAppendingPathComponent:saveFileName];
 }
 
