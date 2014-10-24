@@ -153,16 +153,6 @@
   }
 }
 
-- (UIImage*)getScreen
-{
-  UIImage *image = [UIImage imageWithCGImage:(CGImageRef)_screenView.layer.contents];
-  CGRect rect = CGRectMake(floor((image.size.width-256)/2), floor((image.size.height-224)/2), 256, 224);
-  CGImageRef clip = CGImageCreateWithImageInRect(image.CGImage,rect);
-  UIImage *image2 = [UIImage imageWithCGImage:clip];
-  CGImageRelease(clip);
-  return image2;
-}
-
 @end
 
 #pragma mark -

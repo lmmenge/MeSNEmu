@@ -166,7 +166,7 @@ typedef enum _LMEmulatorAlert
 {
 #ifdef SI_ENABLE_RUNNING_SAVES
   NSLog(@"Saving running state...");
-  [LMSaveManager saveRunningStateForROMNamed:_romFileName screenshot:[_customView getScreen]];
+  [LMSaveManager saveRunningStateForROMNamed:_romFileName screenshot:[self getScreen]];
   NSLog(@"Saved!");
 #endif
 }
@@ -193,9 +193,9 @@ typedef enum _LMEmulatorAlert
 #endif
   if(buttonIndex == actionSheet.destructiveButtonIndex)
   {
-    [self LM_dismantleExternalScreen];
     SISetEmulationRunning(0);
     SIWaitForEmulationEnd();
+    [self LM_dismantleExternalScreen];
     [self dismissViewControllerAnimated:YES completion:nil];
   }
   else if(buttonIndex == resetIndex)
@@ -217,7 +217,7 @@ typedef enum _LMEmulatorAlert
   {
     SISetEmulationPaused(1);
     SIWaitForPause();
-    [LMSaveManager saveStateForROMNamed:_romFileName slot:[[NSString stringWithFormat:@"%ld", (long)[[NSDate date] timeIntervalSince1970]] intValue] screenshot:[_customView getScreen]];
+    [LMSaveManager saveStateForROMNamed:_romFileName slot:[[NSString stringWithFormat:@"%ld", (long)[[NSDate date] timeIntervalSince1970]] intValue] screenshot:[self getScreen]];
     SISetEmulationPaused(0);
   }
   else if(buttonIndex == settingsIndex)
@@ -226,7 +226,7 @@ typedef enum _LMEmulatorAlert
   }
   else if(buttonIndex == snsIndex)
   {
-    UIImage *image = [_customView getScreen];
+    UIImage *image = [self getScreen];
     NSArray *items = [NSArray arrayWithObjects:image, nil];
     UIActivityViewController *activityView = [[[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil] autorelease];
     void (^completionHandler)(NSString *_activityType, BOOL _completed) = ^(NSString *_activityType, BOOL _completed){
@@ -276,7 +276,7 @@ typedef enum _LMEmulatorAlert
     {
       SISetEmulationPaused(1);
       SIWaitForPause();
-      [LMSaveManager saveStateForROMNamed:_romFileName slot:0 screenshot:[_customView getScreen]];
+      [LMSaveManager saveStateForROMNamed:_romFileName slot:0 screenshot:[self getScreen]];
       SISetEmulationPaused(0);
     }
   }
@@ -513,6 +513,16 @@ typedef enum _LMEmulatorAlert
     _customView.iCadeControlView.active = NO;
   }
   return self;
+}
+
+- (UIImage*)getScreen
+{
+  UIImage *image = (_externalEmulator != nil)?[_externalEmulator getScreen]:[UIImage imageWithCGImage:(CGImageRef)_customView.screenView.layer.contents];
+  CGRect rect = CGRectMake(floor((image.size.width-256)/2), floor((image.size.height-224)/2), 256, 224);
+  CGImageRef clip = CGImageCreateWithImageInRect(image.CGImage,rect);
+  UIImage *image2 = [UIImage imageWithCGImage:clip];
+  CGImageRelease(clip);
+  return image2;
 }
 
 @end
