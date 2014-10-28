@@ -120,6 +120,7 @@ typedef enum _LMEmulatorAlert
                                             otherButtonTitles:
                           NSLocalizedString(@"RESET", nil),
 #ifdef SI_ENABLE_SAVES
+                          NSLocalizedString(@"LOAD_CHEAT", nil),
                           NSLocalizedString(@"SAVE_STATE", nil),
 #endif
                           NSLocalizedString(@"SETTINGS", nil),
@@ -181,10 +182,10 @@ typedef enum _LMEmulatorAlert
   NSLog(@"UIActionSheet button index: %i", buttonIndex);
   int resetIndex = 1;
 #ifdef SI_ENABLE_SAVES
-  int loadIndex = -1;
-  int saveIndex = 2;
-  int settingsIndex = 3;
-  int snsIndex = 4;
+  int loadIndex = 2;
+  int saveIndex = 3;
+  int settingsIndex = 4;
+  int snsIndex = 5;
 #else
   int loadIndex = -1
   int saveIndex = -1;
@@ -211,7 +212,9 @@ typedef enum _LMEmulatorAlert
   }
   else if(buttonIndex == loadIndex)
   {
-    //
+    SISetEmulationPaused(1);
+    SILoadCheatFile();
+    SISetEmulationPaused(0);
   }
   else if(buttonIndex == saveIndex)
   {
