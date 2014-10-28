@@ -120,7 +120,7 @@ typedef enum _LMEmulatorAlert
                                             otherButtonTitles:
                           NSLocalizedString(@"RESET", nil),
 #ifdef SI_ENABLE_SAVES
-                          NSLocalizedString(@"LOAD_CHERT", nil),
+                          NSLocalizedString(@"LOAD_CHEAT", nil),
                           NSLocalizedString(@"SAVE_STATE", nil),
 #endif
                           NSLocalizedString(@"SETTINGS", nil),
