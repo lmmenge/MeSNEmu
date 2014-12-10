@@ -242,6 +242,9 @@ typedef enum _LMSettingsSections
         case LMBTControllerType_8BitdoFC30:
           controllerName = @"8Bitdo FC30";
           break;
+        case LMBTControllerType_8BitdoNES30:
+          controllerName = @"8Bitdo NES30";
+          break;
         default:
           break;
       }
@@ -343,6 +346,7 @@ typedef enum _LMSettingsSections
                         @"EX Hybrid",
                         @"SteelSeries Free",
                         @"8Bitdo FC30",
+                        @"8Bitdo NES30",
                         @"iMpulse"/*,
                         NSLocalizedString(@"CUSTOM", nil)*/
                         ];
@@ -352,6 +356,7 @@ typedef enum _LMSettingsSections
                          [NSNumber numberWithInt:LMBTControllerType_EXHybrid],
                          [NSNumber numberWithInt:LMBTControllerType_SteelSeriesFree],
                          [NSNumber numberWithInt:LMBTControllerType_8BitdoFC30],
+                         [NSNumber numberWithInt:LMBTControllerType_8BitdoNES30],
                          [NSNumber numberWithInt:LMBTControllerType_iMpulse]/*,
                          [NSNumber numberWithInt:LMBTControllerType_Custom]*/
                         ];

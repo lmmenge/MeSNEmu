@@ -102,6 +102,13 @@
         [self LMBT_setOnStateString:"wdxa..lkoyhj"
                      offStateString:"eczq..vpgtrn"];
     }
+    else if(_controllerType == LMBTControllerType_8BitdoNES30)
+    {
+      // 8Bitdo NES30 (thanks to DerekT07)
+      // submitted string for English layout: wedcxzaqlvogythrjnufkpim
+      [self LMBT_setOnStateString:"wdxaloyhjuki"
+                   offStateString:"eczqvgtrnfpm"];
+    }
   }
 }
 

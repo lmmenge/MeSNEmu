@@ -1,3 +1,7 @@
+1.4.5
+=====
+- Added support for 8Bitdo NES30 gamepad (thanks to DerekT07).
+
 1.4.4.2
 =======
 - Restored MeSNEmu to ZIP files' "Open in..." menu.
@@ -30,7 +34,7 @@
 
 1.4.1
 =====
-- Fixed support for 8Bitdo FC30 gamepad (thanks to  guidoscheffler).
+- Fixed support for 8Bitdo FC30 gamepad (thanks to guidoscheffler).
 
 1.4
 ===
