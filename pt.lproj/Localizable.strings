@@ -30,6 +30,7 @@
 "VERSION" = "Sobre";
 "PORT_OF" = "Baseado em";
 "BY" = "Desenvolvedor";
+"UNKNOWN" = "Desconhecido";
 
 // LMEmulatorController
 "BACK_TO_GAME" = "Voltar ao jogo";

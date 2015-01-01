@@ -26,6 +26,8 @@ NSString* const kLMSettingsSound = @"Sound";
 NSString* const kLMSettingsAutoFrameskip = @"AutoFrameskip";
 NSString* const kLMSettingsFrameskipValue = @"FrameskipValue";
 
+NSString* const kLMEmulatorPortName = @"MeSNEmu";
+
 typedef enum _LMSettingsSections
 {
   LMSettingsSectionScreen,
@@ -193,7 +195,12 @@ typedef enum _LMSettingsSections
       return 3;
   }
   else if(section == LMSettingsSectionAbout)
-    return 3;
+  {
+    NSString* bundleName = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleNameKey];
+    if([bundleName isEqualToString:kLMEmulatorPortName] == YES)
+      return 3;
+    return 2;
+  }
   return 0;
 }
 
@@ -310,9 +317,15 @@ typedef enum _LMSettingsSections
     if(row == 0)
     {
       cell.textLabel.text = NSLocalizedString(@"VERSION", nil);
+      NSString* versionString = [NSString stringWithFormat:@"(%s)", __DATE__];
+      NSString* bundleName = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleNameKey];
+      if([bundleName isEqualToString:kLMEmulatorPortName] == YES)
+      {
+        versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey];
+      }
       cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ %@",
-                                   [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleNameKey],
-                                   [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString*)kCFBundleVersionKey]];
+                                   kLMEmulatorPortName,
+                                   versionString];
     }
     else if(row == 1)
     {
