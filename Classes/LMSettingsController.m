@@ -360,7 +360,9 @@ typedef enum _LMSettingsSections
                         @"SteelSeries Free",
                         @"8Bitdo FC30",
                         @"8Bitdo NES30",
-                        @"iMpulse"/*,
+                        @"iMpulse",
+                        //@"IPEGA PG-9017s",
+                        @"Snakebyte idroid:con"/*,
                         NSLocalizedString(@"CUSTOM", nil)*/
                         ];
       c.optionValues = @[
@@ -370,7 +372,9 @@ typedef enum _LMSettingsSections
                          [NSNumber numberWithInt:LMBTControllerType_SteelSeriesFree],
                          [NSNumber numberWithInt:LMBTControllerType_8BitdoFC30],
                          [NSNumber numberWithInt:LMBTControllerType_8BitdoNES30],
-                         [NSNumber numberWithInt:LMBTControllerType_iMpulse]/*,
+                         [NSNumber numberWithInt:LMBTControllerType_iMpulse],
+                         //[NSNumber numberWithInt:LMBTControllerType_IPEGAPG9017s],
+                         [NSNumber numberWithInt:LMBTControllerType_Snakebyteidroidcon]/*,
                          [NSNumber numberWithInt:LMBTControllerType_Custom]*/
                         ];
       LMBTControllerType controllerType = [[NSUserDefaults standardUserDefaults] integerForKey:kLMSettingsBluetoothController];

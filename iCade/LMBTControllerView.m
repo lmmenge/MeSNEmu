@@ -109,6 +109,20 @@
       [self LMBT_setOnStateString:"wdxaloyhjuki"
                    offStateString:"eczqvgtrnfpm"];
     }
+    /*else if(_controllerType == LMBTControllerType_IPEGAPG9017s)
+    {
+      // IPEGA PG-9017s (thanks to acowinthecrowd)
+      // submitted string for English layout: wedcxzaqjnufythrimkp
+      [self LMBT_setOnStateString:"wdxaloyhjuki"
+                   offStateString:"eczqvgtrnfpm"];
+    }*/
+    else if(_controllerType == LMBTControllerType_Snakebyteidroidcon)
+    {
+      // Snakebyte idroid:con (thanks to Gohlan)
+      // submitted string for English layout: wedcxzaqlvogythrjnufimkp
+      [self LMBT_setOnStateString:"wdxaloyhjuik"
+                   offStateString:"eczqvgtrnfmp"];
+    }
   }
 }
 
