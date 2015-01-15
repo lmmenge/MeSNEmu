@@ -30,4 +30,6 @@ typedef enum _LMBTControllerType
 
 @property (nonatomic) LMBTControllerType controllerType;
 
++ (NSArray*)supportedControllers;
+
 @end

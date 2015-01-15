@@ -8,6 +8,8 @@
 
 #import "LMBTControllerView.h"
 
+NSArray* LMBTSupportedControllers = nil;
+
 @implementation LMBTControllerView(Privates)
 
 - (void)LMBT_setOnStateString:(const char*)onState offStateString:(const char*)offState
@@ -39,91 +41,123 @@
   {
     _controllerType = controllerType;
     
-    // original SNES layout
-    // L             R
-    //               X
-    //     SE ST   Y   A
-    //               B
-    
-    // map order: UP RT DN LT SE ST  Y  B  X  A  L  R
-    if(_controllerType == LMBTControllerType_iCade)
+    for(NSArray* controller in [LMBTControllerView supportedControllers])
     {
-      // regular iCade
-      // A C E G
-      // B D F H
-      // SE Y X L
-      // ST B A R
-      // UP RT DN LT SE ST  Y  B  X  A  L  R
-      // UP RT DN LT  A  B  C  D  E  F  G  H
-      [self LMBT_setOnStateString:"wdxayhujikol"
-                   offStateString:"eczqtrfnmpgv"];
-    }
-    else if(_controllerType == LMBTControllerType_iCade8Bitty)
-    {
-      // iCade 8-Bitty
-      // hr             jn
-      //             im og
-      //     yt uf   kp lv
-      // B              D
-      //             E  G
-      //     A  C    F  H
-      // UP RT DN LT SE ST  Y  B  X  A  L  R
-      // UP RT DN LT  A  B  C  D  E  F  G  H
-      [self LMBT_setOnStateString:"wdxayuikolhj"
-                   offStateString:"eczqtfmpgvrn"];
-    }
-    else if(_controllerType == LMBTControllerType_EXHybrid)
-    {
-      // //TODO: Properly support the EX Hybrid
-      // UP RT DN LT SE ST  Y  B  X  A  L  R
-      // UP RT DN LT  A  B  C  D  E  F  G  H
-      [self LMBT_setOnStateString:"wdxayhujikol"
-                   offStateString:"eczqtrfnmpgv"];
-    }
-    else if(_controllerType == LMBTControllerType_SteelSeriesFree)
-    {
-      // SteelSeries Free (thanks to Infernoten)
-      // submitted string: wedcxzaqoglvythrufjnimkp
-      [self LMBT_setOnStateString:"wdxaolyhujik"
-                   offStateString:"eczqgvtrfnmp"];
-    }
-    else if(_controllerType == LMBTControllerType_8BitdoFC30)
-    {
-      // 8Bitdo FC30 (thanks to guidoscheffler)
-      // submitted string for English layout: wedcxzaqytufimkpoglvhrjn
-      [self LMBT_setOnStateString:"wdxayuikolhj"
-                   offStateString:"eczqtfmpgvrn"];
-      // submitted string for German layout:  wedcxyaqztufimkpoglvhrjn
-      //[self LMBT_setOnStateString:"wdxazuikolhj"
-      //             offStateString:"ecyqtfmpgvrn"];
-    }
-    else if(_controllerType == LMBTControllerType_iMpulse)
-    {
-        [self LMBT_setOnStateString:"wdxa..lkoyhj"
-                     offStateString:"eczq..vpgtrn"];
-    }
-    else if(_controllerType == LMBTControllerType_8BitdoNES30)
-    {
-      // 8Bitdo NES30 (thanks to DerekT07)
-      // submitted string for English layout: wedcxzaqlvogythrjnufkpim
-      [self LMBT_setOnStateString:"wdxaloyhjuki"
-                   offStateString:"eczqvgtrnfpm"];
-    }
-    /*else if(_controllerType == LMBTControllerType_IPEGAPG9017s)
-    {
-      // IPEGA PG-9017s (thanks to acowinthecrowd)
-      // submitted string for English layout: wedcxzaqjnufythrimkp
-      [self LMBT_setOnStateString:"wdxaloyhjuki"
-                   offStateString:"eczqvgtrnfpm"];
-    }*/
-    else if(_controllerType == LMBTControllerType_Snakebyteidroidcon)
-    {
-      // Snakebyte idroid:con (thanks to Gohlan)
-      // submitted string for English layout: wedcxzaqlvogythrjnufimkp
-      [self LMBT_setOnStateString:"wdxaloyhjuik"
-                   offStateString:"eczqvgtrnfmp"];
+      if([[controller objectAtIndex:1] intValue] == _controllerType)
+      {
+        char onString[13];
+        char offString[13];
+        memset(onString, '.', 12*sizeof(char));
+        memset(offString, '.', 12*sizeof(char));
+        onString[12] = '\0';
+        offString[12] = '\0';
+        
+        NSString* controllerString = [controller objectAtIndex:2];
+        for(NSUInteger i=0; i<[controllerString length]; i++)
+        {
+          if(i%2==0)
+            onString[i/2] = [controllerString characterAtIndex:i];
+          else
+            offString[i/2] = [controllerString characterAtIndex:i];
+        }
+        
+        /*NSLog(@"on:  %s", onString);
+        NSLog(@"off: %s", offString);
+        NSLog(@"Original: %@", controllerString);*/
+        
+        /*char* customOnString = "wdxa..lkoyhj";
+        char* customOffString = "eczq..vpgtrn";
+        NSMutableString* rebuilt = [NSMutableString string];
+        for(NSUInteger i=0; i<24; i++)
+        {
+          unichar character;
+          if(i%2==0)
+            character = customOnString[i/2];
+          else
+            character = customOffString[i/2];
+          [rebuilt appendString:[NSString stringWithCharacters:&character length:1]];
+        }
+        NSLog(@"rebuilt:  %@", rebuilt);*/
+        
+        [self LMBT_setOnStateString:onString
+                     offStateString:offString];
+        break;
+      }
     }
   }
+}
+
++ (NSArray*)supportedControllers
+{
+  @synchronized(self)
+  {
+    if(LMBTSupportedControllers == nil)
+    {
+      // original SNES layout
+      // L             R
+      //               X
+      //     SE ST   Y   A
+      //               B
+      
+      // map order: UP RT DN LT SE ST  Y  B  X  A  L  R
+      
+      LMBTSupportedControllers = [[@[
+                                    /*@[@"Custom",
+                                      [NSNumber numberWithInt:LMBTControllerType_Custom],
+                                      @""],*/
+                                     
+                                    // iCade
+                                    @[@"iCade",
+                                      [NSNumber numberWithInt:LMBTControllerType_iCade],
+                                      @"wedcxzaqythrufjnimkpoglv"],
+                                    
+                                    // iCade 8-Bitty
+                                    @[@"iCade 8-Bitty",
+                                      [NSNumber numberWithInt:LMBTControllerType_iCade8Bitty],
+                                      @"wedcxzaqytufimkpoglvhrjn"],
+                                    
+                                    // EX Hybrid
+                                    // TODO: Properly support the EX Hybrid
+                                    @[@"EX Hybrid",
+                                      [NSNumber numberWithInt:LMBTControllerType_EXHybrid],
+                                      @"wedcxzaqythrufjnimkpoglv"],
+                                    
+                                    // SteelSeries Free (thanks to Infernoten)
+                                    @[@"SteelSeries Free",
+                                      [NSNumber numberWithInt:LMBTControllerType_SteelSeriesFree],
+                                      @"wedcxzaqoglvythrufjnimkp"],
+                                    
+                                    // 8Bitdo FC30 (thanks to guidoscheffler)
+                                    @[@"8Bitdo FC30",
+                                      [NSNumber numberWithInt:LMBTControllerType_8BitdoFC30],
+                                      @"wedcxzaqytufimkpoglvhrjn"],
+                                    
+                                    // 8Bitdo NES30 (thanks to DerekT07)
+                                    @[@"8Bitdo NES30",
+                                      [NSNumber numberWithInt:LMBTControllerType_8BitdoNES30],
+                                      @"wedcxzaqlvogythrjnufkpim"],
+                                    
+                                    // iMpulse
+                                    @[@"iMpulse",
+                                      [NSNumber numberWithInt:LMBTControllerType_iMpulse],
+                                      @"wedcxzaq....lvkpogythrjn"],
+                                    
+                                    // IPEGA PG-9017s (thanks to acowinthecrowd)
+                                    /*@[@"IPEGA PG-9017s",
+                                      [NSNumber numberWithInt:LMBTControllerType_IPEGAPG9017s],
+                                      @"wedcxzaqjnufythrimkp"],*/
+                                    
+                                    // Snakebyte idroid:con (thanks to Gohlan)
+                                    @[@"Snakebyte idroid:con",
+                                      [NSNumber numberWithInt:LMBTControllerType_Snakebyteidroidcon],
+                                      @"wedcxzaqlvogythrjnufimkp"]
+                                    
+                                   ] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+                                     return [[obj1 firstObject] compare:[obj2 firstObject]];
+                                   }] copy];
+    }
+  }
+  return LMBTSupportedControllers;
 }
 
 @end
