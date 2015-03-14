@@ -142,10 +142,10 @@ NSArray* LMBTSupportedControllers = nil;
                                       [NSNumber numberWithInt:LMBTControllerType_iMpulse],
                                       @"wedcxzaq....lvkpogythrjn"],
                                     
-                                    // IPEGA PG-9017s (thanks to acowinthecrowd)
-                                    /*@[@"IPEGA PG-9017s",
-                                      [NSNumber numberWithInt:LMBTControllerType_IPEGAPG9017s],
-                                      @"wedcxzaqjnufythrimkp"],*/
+                                    // IPEGA PG-9025 (thanks to naldin)
+                                    @[@"IPEGA PG-9025",
+                                      [NSNumber numberWithInt:LMBTControllerType_IPEGAPG9025],
+                                      @"wedcxzaqoglvjnufythrimkp"],
                                     
                                     // Snakebyte idroid:con (thanks to Gohlan)
                                     @[@"Snakebyte idroid:con",

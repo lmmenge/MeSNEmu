@@ -1,6 +1,6 @@
 1.4.6
 =====
-// NOT YET! FIX STRINGS: - Added support for IPEGA PG-9017s gamepad (thanks to acowinthecrowd);
+- Added support for IPEGA PG-9025 gamepad (thanks to naldin);
 - Added support for Snakebyte idroid:con gamepad (thanks to Gohlan);
 - Made it so that when suicidal devs sneak MeSNEmu into their App Store apps, it no longer looks like I (Lucas Menge) was responsible for said "carrier app" in the About section of the emulator settings. I do not recommend sneaking it past App Review and would prefer not to be associated with those attempts. When MeSNEmu is embedded into an app that is not named MeSNEmu it no longer shows my name as developer and will use compilation date instead of app version number in order to make it possible to identify which actual version of MeSNEmu was used (because I still get a surprisingly large amount of support messages from people using those App Store versions).
 
