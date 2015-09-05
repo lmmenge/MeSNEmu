@@ -86,7 +86,7 @@ typedef enum _LMSettingsSections
   static NSString* identifier = @"NumberCell";
   LMTableViewNumberCell* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
   if (cell == nil)
-    cell = [[[LMTableViewNumberCell alloc] initWithReuseIdentifier:identifier] autorelease];
+    cell = [[LMTableViewNumberCell alloc] initWithReuseIdentifier:identifier];
   return cell;
 }
 
@@ -95,7 +95,7 @@ typedef enum _LMSettingsSections
   static NSString* identifier = @"SwitchCell";
   LMTableViewSwitchCell* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
   if (cell == nil)
-    cell = [[[LMTableViewSwitchCell alloc] initWithReuseIdentifier:identifier] autorelease];
+    cell = [[LMTableViewSwitchCell alloc] initWithReuseIdentifier:identifier];
   return cell;
 }
 
@@ -104,7 +104,7 @@ typedef enum _LMSettingsSections
   static NSString* identifier = @"MultipleChoiceCell";
   UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
   if (cell == nil)
-    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier] autorelease];
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
   cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
   return cell;
 }
@@ -131,7 +131,6 @@ typedef enum _LMSettingsSections
   _hideSettingsThatRequireReset = YES;
   if(_soundIndexPath != nil)
   {
-    [_soundIndexPath release];
     _soundIndexPath = nil;
     [self.tableView reloadData];
   }
@@ -291,7 +290,7 @@ typedef enum _LMSettingsSections
     static NSString* identifier = @"AboutCell";
     cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil)
-      cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier] autorelease];
+      cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
    
     int row = indexPath.row;
@@ -355,7 +354,6 @@ typedef enum _LMSettingsSections
       }
       c.delegate = self;
       [self.navigationController pushViewController:c animated:YES];
-      [c release];
     }
   }
 }
@@ -382,21 +380,20 @@ typedef enum _LMSettingsSections
   
   UIBarButtonItem* doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(LM_done)];
   self.navigationItem.rightBarButtonItem = doneButton;
-  [doneButton release];
   
-  _smoothScalingIndexPath = [[NSIndexPath indexPathForRow:0 inSection:LMSettingsSectionScreen] retain];
-  _fullScreenIndexPath = [[NSIndexPath indexPathForRow:1 inSection:LMSettingsSectionScreen] retain];
+  _smoothScalingIndexPath = [NSIndexPath indexPathForRow:0 inSection:LMSettingsSectionScreen];
+  _fullScreenIndexPath = [NSIndexPath indexPathForRow:1 inSection:LMSettingsSectionScreen];
   
   if(_hideSettingsThatRequireReset == NO)
   {
-    _soundIndexPath = [[NSIndexPath indexPathForRow:0 inSection:LMSettingsSectionEmulation] retain];
-    _autoFrameskipIndexPath = [[NSIndexPath indexPathForRow:1 inSection:LMSettingsSectionEmulation] retain];
-    _frameskipValueIndexPath = [[NSIndexPath indexPathForRow:2 inSection:LMSettingsSectionEmulation] retain];
+    _soundIndexPath = [NSIndexPath indexPathForRow:0 inSection:LMSettingsSectionEmulation];
+    _autoFrameskipIndexPath = [NSIndexPath indexPathForRow:1 inSection:LMSettingsSectionEmulation];
+    _frameskipValueIndexPath = [NSIndexPath indexPathForRow:2 inSection:LMSettingsSectionEmulation];
   }
   else
   {
-    _autoFrameskipIndexPath = [[NSIndexPath indexPathForRow:0 inSection:LMSettingsSectionEmulation] retain];
-    _frameskipValueIndexPath = [[NSIndexPath indexPathForRow:1 inSection:LMSettingsSectionEmulation] retain];
+    _autoFrameskipIndexPath = [NSIndexPath indexPathForRow:0 inSection:LMSettingsSectionEmulation];
+    _frameskipValueIndexPath = [NSIndexPath indexPathForRow:1 inSection:LMSettingsSectionEmulation];
   }
 }
 
@@ -461,19 +458,13 @@ typedef enum _LMSettingsSections
 
 - (void)dealloc
 {
-  [_smoothScalingIndexPath release];
   _smoothScalingIndexPath = nil;
-  [_fullScreenIndexPath release];
   _fullScreenIndexPath = nil;
   
-  [_soundIndexPath release];
   _soundIndexPath = nil;
-  [_autoFrameskipIndexPath release];
   _autoFrameskipIndexPath = nil;
-  [_frameskipValueIndexPath release];
   _frameskipValueIndexPath = nil;
   
-  [super dealloc];
 }
 
 @end

@@ -10,6 +10,9 @@
 
 @interface LMSaveManager : NSObject
 
+/*! Use this to change the directory saves are written to and read from. */
++ (void)setCustomFilePath:(NSString *)filePath;
+
 + (NSString*)legacy_pathForRunningStates;
 + (NSString*)legacy_pathForSaveStates;
 

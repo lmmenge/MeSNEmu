@@ -74,10 +74,8 @@
 
 - (void)dealloc
 {
-  [_switch release];
   _switch = nil;
   
-  [super dealloc];
 }
 
 @end

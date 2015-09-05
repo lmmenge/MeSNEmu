@@ -52,7 +52,7 @@
     char *_off_states;
     UIView                  *inputView;
     iCadeState              _iCadeState;
-    id<iCadeEventDelegate>  _delegate;
+    id<iCadeEventDelegate>  __weak _delegate;
     
     struct {
         bool stateChanged:1;
@@ -62,7 +62,7 @@
 }
 
 @property (nonatomic, assign) iCadeState iCadeState;
-@property (nonatomic, assign) id<iCadeEventDelegate> delegate;
+@property (nonatomic, weak) id<iCadeEventDelegate> delegate;
 @property (nonatomic, assign) BOOL active;
 
 @end

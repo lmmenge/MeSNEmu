@@ -43,7 +43,7 @@
     button.label.text = @"Start";
   else if(buttonMap == SI_BUTTON_SELECT)
     button.label.text = @"Select";
-  return [button autorelease];
+  return button;
 }
 
 - (LMButtonView*)LM_buttonWithButton:(int)buttonMap
@@ -88,7 +88,7 @@
     else if(buttonMap == SI_BUTTON_R)
       button.label.text = @"R";
   }
-  return [button autorelease];
+  return button;
 }
 
 @end
@@ -184,14 +184,14 @@
     [self addSubview:_screenView];
     
     // start / select buttons
-    _startButton = [[self LM_smallButtonWithButton:SI_BUTTON_START] retain];
+    _startButton = [self LM_smallButtonWithButton:SI_BUTTON_START];
     [self addSubview:_startButton];
     
-    _selectButton = [[self LM_smallButtonWithButton:SI_BUTTON_SELECT] retain];
+    _selectButton = [self LM_smallButtonWithButton:SI_BUTTON_SELECT];
     [self addSubview:_selectButton];
     
     // menu button
-    _optionsButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+    _optionsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_optionsButton setBackgroundImage:[UIImage imageNamed:@"ButtonWide.png"] forState:UIControlStateNormal];
     [_optionsButton setTitle:NSLocalizedString(@"MENU", nil) forState:UIControlStateNormal];
     [_optionsButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.75] forState:UIControlStateNormal];
@@ -201,23 +201,23 @@
     [self addSubview:_optionsButton];
     
     // ABXY buttons
-    _aButton = [[self LM_buttonWithButton:SI_BUTTON_A] retain];
+    _aButton = [self LM_buttonWithButton:SI_BUTTON_A];
     [self addSubview:_aButton];
     
-    _bButton = [[self LM_buttonWithButton:SI_BUTTON_B] retain];
+    _bButton = [self LM_buttonWithButton:SI_BUTTON_B];
     [self addSubview:_bButton];
     
-    _xButton = [[self LM_buttonWithButton:SI_BUTTON_X] retain];
+    _xButton = [self LM_buttonWithButton:SI_BUTTON_X];
     [self addSubview:_xButton];
     
-    _yButton = [[self LM_buttonWithButton:SI_BUTTON_Y] retain];
+    _yButton = [self LM_buttonWithButton:SI_BUTTON_Y];
     [self addSubview:_yButton];
     
     // L/R buttons
-    _lButton = [[self LM_buttonWithButton:SI_BUTTON_L] retain];
+    _lButton = [self LM_buttonWithButton:SI_BUTTON_L];
     [self addSubview:_lButton];
     
-    _rButton = [[self LM_buttonWithButton:SI_BUTTON_R] retain];
+    _rButton = [self LM_buttonWithButton:SI_BUTTON_R];
     [self addSubview:_rButton];
     
     // d-pad
@@ -510,35 +510,22 @@
     free(_565ImageBuffer);
   _565ImageBuffer = nil;
   
-  [_screenView release];
   _screenView = nil;
   
-  [_startButton release];
   _startButton = nil;
-  [_selectButton release];
   _selectButton = nil;
-  [_aButton release];
   _aButton = nil;
-  [_bButton release];
   _bButton = nil;
-  [_yButton release];
   _yButton = nil;
-  [_xButton release];
   _xButton = nil;
-  [_lButton release];
   _lButton = nil;
-  [_rButton release];
   _rButton = nil;
-  [_dPadView release];
   _dPadView = nil;
   
-  [_iCadeControlView release];
   _iCadeControlView = nil;
   
-  [_optionsButton release];
   _optionsButton = nil;
   
-  [super dealloc];
 }
 
 @end

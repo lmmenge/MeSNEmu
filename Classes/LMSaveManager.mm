@@ -14,11 +14,15 @@
 
 #import "../SNES9XBridge/iOSAudio.h"
 
+static NSString *customFilePath;
 
 @implementation LMSaveManager(Privates)
 
 + (NSString*)LM_pathForRunningStates
 {
+    if (customFilePath) {
+        return customFilePath;
+    }
   static NSString* path = nil;
   @synchronized(self)
   {
@@ -33,6 +37,10 @@
 
 + (NSString*)LM_pathForSaveStates
 {
+    if (customFilePath) {
+        return customFilePath;
+    }
+    
   static NSString* path = nil;
   @synchronized(self)
   {
@@ -66,6 +74,7 @@ extern "C" volatile int SI_AudioIsOnHold;
   NSLog(@"EmulationDidPause %i", SI_EmulationDidPause);
   NSLog(@"AudioIsOnHold %i", SI_AudioIsOnHold);
   
+    // TODO: Gotta fix this path
   NSString* savePath = [LMSaveManager pathForSaveOfROMName:romFileName slot:slot];
   
   if([[NSFileManager defaultManager] fileExistsAtPath:savePath] == NO)
@@ -83,6 +92,10 @@ extern "C" volatile int SI_AudioIsOnHold;
 @end
 
 @implementation LMSaveManager
+
++ (void)setCustomFilePath:(NSString *)filePath {
+    customFilePath = filePath;
+}
 
 + (NSString*)legacy_pathForRunningStates
 {
@@ -109,7 +122,12 @@ extern "C" volatile int SI_AudioIsOnHold;
   
   NSString* romFileNameWithoutExtension = [romFileName stringByDeletingPathExtension];
   NSString* saveFileName = [[romFileNameWithoutExtension stringByAppendingPathExtension:[NSString stringWithFormat:@"%03d", slot]] stringByAppendingPathExtension:@"frz"];
-  return [saveFolderPath stringByAppendingPathComponent:saveFileName];
+    if ([saveFileName hasPrefix:saveFolderPath]) {
+        // The romFileName passed in already has the full path
+        return saveFileName;
+    } else {
+        return [saveFolderPath stringByAppendingPathComponent:saveFileName];
+    }
 }
 
 + (BOOL)hasStateForROMNamed:(NSString*)romFileName slot:(int)slot

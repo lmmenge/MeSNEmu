@@ -11,10 +11,10 @@
 @interface LMButtonView : UIImageView
 {
   uint32_t _button;
-  UILabel* _label;
+  UILabel* __weak _label;
 }
 
 @property uint32_t button;
-@property (readonly) UILabel* label;
+@property (weak, readonly) UILabel* label;
 
 @end

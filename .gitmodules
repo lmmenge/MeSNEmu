@@ -1,0 +1,3 @@
+[submodule "contrib/nimbus"]
+	path = contrib/nimbus
+	url = git@github.com:djMax/nimbus.git
