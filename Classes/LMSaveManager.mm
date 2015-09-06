@@ -74,7 +74,6 @@ extern "C" volatile int SI_AudioIsOnHold;
   NSLog(@"EmulationDidPause %i", SI_EmulationDidPause);
   NSLog(@"AudioIsOnHold %i", SI_AudioIsOnHold);
   
-    // TODO: Gotta fix this path
   NSString* savePath = [LMSaveManager pathForSaveOfROMName:romFileName slot:slot];
   
   if([[NSFileManager defaultManager] fileExistsAtPath:savePath] == NO)

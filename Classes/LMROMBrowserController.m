@@ -546,10 +546,6 @@ static int const LMFileOrganizationVersionNumber = 1;
   
   UIBarButtonItem* settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"SETTINGS", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(LM_settingsTapped)];
   self.navigationItem.rightBarButtonItem = settingsButton;
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Load EB"
-                                                                             style:UIBarButtonItemStylePlain
-                                                                            target:self
-                                                                            action:@selector(loadEB)];
   
   if(_romList != nil)
   {
@@ -568,19 +564,6 @@ static int const LMFileOrganizationVersionNumber = 1;
   SISetSRAMPath([_sramPath UTF8String]);
   
   [self LM_reloadROMList];
-}
-
-- (void)loadEB {
-//    NSString *path = [[NSBundle mainBundle] pathForResource:@"EarthBound (USA)" ofType:@"sfc"];
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"SMW" ofType:@"smc"];
-    LMRomInfo *rom = [LMRomInfo new];
-    rom.filePath = path;
-    
-    LMEmulatorController* emulator = [[LMEmulatorController alloc] init];
-    emulator.romFileName = rom.filePath;
-    NSLog(@"rom.filePath: %@", rom.filePath);
-    
-    [self.navigationController presentViewController:emulator animated:YES completion:nil];
 }
 
 - (void)viewDidUnload
