@@ -31,6 +31,7 @@
 
 @property (copy) NSString* romFileName;
 @property (copy) NSString* initialSaveFileName;
+@property (nonatomic, assign) BOOL disableSaveFileAutoLoad;
 
 - (void)startWithROM:(NSString*)romFileName;
 

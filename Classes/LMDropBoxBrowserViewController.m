@@ -28,13 +28,14 @@ DBRestClientDelegate
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) MBProgressHUD *downloadHUD;
 
-// DropBox Info
+// DropBox
 @property (nonatomic, strong) DBRestClient *restClient;
 @property (nonatomic, strong) NSString *dropBoxFolderPath;
 @property (nonatomic, strong) DBMetadata *folderMetadata;
 @property (nonatomic, strong) DBMetadata *romMetaDataToLoadAfterDownloadingEverything;
 @property (nonatomic, strong) DBMetadata *initialFreezeFileMetaData;
 @property (nonatomic, assign) int pendingDownloadTotal;
+@property (nonatomic, strong) NSTimer *uploadTimer;
 
 // File System
 @property (nonatomic, readonly) NSString *localPath;
@@ -64,7 +65,10 @@ DBRestClientDelegate
         self.restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
         self.restClient.delegate = self;
         self.dropBoxFolderPath = dropBoxPath;
-        _localPath = [LMDBManager localFilePath];
+        _localPath = [[LMDBManager localFilePath] stringByAppendingString:self.dropBoxFolderPath];
+        if ([_localPath hasSuffix:@"/"]) {
+            _localPath = [_localPath substringToIndex:(_localPath.length - 1)];
+        }
         NSLog(@"localpath: %@", _localPath);
 
         NSError *dirError = nil;
@@ -120,6 +124,8 @@ DBRestClientDelegate
     [super viewDidAppear:animated];
     
     self.playerIsPlaying = NO;
+    [self.uploadTimer invalidate];
+    self.uploadTimer = nil;
     [self checkForFilesToUpload];
 }
 
@@ -163,17 +169,24 @@ DBRestClientDelegate
     }
     
     for (NSString *localFile in filesToUpload) {
-        if (![LMDBManager shouldUploadFile:localFile]) {
-            NSLog(@"Not uploading %@", localFile);
+        NSString *relativePath = [self dropBoxPathForFileName:localFile];
+        if (![LMDBManager shouldUploadFile:relativePath]) {
+            NSLog(@"Not uploading %@", relativePath);
             continue;
         }
-        NSLog(@"Uploading %@", localFile);
-        DBMetadata *existingMD = [LMDBManager metaDataForFileName:localFile];
+        NSLog(@"Uploading %@", relativePath);
+        DBMetadata *existingMD = [LMDBManager metaDataForFileName:relativePath];
         [self.restClient uploadFile:localFile
                              toPath:self.dropBoxFolderPath
                       withParentRev:existingMD.rev
                            fromPath:[self.localPath stringByAppendingFormat:@"/%@", localFile]];
     }
+}
+
+- (NSString *)dropBoxPathForFileName:(NSString *)fileName {
+    NSString *result = [self.dropBoxFolderPath stringByAppendingString:fileName];
+
+    return result;
 }
 
 - (void)configSNES9X {
@@ -184,13 +197,6 @@ DBRestClientDelegate
 
 - (void)refreshDatasource {
     NSMutableArray *objects = [NSMutableArray array];
-    
-//    NISubtitleCellObject *reload = [NISubtitleCellObject objectWithTitle:@"Reload" subtitle:nil];
-//    [self.tableSystem.actions attachToObject:reload tapBlock:^BOOL(id object, LMDropBoxBrowserViewController *self, NSIndexPath *indexPath) {
-//        [self refreshDatasource];
-//        return YES;
-//    }];
-//    [objects addObject:reload];
     
     NISubtitleCellObject *authObj = [NISubtitleCellObject objectWithTitle:@"DropBox Auth"
                                                                  subtitle:[NSString stringWithFormat:@"Linked: %d", [[DBSession sharedSession] isLinked]]];
@@ -231,10 +237,18 @@ DBRestClientDelegate
 - (void)openRom:(LMRomInfo *)romInfo withInitialFreezeFile:(NSString *)freezeFile {
     LMEmulatorController* emulator = [[LMEmulatorController alloc] init];
     emulator.romFileName = romInfo.filePath;
-    emulator.initialSaveFileName = freezeFile; // Set this for the Emulator controller to start with a initial freeze file
+    emulator.disableSaveFileAutoLoad = YES; // TODO: Only disable if we just freshly downloaded the SRM file.
+    emulator.initialSaveFileName = freezeFile;
     self.loadedRom = romInfo;
 
     self.playerIsPlaying = YES;
+    
+    // Start auto uploader for save states and SRM files.
+    self.uploadTimer = [NSTimer scheduledTimerWithTimeInterval:60
+                                                        target:self
+                                                      selector:@selector(checkForFilesToUpload)
+                                                      userInfo:nil
+                                                       repeats:YES];
     [self.navigationController presentViewController:emulator animated:YES completion:nil];
 }
 
@@ -269,7 +283,11 @@ DBRestClientDelegate
 }
 
 - (void)openRomRelatedMetaData:(DBMetadata *)metaData {
+    NSString *fileBaseName = [metaData.filename stringByDeletingPathExtension];
+    
     if ([LMRomInfo isFreezeFileName:metaData.filename]) {
+        // save state files are "basename.000.frz", so this is a special case.
+        fileBaseName = [[metaData.filename stringByDeletingPathExtension] stringByDeletingPathExtension];
         self.initialFreezeFileMetaData = metaData;
     }
     
@@ -277,15 +295,16 @@ DBRestClientDelegate
     
     // Download files if they aren't already downloaded
     NSMutableArray *filesToDownload = [NSMutableArray array];
-    NSString *fileBaseName = [metaData.filename stringByDeletingPathExtension];
     for (DBMetadata *file in self.folderMetadata.contents) {
+        if (![[file.filename stringByDeletingPathExtension] isEqualToString:fileBaseName]) {
+            continue;
+        }
         
         if ([LMRomInfo isROMFileName:file.filename]) {
             romMetadata = file;
         }
         
-        if ([[file.filename stringByDeletingPathExtension] isEqualToString:fileBaseName] &&
-            [LMDBManager shouldDownloadFile:file]) {
+        if ([LMDBManager shouldDownloadFile:file]) {
             [filesToDownload addObject:file];
         }
     }
@@ -362,7 +381,7 @@ DBRestClientDelegate
     
     self.pendingDownloadTotal--;
     
-    [LMDBManager setMetaData:metadata forFileName:metadata.filename];
+    [LMDBManager setMetaData:metadata forFileName:metadata.path];
     
     if (self.pendingDownloadTotal == 0) {
         [self.downloadHUD hide:YES];
@@ -391,7 +410,7 @@ DBRestClientDelegate
 - (void)restClient:(DBRestClient*)client uploadedFile:(NSString*)destPath from:(NSString*)srcPath metadata:(DBMetadata*)metadata {
     NSLog(@"file uploaded: %@, fileName: %@", destPath, metadata.filename);
     
-    [LMDBManager setMetaData:metadata forFileName:metadata.filename];
+    [LMDBManager setMetaData:metadata forFileName:metadata.path];
     
 }
 
@@ -399,18 +418,20 @@ DBRestClientDelegate
 - (void)restClient:(DBRestClient*)client uploadFileFailedWithError:(NSError*)error {
     NSLog(@"upload failed: %@", error);
     
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Upload error."
-                                                                   message:[error localizedDescription] preferredStyle:UIAlertControllerStyleAlert];
-    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
-                                              style:UIAlertActionStyleCancel
-                                            handler:nil]];
-    [alert addAction:[UIAlertAction actionWithTitle:@"Retry"
-                                              style:UIAlertActionStyleDefault
-                                            handler:^(UIAlertAction *action) {
-                                                // This is a little too agressive, we may start uploading files that haven't failed or completed yet unnecessarily.
-                                                [self checkForFilesToUpload];
-                                            }]];
-    [self presentViewController:alert animated:YES completion:nil];
+    if (!self.playerIsPlaying) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Upload error."
+                                                                       message:[error localizedDescription] preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
+                                                  style:UIAlertActionStyleCancel
+                                                handler:nil]];
+        [alert addAction:[UIAlertAction actionWithTitle:@"Retry"
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction *action) {
+                                                    // This is a little too agressive, we may start uploading files that haven't failed or completed yet unnecessarily.
+                                                    [self checkForFilesToUpload];
+                                                }]];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 @end

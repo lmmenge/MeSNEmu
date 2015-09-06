@@ -71,10 +71,11 @@
     
     NSLog(@"dbDate: %@", dbDateModified);
     NSLog(@"l Date: %@", localDateModifed);
+    // TODO: I don't trust this date comparison. We're definitely uploading things more than we need to be.
     if ([dbDateModified compare:localDateModifed] != NSOrderedSame) {
         return YES;
     } else {
-        NSLog(@"Date modified dates are the same. I wonder if this ever happens.");
+        NSLog(@"Date modified dates are the same. Don't upload.");
     }
 
     return NO;
@@ -82,7 +83,8 @@
 
 + (BOOL)shouldDownloadFile:(DBMetadata *)metaData {
     NSError *error = nil;
-    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[[self localFilePath] stringByAppendingFormat:@"/%@", metaData.filename]
+    NSString *filePath = [[self localFilePath] stringByAppendingString:metaData.path];
+    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath
                                                                                 error:&error];
     NSLog(@"attributes: %@", attributes);
     if (error) {
@@ -90,7 +92,7 @@
         return YES;
     }
     
-    DBMetadata *existingMD = [self metaDataForFileName:metaData.filename];
+    DBMetadata *existingMD = [self metaDataForFileName:metaData.path];
     NSLog(@"existingMD: %@", existingMD);
     if (!existingMD) {
         // There is a local file, but no DBMetaData, so download it

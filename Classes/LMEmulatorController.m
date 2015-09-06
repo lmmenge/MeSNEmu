@@ -136,6 +136,9 @@ typedef enum _LMEmulatorAlert
 
 - (void)loadROMRunningState
 {
+    if(_initialSaveFileName == nil && self.disableSaveFileAutoLoad) {
+        return;
+    }
 #ifdef SI_ENABLE_RUNNING_SAVES
   NSLog(@"Loading running state...");
   if(_initialSaveFileName == nil)
