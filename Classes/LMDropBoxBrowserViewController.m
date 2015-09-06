@@ -41,6 +41,7 @@ DBRestClientDelegate
 
 // Emulation
 @property (nonatomic, strong) LMRomInfo *loadedRom;
+@property (nonatomic, assign) BOOL playerIsPlaying;
 
 @end
 
@@ -50,11 +51,19 @@ DBRestClientDelegate
 #pragma mark -
 #pragma mark Init & Factory
 - (id)init {
+    self = [self initWithDropBoxPath:@"/"];
+    if (self) {
+        
+    }
+    return self;
+}
+
+- (id)initWithDropBoxPath:(NSString *)dropBoxPath {
     self = [super init];
     if (self) {
         self.restClient = [[DBRestClient alloc] initWithSession:[DBSession sharedSession]];
         self.restClient.delegate = self;
-        self.dropBoxFolderPath = @"/";
+        self.dropBoxFolderPath = dropBoxPath;
         _localPath = [LMDBManager localFilePath];
         NSLog(@"localpath: %@", _localPath);
 
@@ -110,6 +119,7 @@ DBRestClientDelegate
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    self.playerIsPlaying = NO;
     [self checkForFilesToUpload];
 }
 
@@ -224,6 +234,7 @@ DBRestClientDelegate
     emulator.initialSaveFileName = freezeFile; // Set this for the Emulator controller to start with a initial freeze file
     self.loadedRom = romInfo;
 
+    self.playerIsPlaying = YES;
     [self.navigationController presentViewController:emulator animated:YES completion:nil];
 }
 
@@ -239,6 +250,25 @@ DBRestClientDelegate
 
 /*! Opens the specified DBMetadata if it's for a ROM. */
 - (void)openDBMetaData:(DBMetadata *)metaData {
+    if ([LMRomInfo isFreezeFileName:metaData.filename] ||
+        [LMRomInfo isSRMFileName:metaData.filename] ||
+        [LMRomInfo isROMFileName:metaData.filename]) {
+        [self openRomRelatedMetaData:metaData];
+    } else if (metaData.isDirectory) {
+        LMDropBoxBrowserViewController *db = [[LMDropBoxBrowserViewController alloc] initWithDropBoxPath:metaData.path];
+        [self.navigationController pushViewController:db animated:YES];
+    } else {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Wha?"
+                                                                       message:[NSString stringWithFormat:@"Don't know how to open %@", metaData.filename]
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"OK"
+                                                  style:UIAlertActionStyleCancel
+                                                handler:nil]];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+}
+
+- (void)openRomRelatedMetaData:(DBMetadata *)metaData {
     if ([LMRomInfo isFreezeFileName:metaData.filename]) {
         self.initialFreezeFileMetaData = metaData;
     }
