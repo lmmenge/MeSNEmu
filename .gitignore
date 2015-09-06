@@ -9,7 +9,6 @@ LMZip
 *.pbxuser
 *.perspective
 *.perspectivev3
-*.xcworkspace
 xcuserdata
 
 *.mode1v3
