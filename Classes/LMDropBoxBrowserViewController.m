@@ -15,6 +15,7 @@
 #import "../SNES9XBridge/Snes9xMain.h"
 #import <DropboxSDK/DropboxSDK.h>
 #import "LMDBManager.h"
+#import "MBProgressHUD.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 @interface LMDropBoxBrowserViewController() <
@@ -25,6 +26,7 @@ DBRestClientDelegate
 // View
 @property (nonatomic, strong) NITableViewSystem *tableSystem;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) MBProgressHUD *downloadHUD;
 
 // DropBox Info
 @property (nonatomic, strong) DBRestClient *restClient;
@@ -59,9 +61,7 @@ DBRestClientDelegate
         NSError *dirError = nil;
         [[NSFileManager defaultManager] createDirectoryAtPath:_localPath withIntermediateDirectories:NO
                                                    attributes:@{} error:&dirError];
-        if (dirError) {
-            NSLog(@"dirError: %@", dirError);
-        }
+        NSAssert(!dirError, @"Could not create directory. Will not be able to save files. Got error: %@", dirError);
         [LMSaveManager setCustomFilePath:self.localPath];
     }
 
@@ -260,6 +260,11 @@ DBRestClientDelegate
     if ([filesToDownload count]) {
         self.pendingDownloadTotal = [filesToDownload count];
         self.romMetaDataToLoadAfterDownloadingEverything = metaData;
+        
+        [self.downloadHUD hide:NO];
+        self.downloadHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        self.downloadHUD.labelText = [NSString stringWithFormat:@"Downloading %d files", self.pendingDownloadTotal];
+        
         for (DBMetadata *file in filesToDownload) {
             NSString *dest = [NSString stringWithFormat:@"%@/%@",
                               self.localPath,
@@ -315,13 +320,24 @@ DBRestClientDelegate
     [LMDBManager setMetaData:metadata forFileName:metadata.filename];
     
     if (self.pendingDownloadTotal == 0) {
+        [self.downloadHUD hide:YES];
+        self.downloadHUD = nil;
+
         [self openRomWithFileName:self.romMetaDataToLoadAfterDownloadingEverything.filename withInitialFreezeFile:self.initialFreezeFileMetaData.filename];
         self.romMetaDataToLoadAfterDownloadingEverything = nil;
+    } else {
+        self.downloadHUD.labelText = [NSString stringWithFormat:@"Downloading %d files", self.pendingDownloadTotal];
     }
 }
 
 - (void)restClient:(DBRestClient *)client loadFileFailedWithError:(NSError *)error {
     NSLog(@"There was an error loading the file: %@", error);
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Download error. Please retry."
+                                                                   message:[error localizedDescription] preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"OK"
+                                              style:UIAlertActionStyleCancel
+                                            handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark -
@@ -331,11 +347,25 @@ DBRestClientDelegate
     NSLog(@"file uploaded: %@, fileName: %@", destPath, metadata.filename);
     
     [LMDBManager setMetaData:metadata forFileName:metadata.filename];
+    
 }
 
 //- (void)restClient:(DBRestClient*)client uploadProgress:(CGFloat)progress forFile:(NSString*)destPath from:(NSString*)srcPath;
 - (void)restClient:(DBRestClient*)client uploadFileFailedWithError:(NSError*)error {
     NSLog(@"upload failed: %@", error);
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Upload error."
+                                                                   message:[error localizedDescription] preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
+                                              style:UIAlertActionStyleCancel
+                                            handler:nil]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Retry"
+                                              style:UIAlertActionStyleCancel
+                                            handler:^(UIAlertAction *action) {
+                                                // This is a little too agressive, we may start uploading files that haven't failed or completed yet unnecessarily.
+                                                [self checkForFilesToUpload];
+                                            }]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 @end
