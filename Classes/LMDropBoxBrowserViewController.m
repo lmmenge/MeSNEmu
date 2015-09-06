@@ -231,6 +231,9 @@ DBRestClientDelegate
 #pragma mark DropBox Stuff
 - (void)loadDirContents {
     NSLog(@"Loading DropBox list for directory: %@", self.dropBoxFolderPath);
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Loading contents";
+    
     [self.restClient loadMetadata:self.dropBoxFolderPath];
 }
 
@@ -297,6 +300,7 @@ DBRestClientDelegate
 #pragma mark DBRestClientDelegate Download
 - (void)restClient:(DBRestClient *)client loadedMetadata:(DBMetadata *)metadata {
     [self.refreshControl endRefreshing];
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 
     if (metadata.isDirectory && [metadata.path isEqualToString:self.dropBoxFolderPath]) {
         self.folderMetadata = metadata;
@@ -306,9 +310,20 @@ DBRestClientDelegate
 
 - (void)restClient:(DBRestClient *)client loadMetadataFailedWithError:(NSError *)error {
     [self.refreshControl endRefreshing];
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 
-    // TODO: Display error
     NSLog(@"Error loading metadata: %@", error);
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Couldn't get DropBox data."
+                                                                   message:[error localizedDescription] preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel"
+                                              style:UIAlertActionStyleCancel
+                                            handler:nil]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Retry"
+                                              style:UIAlertActionStyleDefault
+                                            handler:^(UIAlertAction *action) {
+                                                [self loadDirContents];
+                                            }]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)restClient:(DBRestClient *)client loadedFile:(NSString *)localPath
@@ -360,7 +375,7 @@ DBRestClientDelegate
                                               style:UIAlertActionStyleCancel
                                             handler:nil]];
     [alert addAction:[UIAlertAction actionWithTitle:@"Retry"
-                                              style:UIAlertActionStyleCancel
+                                              style:UIAlertActionStyleDefault
                                             handler:^(UIAlertAction *action) {
                                                 // This is a little too agressive, we may start uploading files that haven't failed or completed yet unnecessarily.
                                                 [self checkForFilesToUpload];
