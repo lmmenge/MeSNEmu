@@ -61,7 +61,7 @@ DBRestClientDelegate
         NSError *dirError = nil;
         [[NSFileManager defaultManager] createDirectoryAtPath:_localPath withIntermediateDirectories:NO
                                                    attributes:@{} error:&dirError];
-        NSAssert(!dirError, @"Could not create directory. Will not be able to save files. Got error: %@", dirError);
+        NSAssert(!dirError || dirError.code == 516, @"Could not create directory. Will not be able to save files. Got error: %@", dirError);
         [LMSaveManager setCustomFilePath:self.localPath];
     }
 
@@ -263,7 +263,7 @@ DBRestClientDelegate
         
         [self.downloadHUD hide:NO];
         self.downloadHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        self.downloadHUD.labelText = [NSString stringWithFormat:@"Downloading %d files", self.pendingDownloadTotal];
+        self.downloadHUD.labelText = [NSString stringWithFormat:@"Downloading %d file(s)", self.pendingDownloadTotal];
         
         for (DBMetadata *file in filesToDownload) {
             NSString *dest = [NSString stringWithFormat:@"%@/%@",
@@ -326,7 +326,7 @@ DBRestClientDelegate
         [self openRomWithFileName:self.romMetaDataToLoadAfterDownloadingEverything.filename withInitialFreezeFile:self.initialFreezeFileMetaData.filename];
         self.romMetaDataToLoadAfterDownloadingEverything = nil;
     } else {
-        self.downloadHUD.labelText = [NSString stringWithFormat:@"Downloading %d files", self.pendingDownloadTotal];
+        self.downloadHUD.labelText = [NSString stringWithFormat:@"Downloading %d file(s)", self.pendingDownloadTotal];
     }
 }
 

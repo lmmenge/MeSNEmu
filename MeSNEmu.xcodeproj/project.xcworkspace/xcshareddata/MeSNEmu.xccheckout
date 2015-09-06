@@ -22,7 +22,7 @@
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>4182765C525509B305166AB949D5935FD5C85212</key>
-		<string>../../contrib/MBProgressHUD/</string>
+		<string>../../contrib/MBProgressHUD</string>
 		<key>7872DC40D02DA5BD67FA103F2F365257C4C7916C</key>
 		<string>../..</string>
 		<key>EA32E647612B3E4C99557394FE0723D07911B744</key>
