@@ -34,7 +34,10 @@
 }
 
 + (NSString *)localFilePath {
-    return [[[[[NSBundle mainBundle] resourcePath] stringByDeletingLastPathComponent] stringByDeletingLastPathComponent] stringByAppendingString:@"/db_files"];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsPath = [paths objectAtIndex:0];
+    
+    return [documentsPath stringByAppendingString:@"/db_files"];
 }
 
 + (DBMetadata *)metaDataForFileName:(NSString *)fileName {
