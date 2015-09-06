@@ -1,3 +1,6 @@
 [submodule "contrib/nimbus"]
 	path = contrib/nimbus
 	url = git@github.com:djMax/nimbus.git
+[submodule "contrib/MBProgressHUD"]
+	path = contrib/MBProgressHUD
+	url = git@github.com:jdg/MBProgressHUD.git

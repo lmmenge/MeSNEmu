@@ -49,6 +49,7 @@
 		7F7A398C1B7D8BA900C887DB /* LMDropBoxBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7A398B1B7D8BA900C887DB /* LMDropBoxBrowserViewController.m */; };
 		7F7A39941B9947B600C887DB /* LMDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F7A39931B9947B600C887DB /* LMDBManager.m */; };
 		7F7A39961B9B967A00C887DB /* dropbox_credentials in Resources */ = {isa = PBXBuildFile; fileRef = 7F7A39951B9B967A00C887DB /* dropbox_credentials */; };
+		7FA845941B9C830100DF121E /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FA845931B9C830100DF121E /* MBProgressHUD.m */; };
 		A00403C114BE3E4D00FE28CE /* apu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00401E514BE3E4D00FE28CE /* apu.cpp */; };
 		A00403C314BE3E4D00FE28CE /* SNES_SPC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00401F014BE3E4D00FE28CE /* SNES_SPC.cpp */; };
 		A00403C414BE3E4D00FE28CE /* SNES_SPC_misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A00401F214BE3E4D00FE28CE /* SNES_SPC_misc.cpp */; };
@@ -276,6 +277,8 @@
 		7F7A39921B9947B600C887DB /* LMDBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LMDBManager.h; path = Classes/LMDBManager.h; sourceTree = SOURCE_ROOT; };
 		7F7A39931B9947B600C887DB /* LMDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LMDBManager.m; path = Classes/LMDBManager.m; sourceTree = SOURCE_ROOT; };
 		7F7A39951B9B967A00C887DB /* dropbox_credentials */ = {isa = PBXFileReference; lastKnownFileType = folder; name = dropbox_credentials; path = MeSNEmu/dropbox_credentials; sourceTree = SOURCE_ROOT; };
+		7FA845921B9C830100DF121E /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = contrib/MBProgressHUD/MBProgressHUD.h; sourceTree = SOURCE_ROOT; };
+		7FA845931B9C830100DF121E /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = contrib/MBProgressHUD/MBProgressHUD.m; sourceTree = SOURCE_ROOT; };
 		A00401E314BE3E4D00FE28CE /* 65c816.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 65c816.h; sourceTree = "<group>"; };
 		A00401E514BE3E4D00FE28CE /* apu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = apu.cpp; sourceTree = "<group>"; };
 		A00401E614BE3E4D00FE28CE /* apu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = apu.h; sourceTree = "<group>"; };
@@ -550,6 +553,7 @@
 		7F7A38DD1B7D84D000C887DB /* contrib */ = {
 			isa = PBXGroup;
 			children = (
+				7FA845911B9C82F300DF121E /* MBProgresHUD */,
 				7F7A38E41B7D8B5600C887DB /* nimbus */,
 				7F7A38E01B7D870700C887DB /* DropboxSDK.framework */,
 			);
@@ -673,6 +677,15 @@
 				7F7A39731B7D8B7900C887DB /* NITableViewSystemActions.m */,
 			);
 			path = src;
+			sourceTree = "<group>";
+		};
+		7FA845911B9C82F300DF121E /* MBProgresHUD */ = {
+			isa = PBXGroup;
+			children = (
+				7FA845921B9C830100DF121E /* MBProgressHUD.h */,
+				7FA845931B9C830100DF121E /* MBProgressHUD.m */,
+			);
+			name = MBProgresHUD;
 			sourceTree = "<group>";
 		};
 		A00401E214BE3E4D00FE28CE /* SNES9X */ = {
@@ -1266,6 +1279,7 @@
 				7F7A39431B7D8B5E00C887DB /* NISnapshotRotation.m in Sources */,
 				A004048114BE3E4E00FE28CE /* obc1.cpp in Sources */,
 				7F7A393F1B7D8B5E00C887DB /* NIOperations.m in Sources */,
+				7FA845941B9C830100DF121E /* MBProgressHUD.m in Sources */,
 				A004048214BE3E4E00FE28CE /* ppu.cpp in Sources */,
 				A004048314BE3E4E00FE28CE /* reader.cpp in Sources */,
 				A004048414BE3E4E00FE28CE /* sa1.cpp in Sources */,
