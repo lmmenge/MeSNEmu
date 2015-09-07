@@ -162,7 +162,9 @@ DBRestClientDelegate
         
         // Else, just look for a matching base file name and upload everything.
         // Kind of dumb logic but ¯\_(ツ)_/¯
-        if ([baseName isEqualToString:[localFile stringByDeletingPathExtension]] &&
+        BOOL isRelatedToRomFile = [LMRomInfo isFreezeFileName:localFile] ? [baseName isEqualToString:[[localFile stringByDeletingPathExtension] stringByDeletingPathExtension]] : [baseName isEqualToString:[localFile stringByDeletingPathExtension]];
+        
+        if (isRelatedToRomFile &&
             ![LMRomInfo isROMExtension:[localFile pathExtension]]) {
             [filesToUpload addObject:localFile];
         }
