@@ -376,7 +376,9 @@ extern "C" int SIStartWithROM(char* rom_filename)
     if (rom_filename)
     {
       char rom_path[1024] = {0};
-      sprintf(rom_path,"%s%s%s",SI_DocumentsPath,DIR_SEPERATOR,rom_filename);
+        // TODO: Need to set SI_DocumentsPath right before starting emulation from DropBox VC, I think that might clean everything up. Well, it's might be a start. Need to change where save files get written to
+      //sprintf(rom_path,"%s%s%s",SI_DocumentsPath,DIR_SEPERATOR,rom_filename);
+        sprintf(rom_path,"%s",rom_filename);
       
       loaded = Memory.LoadROM(rom_path);
       

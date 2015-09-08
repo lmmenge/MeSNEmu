@@ -87,9 +87,8 @@
     if(_minusButton != nil)
     {
       [_minusButton removeFromSuperview];
-      [_minusButton release];
     }
-    _minusButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+    _minusButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_minusButton setBackgroundImage:minusImage forState:UIControlStateNormal];
     [_minusButton setBackgroundImage:minusImageDown forState:UIControlStateHighlighted];
     _minusButton.bounds = (CGRect){0,0, minusImage.size};
@@ -100,9 +99,8 @@
     if(_defaultButton != nil)
     {
       [_defaultButton removeFromSuperview];
-      [_defaultButton release];
     }
-    _defaultButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+    _defaultButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_defaultButton setBackgroundImage:defaultImage forState:UIControlStateNormal];
     [_defaultButton setBackgroundImage:defaultImageDown forState:UIControlStateHighlighted];
     _defaultButton.bounds = (CGRect){0,0, defaultImage.size};
@@ -127,9 +125,8 @@
     if(_plusButton != nil)
     {
       [_plusButton removeFromSuperview];
-      [_plusButton release];
     }
-    _plusButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
+    _plusButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_plusButton setBackgroundImage:plusImage forState:UIControlStateNormal];
     [_plusButton setBackgroundImage:plusImageDown forState:UIControlStateHighlighted];
     _plusButton.bounds = (CGRect){0,0, plusImage.size};
@@ -158,7 +155,6 @@
 @synthesize suffix = _suffix;
 - (void)setSuffix:(NSString*)newSuffix
 {
-  [_suffix release];
   _suffix = [newSuffix copy];
   [self updateLabel];
 }
@@ -257,16 +253,11 @@
 
 - (void)dealloc
 {
-  [_plusMinusAccessoryView release];
   _plusMinusAccessoryView = nil;
-  [_plusButton release];
   _plusButton = nil;
-  [_minusButton release];
   _minusButton = nil;
-  [_defaultButton release];
   _defaultButton = nil;
   
-  [super dealloc];
 }
 
 @end

@@ -13,7 +13,7 @@
   UISwitch* _switch;
 }
 
-@property (readonly) UISwitch* switchView;
+@property (weak, readonly) UISwitch* switchView;
 
 - (id)initWithReuseIdentifier:(NSString*)reuseIdentifier;
 

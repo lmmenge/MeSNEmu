@@ -48,17 +48,17 @@ typedef enum _LMEmulatorControllerViewMode
   LMDPadView* _dPadView;
   
   // external controller
-  LMBTControllerView* _iCadeControlView;
+  LMBTControllerView* __weak _iCadeControlView;
   
-  UIButton* _optionsButton;
+  UIButton* __weak _optionsButton;
   
   BOOL _hideUI;
   
   LMEmulatorControllerViewMode _viewMode;
 }
 
-@property (readonly) UIButton* optionsButton;
-@property (readonly) LMBTControllerView* iCadeControlView;
+@property (weak, readonly) UIButton* optionsButton;
+@property (weak, readonly) LMBTControllerView* iCadeControlView;
 @property (nonatomic) LMEmulatorControllerViewMode viewMode;
 
 - (void)setControlsHidden:(BOOL)value animated:(BOOL)animated;

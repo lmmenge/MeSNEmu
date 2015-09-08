@@ -154,5 +154,14 @@
 			</dict>
 		</dict>
 	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>db-jvu93686gqiq3mh</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

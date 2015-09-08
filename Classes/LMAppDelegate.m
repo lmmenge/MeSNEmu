@@ -9,6 +9,8 @@
 #import "LMAppDelegate.h"
 
 #import "LMROMBrowserController.h"
+#import "LMDropBoxBrowserViewController.h"
+#import <DropboxSDK/DropboxSDK.h>
 
 // TODO: LM: Better save UI to allow for multiple slots
 // TODO: LM: save/show screenshots for save states in the save state manager
@@ -18,12 +20,6 @@
 @synthesize window = _window;
 @synthesize viewController = _viewController;
 
-- (void)dealloc
-{
-  [_window release];
-  [_viewController release];
-  [super dealloc];
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -31,18 +27,54 @@
   // where are we?
   NSLog(@"\nDocuments Directory:\n%@\n\n", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject]);
 #endif
+    
+  [self setUpDropBox];
   
-  self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+  self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
-  LMROMBrowserController* romBrowser = [[LMROMBrowserController alloc] init];
+//  LMROMBrowserController* romBrowser = [[LMROMBrowserController alloc] init];
+    LMDropBoxBrowserViewController *romBrowser = [LMDropBoxBrowserViewController new];
   UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:romBrowser];
   self.viewController = nav;
-  [nav release];
-  [romBrowser release];
 
   self.window.rootViewController = self.viewController;
   [self.window makeKeyAndVisible];
   return YES;
+}
+
+- (void)setUpDropBox {
+    NSString *dbCreds = [[NSBundle mainBundle] pathForResource:@"dropbox_credentials" ofType:@"json" inDirectory:@"dropbox_credentials"];
+    if (!dbCreds) {
+        NSLog(@"No DropBox credentials found. To enable DropBox, create a dropbox_credentials.json file in the dropbox_credentials directory, following the example in there.");
+    }
+    
+    NSString *content = [NSString stringWithContentsOfFile:dbCreds encoding:NSUTF8StringEncoding error:nil];
+    NSData *jsonData = [content dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *e;
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:jsonData options:nil error:&e];
+    if (e) {
+        NSLog(@"Couldn't parse dropbox_credentials.json: %@", [e localizedDescription]);
+        return;
+    }
+    
+    DBSession *dbSession = [[DBSession alloc]
+                            initWithAppKey:[dict valueForKey:@"app_key"]
+                            appSecret:[dict valueForKey:@"secret"]
+                            root:kDBRootAppFolder];
+    [DBSession setSharedSession:dbSession];
+}
+
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url
+  sourceApplication:(NSString *)source annotation:(id)annotation {
+    if ([[DBSession sharedSession] handleOpenURL:url]) {
+        if ([[DBSession sharedSession] isLinked]) {
+            NSLog(@"App linked successfully!");
+            // At this point you can start making API calls
+        }
+        return YES;
+    }
+    // Add whatever other url handling code your app requires here
+    return NO;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

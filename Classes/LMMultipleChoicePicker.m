@@ -42,7 +42,7 @@
   
   UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
   if(cell == nil)
-    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
   
   cell.textLabel.text = [_optionNames objectAtIndex:indexPath.row];
   if(indexPath.row == _pickedIndex)
@@ -97,12 +97,9 @@
 
 - (void)dealloc
 {
-  [_optionNames release];
   _optionNames = nil;
-  [_optionValues release];
   _optionValues = nil;
   
-  [super dealloc];
 }
 
 @end

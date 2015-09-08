@@ -16,13 +16,13 @@
   NSArray* _optionValues;
   int _pickedIndex;
   
-  id<LMMultipleChoicePickerDelegate> _delegate;
+  id<LMMultipleChoicePickerDelegate> __weak _delegate;
 }
 
 @property (copy) NSArray* optionNames;
 @property (copy) NSArray* optionValues;
 @property int pickedIndex;
 
-@property (assign) id<LMMultipleChoicePickerDelegate> delegate;
+@property (weak) id<LMMultipleChoicePickerDelegate> delegate;
 
 @end

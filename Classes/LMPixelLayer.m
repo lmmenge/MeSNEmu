@@ -139,7 +139,7 @@
     cgImage = CGBitmapContextCreateImage(_bitmapContext);
   else
     cgImage = CGBitmapContextCreateImage(_bitmapContextAlt);
-  self.contents = (id)cgImage;
+  self.contents = (__bridge id)cgImage;
   CGImageRelease(cgImage);
 }
 
@@ -174,7 +174,6 @@
     CGContextRelease(_bitmapContextAlt);
   _bitmapContextAlt = nil;
   
-  [super dealloc];
 }
 
 @end

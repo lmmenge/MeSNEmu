@@ -10,6 +10,7 @@
 
 #include <sys/time.h>
 #include <libgen.h>
+#include <errno.h>
 
 #include "../SNES9X/snes9x.h"
 #include "../SNES9X/memmap.h"
@@ -167,8 +168,12 @@ bool8 S9xOpenSnapshotFile (const char* fname, bool8 read_only, STREAM* file)
   }
   else
   {
-		if (0 != (*file = OPEN_STREAM(fname, "wb")))
-      return (true);
+      if (0 != (*file = OPEN_STREAM(fname, "wb"))) {
+          return (true);
+      } else {
+          fprintf (stderr, "gzopen of '%s' failed: %s.\n", fname,
+                   strerror (errno));
+      }
   }
   
   return (false);

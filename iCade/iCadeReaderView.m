@@ -66,7 +66,6 @@
         _off_states = nil;
     }
   
-    [super dealloc];
 }
 
 - (void)didEnterBackground {

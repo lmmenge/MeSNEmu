@@ -17,50 +17,6 @@
 static NSString* const LMFileOrganizationVersion = @"LMFileOrganizationVersion";
 static int const LMFileOrganizationVersionNumber = 1;
 
-@interface LMFileListItem : NSObject
-{
-  BOOL _hasDetails;
-  NSString* _displayName;
-  NSString* _displayDetails;
-  NSString* _fileName;
-}
-
-@property BOOL hasDetails;
-@property (retain) NSString* displayName;
-@property (retain) NSString* displayDetails;
-@property (retain) NSString* fileName;
-
-+ (BOOL)isROMExtension:(NSString*)lowerCaseExtension;
-@end
-
-#pragma mark -
-
-@implementation LMFileListItem
-
-@synthesize hasDetails = _hasDetails;
-@synthesize displayName = _displayName;
-@synthesize displayDetails = _displayDetails;
-@synthesize fileName = _fileName;
-
-+ (BOOL)isROMExtension:(NSString*)lowerCaseExtension
-{
-  if(lowerCaseExtension != nil
-     && ([lowerCaseExtension compare:@"smc"] == NSOrderedSame
-         || [lowerCaseExtension compare:@"sfc"] == NSOrderedSame
-         || [lowerCaseExtension compare:@"zip"] == NSOrderedSame))
-    return YES;
-  return NO;
-}
-
-- (void)dealloc
-{
-  self.displayName = nil;
-  self.displayDetails = nil;
-  self.fileName = nil;
-  [super dealloc];
-}
-
-@end
 
 #pragma mark -
 
@@ -137,7 +93,7 @@ static int const LMFileOrganizationVersionNumber = 1;
     if([file rangeOfString:romNameWithoutExtension].location == 0)
     {
       NSString* extension = [[file pathExtension] lowercaseString];
-      if([LMFileListItem isROMExtension:extension] == YES)
+      if([LMRomInfo isROMExtension:extension] == YES)
         [list addObject:file];
       else if([extension compare:@"srm"] == NSOrderedSame)
         [list addObject:file];
@@ -145,7 +101,7 @@ static int const LMFileOrganizationVersionNumber = 1;
         [list addObject:file];
     }
   }
-  return [[list copy] autorelease];
+  return [list copy];
 }
 
 - (void)LM_reloadROMList:(BOOL)updateTable
@@ -190,11 +146,12 @@ static int const LMFileOrganizationVersionNumber = 1;
     for(NSString* file in proposedFileList)
     {
       NSString* extension = [[file pathExtension] lowercaseString];
-      if([LMFileListItem isROMExtension:extension] == YES)
+      if([LMRomInfo isROMExtension:extension] == YES)
       {
-        LMFileListItem* item = [[LMFileListItem alloc] init];
+        LMRomInfo* item = [[LMRomInfo alloc] init];
         item.displayName = [file stringByDeletingPathExtension];
         item.fileName = file;
+          // TODO: Set file path
         NSString* sramPath = [_sramPath stringByAppendingPathComponent:[[file stringByDeletingPathExtension] stringByAppendingPathExtension:@"srm"]];
         if([fm fileExistsAtPath:sramPath] == YES)
           item.hasDetails = YES;
@@ -210,7 +167,6 @@ static int const LMFileOrganizationVersionNumber = 1;
           }
         }
         [onlyROMsItemList addObject:item];
-        [item release];
       }
     }
     proposedFileList = onlyROMsItemList;
@@ -218,7 +174,7 @@ static int const LMFileOrganizationVersionNumber = 1;
     // sort symbols first
     NSMutableArray* symbolsList = [NSMutableArray array];
     NSMutableArray* alphabetList = [NSMutableArray array];
-    for(LMFileListItem* file in proposedFileList)
+    for(LMRomInfo* file in proposedFileList)
     {
       unichar firstLetter = [[file.displayName uppercaseString] characterAtIndex:0];
       if(firstLetter < 'A' || firstLetter > 'Z')
@@ -234,7 +190,7 @@ static int const LMFileOrganizationVersionNumber = 1;
     tempSectionTitles = [NSMutableArray array];
     tempSectionMarkers = [NSMutableArray array];
     unichar lastChar = '\0';
-    for(LMFileListItem* file in proposedFileList)
+    for(LMRomInfo* file in proposedFileList)
     {
       if(searching == YES && [file.fileName rangeOfString:filterString options:NSCaseInsensitiveSearch].location == NSNotFound)
         continue;
@@ -263,24 +219,22 @@ static int const LMFileOrganizationVersionNumber = 1;
     {
       [tempSectionTitles addObject:NSLocalizedString(@"CARTRIDGE_FILES", nil)];
       [tempSectionMarkers addObject:[NSNumber numberWithInt:[itemsList count]]];
-      LMFileListItem* romItem = [[LMFileListItem alloc] init];
+      LMRomInfo* romItem = [[LMRomInfo alloc] init];
       romItem.displayName = _detailsItem.displayName;
       //romItem.displayName = NSLocalizedString(@"GAME_FILE", nil);
       //romItem.displayDetails = _detailsItem.displayName;
       romItem.fileName = _detailsItem.fileName;
       [itemsList addObject:romItem];
-      [romItem release];
     }
     // sram
     NSString* sramPath = [_sramPath stringByAppendingPathComponent:[[_detailsItem.fileName stringByDeletingPathExtension] stringByAppendingPathExtension:@"srm"]];
     if([fm fileExistsAtPath:sramPath] == YES)
     {
-      LMFileListItem* sramItem = [[LMFileListItem alloc] init];
+      LMRomInfo* sramItem = [[LMRomInfo alloc] init];
       sramItem.displayName = NSLocalizedString(@"SRAM_FILE", nil);
       sramItem.fileName = [sramPath lastPathComponent];
       sramItem.displayDetails = sramItem.fileName;
       [itemsList addObject:sramItem];
-      [sramItem release];
     }
     // saves
     BOOL hasSaves = NO;
@@ -294,7 +248,7 @@ static int const LMFileOrganizationVersionNumber = 1;
           [tempSectionMarkers addObject:[NSNumber numberWithInt:[itemsList count]]];
           hasSaves = YES;
         }
-        LMFileListItem* saveItem = [[LMFileListItem alloc] init];
+        LMRomInfo* saveItem = [[LMRomInfo alloc] init];
         if(i == 0)
           saveItem.displayName = NSLocalizedString(@"LAST_PLAYED_SPOT", nil);
         else
@@ -302,7 +256,6 @@ static int const LMFileOrganizationVersionNumber = 1;
         saveItem.fileName = [[LMSaveManager pathForSaveOfROMName:_detailsItem.fileName slot:i] lastPathComponent];
         saveItem.displayDetails = saveItem.fileName;
         [itemsList addObject:saveItem];
-        [saveItem release];
       }
       else if(i > 0)
         break;
@@ -321,12 +274,12 @@ static int const LMFileOrganizationVersionNumber = 1;
   {
     for(int i=0; i<[tempItemList count]; i++)
     {
-      LMFileListItem* romA = nil;
+      LMRomInfo* romA = nil;
       if(searching == YES)
         romA = [_filteredRomList objectAtIndex:i];
       else
         romA = [_romList objectAtIndex:i];
-      LMFileListItem* romB = [tempItemList objectAtIndex:i];
+      LMRomInfo* romB = [tempItemList objectAtIndex:i];
       if([romA.fileName isEqualToString:romB.fileName] == NO)
       {
         different = YES;
@@ -343,20 +296,14 @@ static int const LMFileOrganizationVersionNumber = 1;
   {
     if(searching == YES)
     {
-      [_filteredRomList release];
       _filteredRomList = [tempItemList copy];
-      [_filteredSectionTitles release];
       _filteredSectionTitles = [tempSectionTitles copy];
-      [_filteredSectionMarkers release];
       _filteredSectionMarkers = [tempSectionMarkers copy];
     }
     else
     {
-      [_romList release];
       _romList = [tempItemList copy];
-      [_sectionTitles release];
       _sectionTitles = [tempSectionTitles copy];
-      [_sectionMarkers release];
       _sectionMarkers = [tempSectionMarkers copy];
       if(updateTable == YES)
         [self.tableView reloadData];
@@ -375,11 +322,9 @@ static int const LMFileOrganizationVersionNumber = 1;
   UINavigationController* n = [[UINavigationController alloc] initWithRootViewController:c];
   n.modalPresentationStyle = UIModalPresentationFormSheet;
   [self presentViewController:n animated:YES completion:nil];
-  [c release];
-  [n release];
 }
 
-- (LMFileListItem*)LM_romItemForTableView:(UITableView*)tableView indexPath:(NSIndexPath*)indexPath
+- (LMRomInfo*)LM_romItemForTableView:(UITableView*)tableView indexPath:(NSIndexPath*)indexPath
 {
   int index = indexPath.row;
   if(tableView == self.searchDisplayController.searchResultsTableView)
@@ -476,9 +421,9 @@ static int const LMFileOrganizationVersionNumber = 1;
   
   UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
   if(cell == nil)
-    cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
   
-  LMFileListItem* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
+  LMRomInfo* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
   cell.textLabel.text = item.displayName;
   cell.detailTextLabel.text = item.displayDetails;
   if(item.hasDetails)
@@ -492,14 +437,14 @@ static int const LMFileOrganizationVersionNumber = 1;
 - (void)tableView:(UITableView*)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
   LMEmulatorController* emulator = [[LMEmulatorController alloc] init];
-  LMFileListItem* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
+  LMRomInfo* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
   if(_detailsItem == nil)
-    emulator.romFileName = item.fileName;
+    emulator.romFileName = item.fileName; // TODO: Change to file path
   else
   {
-    emulator.romFileName = _detailsItem.fileName;
+    emulator.romFileName = _detailsItem.fileName; // TODO: Change to file path
     NSString* extension = [[item.fileName pathExtension] lowercaseString];
-    if([LMFileListItem isROMExtension:extension] == YES)
+    if([LMRomInfo isROMExtension:extension] == YES)
     {
       // do nothing here either
     }
@@ -515,16 +460,14 @@ static int const LMFileOrganizationVersionNumber = 1;
   }
   [self.searchDisplayController setActive:NO];
   [self.navigationController presentViewController:emulator animated:YES completion:nil];
-  [emulator release];
 }
 
 - (void)tableView:(UITableView*)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath*)indexPath
 {
   LMROMBrowserController* detailsBrowser = [[LMROMBrowserController alloc] initWithStyle:UITableViewStyleGrouped];
-  LMFileListItem* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
+  LMRomInfo* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
   detailsBrowser.detailsItem = item;
   [self.navigationController pushViewController:detailsBrowser animated:YES];
-  [detailsBrowser release];
 }
 
 - (void)tableView:(UITableView*)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath*)indexPath
@@ -533,7 +476,7 @@ static int const LMFileOrganizationVersionNumber = 1;
   {
     // Delete the row from the data source
     int amount = [self tableView:tableView numberOfRowsInSection:indexPath.section];
-    LMFileListItem* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
+    LMRomInfo* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
     [[NSFileManager defaultManager] removeItemAtPath:[_romPath stringByAppendingPathComponent:item.fileName] error:nil];
     [self LM_reloadROMList:NO];
     
@@ -593,7 +536,6 @@ static int const LMFileOrganizationVersionNumber = 1;
     UISearchBar* searchbar = [[UISearchBar alloc] init];
     [searchbar sizeToFit];
     self.tableView.tableHeaderView = searchbar;
-    [searchbar release];
     UISearchDisplayController* searchController = [[UISearchDisplayController alloc] initWithSearchBar:searchbar contentsController:self];
     searchController.delegate = self;
     searchController.searchResultsDataSource = self;
@@ -604,11 +546,9 @@ static int const LMFileOrganizationVersionNumber = 1;
   
   UIBarButtonItem* settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"SETTINGS", nil) style:UIBarButtonItemStyleBordered target:self action:@selector(LM_settingsTapped)];
   self.navigationItem.rightBarButtonItem = settingsButton;
-  [settingsButton release];
   
   if(_romList != nil)
   {
-    [_romList release];
     _romList = nil;
   }
   
@@ -684,30 +624,21 @@ static int const LMFileOrganizationVersionNumber = 1;
   
   //[self.searchDisplayController release];
   
-  [_romList release];
   _romList = nil;
-  [_sectionTitles release];
   _sectionTitles = nil;
-  [_sectionMarkers release];
   _sectionMarkers = nil;
   
-  [_filteredRomList release];
   _filteredRomList = nil;
-  [_filteredSectionTitles release];
   _filteredSectionTitles = nil;
-  [_filteredSectionMarkers release];
   _filteredSectionMarkers = nil;
   
   self.detailsItem = nil;
-  [_romPath release];
   _romPath = nil;
-  [_sramPath release];
   _sramPath = nil;
   
   [_fsTimer invalidate];
   _fsTimer = nil;
   
-  [super dealloc];
 }
 
 @end

@@ -43,10 +43,10 @@ extern NSString* const kLMSettingsFrameskipValue;
   NSIndexPath* _autoFrameskipIndexPath;
   NSIndexPath* _frameskipValueIndexPath;
   
-  id<LMSettingsControllerDelegate> _delegate;
+  id<LMSettingsControllerDelegate> __weak _delegate;
 }
 
-@property (assign) id<LMSettingsControllerDelegate> delegate;
+@property (weak) id<LMSettingsControllerDelegate> delegate;
 
 - (void)hideSettingsThatRequireReset;
 

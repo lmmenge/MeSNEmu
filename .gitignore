@@ -9,8 +9,9 @@ LMZip
 *.pbxuser
 *.perspective
 *.perspectivev3
-*.xcworkspace
 xcuserdata
 
 *.mode1v3
 *.mode2v3
+
+dropbox_credentials.json

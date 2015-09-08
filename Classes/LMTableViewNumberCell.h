@@ -25,10 +25,10 @@
   UIButton* _minusButton;
   UIButton* _defaultButton;
   
-  id<LMTableViewCellDelegate> _delegate;
+  id<LMTableViewCellDelegate> __weak _delegate;
 }
 
-@property (readonly) UIView* plusMinusAccessoryView;
+@property (weak, readonly) UIView* plusMinusAccessoryView;
 @property (nonatomic) int value;
 @property int minimumValue;
 @property int maximumValue;
@@ -36,7 +36,7 @@
 @property (nonatomic) BOOL usesDefaultValue;
 @property (nonatomic) BOOL allowsDefault;
 
-@property (assign) id<LMTableViewCellDelegate> delegate;
+@property (weak) id<LMTableViewCellDelegate> delegate;
 
 - (id)initWithReuseIdentifier:(NSString*)reuseIdentifier;
 
