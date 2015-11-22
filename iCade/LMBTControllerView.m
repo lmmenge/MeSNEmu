@@ -150,7 +150,12 @@ NSArray* LMBTSupportedControllers = nil;
                                     // Snakebyte idroid:con (thanks to Gohlan)
                                     @[@"Snakebyte idroid:con",
                                       [NSNumber numberWithInt:LMBTControllerType_Snakebyteidroidcon],
-                                      @"wedcxzaqlvogythrjnufimkp"]
+                                      @"wedcxzaqlvogythrjnufimkp"],
+                                    
+                                    // IPEGA PG-9025 (thanks to klattimer)
+                                    @[@"IPEGA PG-9028",
+                                      [NSNumber numberWithInt:LMBTControllerType_IPEGAPG9028],
+                                      @"wedcxzaqimkpjnufythroglv"]
                                     
                                    ] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
                                      return [[obj1 firstObject] compare:[obj2 firstObject]];
