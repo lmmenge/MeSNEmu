@@ -19,7 +19,8 @@ typedef enum _LMBTControllerType
   LMBTControllerType_iMpulse = 6,
   LMBTControllerType_8BitdoNES30 = 7,
   LMBTControllerType_IPEGAPG9025 = 8,
-  LMBTControllerType_Snakebyteidroidcon = 9
+  LMBTControllerType_Snakebyteidroidcon = 9,
+  LMBTControllerType_IPEGAPG9028 = 10
 } LMBTControllerType;
 
 @interface LMBTControllerView : iCadeReaderView {
