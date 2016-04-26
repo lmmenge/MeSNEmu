@@ -493,6 +493,7 @@ static int const LMFileOrganizationVersionNumber = 1;
 {
   LMEmulatorController* emulator = [[LMEmulatorController alloc] init];
   LMFileListItem* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
+    [self addMostRecentlyTouched: item];
   if(_detailsItem == nil)
     emulator.romFileName = item.fileName;
   else
@@ -518,6 +519,36 @@ static int const LMFileOrganizationVersionNumber = 1;
   [emulator release];
 }
 
+- (void)addMostRecentlyTouched:(LMFileListItem *)item
+{
+    NSString *key = @"RECENTLY_TOUCHED";
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *gameName = item.fileName;
+    NSMutableArray *recentGames = [NSMutableArray arrayWithArray: [defaults stringArrayForKey:key]];
+    
+
+    if(recentGames == nil)
+    {
+        NSArray *recentGames = [NSArray arrayWithObject:gameName];
+        [defaults setValue:recentGames forKey:key];
+    }
+    else if([recentGames containsObject:gameName])
+    {
+        [recentGames removeObject:gameName];
+        [recentGames addObject:gameName];
+        NSArray *newRecentGames = [NSArray arrayWithArray:recentGames];
+        [defaults setObject:newRecentGames forKey:key];
+    }
+    else
+    {
+        if([recentGames count] >=  4) [recentGames removeObjectAtIndex:0];
+        [recentGames addObject:gameName];
+        NSArray *newRecentGames = [NSArray arrayWithArray:recentGames];
+        [defaults setObject:newRecentGames forKey:key];
+    }
+
+}
+
 - (void)tableView:(UITableView*)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath*)indexPath
 {
   LMROMBrowserController* detailsBrowser = [[LMROMBrowserController alloc] initWithStyle:UITableViewStyleGrouped];
@@ -536,7 +567,7 @@ static int const LMFileOrganizationVersionNumber = 1;
     LMFileListItem* item = [self LM_romItemForTableView:tableView indexPath:indexPath];
     [[NSFileManager defaultManager] removeItemAtPath:[_romPath stringByAppendingPathComponent:item.fileName] error:nil];
     [self LM_reloadROMList:NO];
-    
+      [self deleteMostRecentlyDeleted: item];
     BOOL isROMDetail = (_detailsItem != nil);
     if(isROMDetail == YES)
     {
@@ -552,6 +583,21 @@ static int const LMFileOrganizationVersionNumber = 1;
     else
       [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
   }
+}
+
+- (void)deleteMostRecentlyDeleted:(LMFileListItem *)item
+{
+    NSString *key = @"RECENTLY_TOUCHED";
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *gameName = item.fileName;
+    NSMutableArray *recentGames = [NSMutableArray arrayWithArray: [defaults stringArrayForKey:key]];
+    
+    if(recentGames != nil)
+    {
+        [recentGames removeObject:gameName];
+        NSArray *newRecentGames = [NSArray arrayWithArray:recentGames];
+        [defaults setObject:newRecentGames forKey:key];
+    }
 }
 
 @end
