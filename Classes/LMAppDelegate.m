@@ -9,6 +9,7 @@
 #import "LMAppDelegate.h"
 
 #import "LMROMBrowserController.h"
+#import "LMEmulatorController.h"
 
 // TODO: LM: Better save UI to allow for multiple slots
 // TODO: LM: save/show screenshots for save states in the save state manager
@@ -27,61 +28,102 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-#if TARGET_IPHONE_SIMULATOR
-  // where are we?
-  NSLog(@"\nDocuments Directory:\n%@\n\n", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject]);
-#endif
-  
-  self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
-  
-  LMROMBrowserController* romBrowser = [[LMROMBrowserController alloc] init];
-  UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:romBrowser];
-  self.viewController = nav;
-  [nav release];
-  [romBrowser release];
+    [self launch];
+    BOOL callPerformActionForShortcutItem = YES;
+    // Checks if force touch is available, but I'm not sure what will happen if this method is called on devices < 9.0
+    if([self forceTouchAvailable])
+    {
+        [self threeDTouchSetup];
 
-  self.window.rootViewController = self.viewController;
-  [self.window makeKeyAndVisible];
-  return YES;
-}
-
-- (void)applicationWillResignActive:(UIApplication *)application
-{
-    /*
-     Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-     Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-     */
+        UIApplicationShortcutItem *shortcutItem = [launchOptions objectForKeyedSubscript:UIApplicationLaunchOptionsShortcutItemKey];
+        if(shortcutItem != nil)
+        {
+            [self openShortcut: shortcutItem];
+            callPerformActionForShortcutItem = NO;
+        }
+    }
+    return callPerformActionForShortcutItem;
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    /*
-     Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-     If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-     */
+    if([self forceTouchAvailable]) [self threeDTouchSetup];
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application
+- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler
 {
-    /*
-     Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-     */
+    BOOL shortcutItemWasOpened = [self openShortcut:shortcutItem];
+    completionHandler(shortcutItemWasOpened);
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application
+- (BOOL)openShortcut:(UIApplicationShortcutItem *)shortcutItem
 {
-    /*
-     Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-     */
+    BOOL opened = NO;
+    
+    NSString *gameName = shortcutItem.localizedTitle;
+    if(gameName != nil)
+    {
+        LMEmulatorController* emulator = [[LMEmulatorController alloc] init];
+        emulator.romFileName = gameName;
+        [self.viewController presentViewController:emulator animated:YES completion:nil];
+        opened = YES;
+    }
+    
+    return opened;
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application
+- (BOOL)forceTouchAvailable
 {
-    /*
-     Called when the application is about to terminate.
-     Save data if appropriate.
-     See also applicationDidEnterBackground:.
-     */
+    if([[[UIScreen mainScreen] traitCollection] forceTouchCapability] == UIForceTouchCapabilityAvailable)
+    {
+        NSLog(@"Force Touch Available");
+        return YES;
+    }
+    NSLog(@"Force Touch Unavailable");
+    return NO;
+}
+
+- (void)threeDTouchSetup
+{
+    NSString *key = @"RECENTLY_TOUCHED";
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray *recentGames = [defaults stringArrayForKey:key];
+    if(recentGames != nil)
+    {
+        NSMutableArray *shortcutItems = [[NSMutableArray alloc] init];
+        NSString *shortcutType = @"com.MeSNEmu.recent";
+        UIApplicationShortcutIcon *shortcutFavoriteIcon = [UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypeFavorite];
+        for(int i = 0; i < [recentGames count]; i++)
+        {
+            UIApplicationShortcutItem *shortcutItem = [[UIApplicationShortcutItem alloc]
+                                                         initWithType:shortcutType
+                                                         localizedTitle:recentGames[i]
+                                                         localizedSubtitle:nil
+                                                         icon:shortcutFavoriteIcon
+                                                         userInfo:nil];
+            [shortcutItems addObject:shortcutItem];
+        }
+        [UIApplication sharedApplication].shortcutItems = shortcutItems;
+    }
+}
+
+- (void)launch
+{
+#if TARGET_IPHONE_SIMULATOR
+    // where are we?
+    NSLog(@"\nDocuments Directory:\n%@\n\n", [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject]);
+#endif
+    
+    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    
+    LMROMBrowserController* romBrowser = [[LMROMBrowserController alloc] init];
+    UINavigationController* nav = [[UINavigationController alloc] initWithRootViewController:romBrowser];
+    self.viewController = nav;
+    [nav release];
+    [romBrowser release];
+    
+    self.window.rootViewController = self.viewController;
+    [self.window makeKeyAndVisible];
 }
 
 @end
