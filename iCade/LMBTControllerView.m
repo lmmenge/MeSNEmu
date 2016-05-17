@@ -40,7 +40,7 @@ NSArray* LMBTSupportedControllers = nil;
   if(_controllerType != controllerType)
   {
     _controllerType = controllerType;
-    
+
     for(NSArray* controller in [LMBTControllerView supportedControllers])
     {
       if([[controller objectAtIndex:1] intValue] == _controllerType)
@@ -51,7 +51,7 @@ NSArray* LMBTSupportedControllers = nil;
         memset(offString, '.', 12*sizeof(char));
         onString[12] = '\0';
         offString[12] = '\0';
-        
+
         NSString* controllerString = [controller objectAtIndex:2];
         for(NSUInteger i=0; i<[controllerString length]; i++)
         {
@@ -60,11 +60,11 @@ NSArray* LMBTSupportedControllers = nil;
           else
             offString[i/2] = [controllerString characterAtIndex:i];
         }
-        
+
         /*NSLog(@"on:  %s", onString);
         NSLog(@"off: %s", offString);
         NSLog(@"Original: %@", controllerString);*/
-        
+
         /*char* customOnString = "wdxa..lkoyhj";
         char* customOffString = "eczq..vpgtrn";
         NSMutableString* rebuilt = [NSMutableString string];
@@ -78,7 +78,7 @@ NSArray* LMBTSupportedControllers = nil;
           [rebuilt appendString:[NSString stringWithCharacters:&character length:1]];
         }
         NSLog(@"rebuilt:  %@", rebuilt);*/
-        
+
         [self LMBT_setOnStateString:onString
                      offStateString:offString];
         break;
@@ -98,60 +98,64 @@ NSArray* LMBTSupportedControllers = nil;
       //               X
       //     SE ST   Y   A
       //               B
-      
+
       // map order: UP RT DN LT SE ST  Y  B  X  A  L  R
-      
+
       LMBTSupportedControllers = [[@[
                                     /*@[@"Custom",
                                       [NSNumber numberWithInt:LMBTControllerType_Custom],
                                       @""],*/
-                                     
+
                                     // iCade
                                     @[@"iCade",
                                       [NSNumber numberWithInt:LMBTControllerType_iCade],
                                       @"wedcxzaqythrufjnimkpoglv"],
-                                    
+
                                     // iCade 8-Bitty
                                     @[@"iCade 8-Bitty",
                                       [NSNumber numberWithInt:LMBTControllerType_iCade8Bitty],
                                       @"wedcxzaqytufimkpoglvhrjn"],
-                                    
+
                                     // EX Hybrid
                                     // TODO: Properly support the EX Hybrid
                                     @[@"EX Hybrid",
                                       [NSNumber numberWithInt:LMBTControllerType_EXHybrid],
                                       @"wedcxzaqythrufjnimkpoglv"],
-                                    
+
                                     // SteelSeries Free (thanks to Infernoten)
                                     @[@"SteelSeries Free",
                                       [NSNumber numberWithInt:LMBTControllerType_SteelSeriesFree],
                                       @"wedcxzaqoglvythrufjnimkp"],
-                                    
+
                                     // 8Bitdo FC30 (thanks to guidoscheffler)
                                     @[@"8Bitdo FC30",
                                       [NSNumber numberWithInt:LMBTControllerType_8BitdoFC30],
                                       @"wedcxzaqytufimkpoglvhrjn"],
-                                    
+
                                     // 8Bitdo NES30 (thanks to DerekT07)
                                     @[@"8Bitdo NES30",
                                       [NSNumber numberWithInt:LMBTControllerType_8BitdoNES30],
                                       @"wedcxzaqlvogythrjnufkpim"],
-                                    
+
                                     // iMpulse
                                     @[@"iMpulse",
                                       [NSNumber numberWithInt:LMBTControllerType_iMpulse],
                                       @"wedcxzaq....lvkpogythrjn"],
-                                    
+
                                     // IPEGA PG-9025 (thanks to naldin)
                                     @[@"IPEGA PG-9025",
                                       [NSNumber numberWithInt:LMBTControllerType_IPEGAPG9025],
                                       @"wedcxzaqoglvjnufythrimkp"],
-                                    
+
                                     // Snakebyte idroid:con (thanks to Gohlan)
                                     @[@"Snakebyte idroid:con",
                                       [NSNumber numberWithInt:LMBTControllerType_Snakebyteidroidcon],
-                                      @"wedcxzaqlvogythrjnufimkp"]
-                                    
+                                      @"wedcxzaqlvogythrjnufimkp"],
+
+                                    @[@"8Bitdo SFC30",
+                                      [NSNumber numberWithInt:LMBTControllerType_8BitdoSFC30],
+                                      @"wedcxzaqlvogythrjnufkpim"]
+
                                    ] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
                                      return [[obj1 firstObject] compare:[obj2 firstObject]];
                                    }] copy];
