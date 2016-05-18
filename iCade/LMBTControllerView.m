@@ -116,17 +116,6 @@ NSArray* LMBTSupportedControllers = nil;
                                       [NSNumber numberWithInt:LMBTControllerType_iCade8Bitty],
                                       @"wedcxzaqytufimkpoglvhrjn"],
 
-                                    // EX Hybrid
-                                    // TODO: Properly support the EX Hybrid
-                                    @[@"EX Hybrid",
-                                      [NSNumber numberWithInt:LMBTControllerType_EXHybrid],
-                                      @"wedcxzaqythrufjnimkpoglv"],
-
-                                    // SteelSeries Free (thanks to Infernoten)
-                                    @[@"SteelSeries Free",
-                                      [NSNumber numberWithInt:LMBTControllerType_SteelSeriesFree],
-                                      @"wedcxzaqoglvythrufjnimkp"],
-
                                     // 8Bitdo FC30 (thanks to guidoscheffler)
                                     @[@"8Bitdo FC30",
                                       [NSNumber numberWithInt:LMBTControllerType_8BitdoFC30],
@@ -137,25 +126,35 @@ NSArray* LMBTSupportedControllers = nil;
                                       [NSNumber numberWithInt:LMBTControllerType_8BitdoNES30],
                                       @"wedcxzaqlvogythrjnufkpim"],
 
-                                    // iMpulse
-                                    @[@"iMpulse",
-                                      [NSNumber numberWithInt:LMBTControllerType_iMpulse],
-                                      @"wedcxzaq....lvkpogythrjn"],
+                                    // 8Bitdo SFC30 (thanks to defkode)
+                                    @[@"8Bitdo SFC30",
+                                      [NSNumber numberWithInt:LMBTControllerType_8BitdoSFC30],
+                                      @"wedcxzaqlvogythrjnufkpim"],
 
                                     // IPEGA PG-9025 (thanks to naldin)
                                     @[@"IPEGA PG-9025",
                                       [NSNumber numberWithInt:LMBTControllerType_IPEGAPG9025],
                                       @"wedcxzaqoglvjnufythrimkp"],
 
+                                    // IPEGA PG-9028 (thanks to klattimer)
+                                    @[@"IPEGA PG-9028",
+                                      [NSNumber numberWithInt:LMBTControllerType_IPEGAPG9028],
+                                      @"wedcxzaqimkpjnufythroglv"],
+
+                                    // SteelSeries Free (thanks to Infernoten)
+                                    @[@"SteelSeries Free",
+                                      [NSNumber numberWithInt:LMBTControllerType_SteelSeriesFree],
+                                      @"wedcxzaqoglvythrufjnimkp"],
+
                                     // Snakebyte idroid:con (thanks to Gohlan)
                                     @[@"Snakebyte idroid:con",
                                       [NSNumber numberWithInt:LMBTControllerType_Snakebyteidroidcon],
                                       @"wedcxzaqlvogythrjnufimkp"],
 
-                                    @[@"8Bitdo SFC30",
-                                      [NSNumber numberWithInt:LMBTControllerType_8BitdoSFC30],
-                                      @"wedcxzaqlvogythrjnufkpim"]
-
+                                    // iMpulse
+                                    @[@"iMpulse",
+                                      [NSNumber numberWithInt:LMBTControllerType_iMpulse],
+                                      @"wedcxzaq....lvkpogythrjn"]
                                    ] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
                                      return [[obj1 firstObject] compare:[obj2 firstObject]];
                                    }] copy];
