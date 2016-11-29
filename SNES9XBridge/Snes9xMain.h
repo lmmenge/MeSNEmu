@@ -77,6 +77,11 @@ void SILoadSRAM();
 // Tells the emulator to save the SRAM
 void SISaveSRAM();
 
+// Cheat
+// ===============
+  
+void SILoadCheatFile();
+
 // Notifications to the emulator
 // =============================
   

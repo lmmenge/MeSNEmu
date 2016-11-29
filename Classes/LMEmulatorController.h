@@ -36,4 +36,6 @@
 
 - (id)initMirrorOf:(LMEmulatorController*)mainController;
 
+- (UIImage*)getScreen;
+
 @end

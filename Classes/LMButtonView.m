@@ -12,9 +12,10 @@
 
 @implementation LMButtonView(Privates)
 
-- (void)handleTouches:(NSSet*)touches
+- (IBAction)handleTouches:(id)sender forEvent:(UIEvent*)event
 {
-  UITouch* touch = [touches anyObject];
+  UIView *button = (UIView *)sender;
+  UITouch *touch = [[event touchesForView:button] anyObject];
   if(touch.phase == UITouchPhaseCancelled || touch.phase == UITouchPhaseEnded || touch == nil)
     SISetControllerReleaseButton(_button);
   else
@@ -26,65 +27,38 @@
 @implementation LMButtonView
 
 @synthesize button = _button;
-@synthesize label = _label;
 
-@end
-
-#pragma mark -
-
-@implementation LMButtonView(UIView)
-
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithFrame:(CGRect)frame border:(CGFloat)border radius:(CGFloat)radius
 {
   self = [super initWithFrame:frame];
   if(self)
   {
-    self.userInteractionEnabled = YES;
-    //self.backgroundColor = [UIColor whiteColor];
-    self.contentMode = UIViewContentModeCenter;
+    [self setTitleColor:[UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0] forState:UIControlStateNormal];
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(frame.size.width, frame.size.height), NO, self.currentImage.scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetRGBFillColor(context, 120/255.0, 120/255.0, 120/255.0, 0.0);
+    CGContextSetRGBStrokeColor(context, 255/255.0, 255/255.0, 255/255.0, 1.0);
+    CGContextSetLineWidth(context, border);
     
-    _label = [[UILabel alloc] initWithFrame:(CGRect){0,0, frame.size}];
-    _label.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    _label.backgroundColor = nil;
-    _label.opaque = NO;
-    _label.textAlignment = NSTextAlignmentCenter;
-    [self addSubview:_label];
+    CGRect rrect = CGRectMake(0, 0, frame.size.width, frame.size.height);
+    CGFloat minx = CGRectGetMinX(rrect)+(border/2), midx = CGRectGetMidX(rrect), maxx = CGRectGetMaxX(rrect)-(border/2);
+    CGFloat miny = CGRectGetMinY(rrect)+(border/2), midy = CGRectGetMidY(rrect), maxy = CGRectGetMaxY(rrect)-(border/2);
+    
+    CGContextMoveToPoint(context, minx, midy);
+    CGContextAddArcToPoint(context, minx, miny, midx, miny, radius);
+    CGContextAddArcToPoint(context, maxx, miny, maxx, midy, radius);
+    CGContextAddArcToPoint(context, maxx, maxy, midx, maxy, radius);
+    CGContextAddArcToPoint(context, minx, maxy, minx, midy, radius);
+    CGContextClosePath(context);
+    CGContextDrawPath(context, kCGPathFillStroke);
+    
+    [self setBackgroundImage:UIGraphicsGetImageFromCurrentImageContext() forState:UIControlStateNormal];
+    
+    UIGraphicsEndImageContext();
+    
+    [self addTarget:self action:@selector(handleTouches:forEvent:) forControlEvents:UIControlEventAllEvents];
   }
   return self;
-}
-
-- (void)touchesBegan:(NSSet*)touches withEvent:(UIEvent*)event
-{
-  [self handleTouches:touches];
-}
-
-- (void)touchesMoved:(NSSet*)touches withEvent:(UIEvent*)event
-{
-  [self handleTouches:touches];
-}
-
-- (void)touchesEnded:(NSSet*)touches withEvent:(UIEvent*)event
-{
-  [self handleTouches:touches];
-}
-
-- (void)touchesCancelled:(NSSet*)touches withEvent:(UIEvent*)event
-{
-  [self handleTouches:touches];
-}
-
-@end
-
-#pragma mark -
-
-@implementation LMButtonView(NSObject)
-
-- (void)dealloc
-{
-  [_label release];
-  _label = nil;
-  
-  [super dealloc];
 }
 
 @end

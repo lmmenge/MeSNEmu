@@ -29,65 +29,56 @@
 
 - (LMButtonView*)LM_smallButtonWithButton:(int)buttonMap
 {
-  int width = 44;
+  int width = 64;
   int height = 24;
+  CGFloat border = 2.0;
   
-  LMButtonView* button = [[LMButtonView alloc] initWithFrame:(CGRect){0,0, width,height}];
-  button.image = [UIImage imageNamed:@"ButtonWide.png"];
-  button.label.textColor = [UIColor colorWithWhite:1 alpha:0.75];
-  button.label.shadowColor = [UIColor colorWithWhite:0 alpha:0.35];
-  button.label.shadowOffset = CGSizeMake(0, -1);
-  button.label.font = [UIFont systemFontOfSize:10];
+  LMButtonView* button = [[LMButtonView alloc] initWithFrame:(CGRect){0,0, width,height} border:border radius:10.0];
   button.button = buttonMap;
-  if(buttonMap == SI_BUTTON_START)
-    button.label.text = @"Start";
-  else if(buttonMap == SI_BUTTON_SELECT)
-    button.label.text = @"Select";
+  button.titleLabel.font = [UIFont boldSystemFontOfSize:10];
+  
+  switch (buttonMap) {
+    case SI_BUTTON_START:
+      [button setTitle:NSLocalizedString(@"START", nil) forState:UIControlStateNormal];
+      break;
+    case SI_BUTTON_SELECT:
+      [button setTitle:NSLocalizedString(@"SELECT", nil) forState:UIControlStateNormal];
+      break;
+  }
+  
   return [button autorelease];
 }
 
 - (LMButtonView*)LM_buttonWithButton:(int)buttonMap
 {
-  int side = 50;
-  side = 60;
-  if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-    side = 70;
-  LMButtonView* button = [[LMButtonView alloc] initWithFrame:(CGRect){0,0, side,side}];
+  int side = (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) ? 60 : 50;
+  CGFloat border = 4.0;
+  
+  LMButtonView* button = [[LMButtonView alloc] initWithFrame:(CGRect){0,0, side,side} border:border radius:(buttonMap == SI_BUTTON_L || buttonMap == SI_BUTTON_R)?side/4:(side/2)-(border/2)];
   button.button = buttonMap;
-  button.label.font = [UIFont boldSystemFontOfSize:27.0];
-  if(buttonMap == SI_BUTTON_A || buttonMap == SI_BUTTON_B)
-  {
-    button.image = [UIImage imageNamed:@"ButtonDarkPurple.png"];
-    button.label.textColor = [UIColor colorWithRed:63/255.0 green:32/255.0 blue:127/255.0 alpha:0.75];
-    button.label.shadowColor = [UIColor colorWithWhite:1 alpha:0.25];
-    button.label.shadowOffset = CGSizeMake(0, 1);
-    if(buttonMap == SI_BUTTON_A)
-      button.label.text = @"A";
-    else if(buttonMap == SI_BUTTON_B)
-      button.label.text = @"B";
+  button.titleLabel.font = [UIFont boldSystemFontOfSize:20.0];
+  
+  switch (buttonMap) {
+    case SI_BUTTON_A:
+      [button setTitle:NSLocalizedString(@"A", nil) forState:UIControlStateNormal];
+      break;
+    case SI_BUTTON_B:
+      [button setTitle:NSLocalizedString(@"B", nil) forState:UIControlStateNormal];
+      break;
+    case SI_BUTTON_X:
+      [button setTitle:NSLocalizedString(@"X", nil) forState:UIControlStateNormal];
+      break;
+    case SI_BUTTON_Y:
+      [button setTitle:NSLocalizedString(@"Y", nil) forState:UIControlStateNormal];
+      break;
+    case SI_BUTTON_L:
+      [button setTitle:NSLocalizedString(@"L", nil) forState:UIControlStateNormal];
+      break;
+    case SI_BUTTON_R:
+      [button setTitle:NSLocalizedString(@"R", nil) forState:UIControlStateNormal];
+      break;
   }
-  else if(buttonMap == SI_BUTTON_X || buttonMap == SI_BUTTON_Y)
-  {
-    button.image = [UIImage imageNamed:@"ButtonLightPurple.png"];
-    button.label.textColor = [UIColor colorWithRed:122/255.0 green:101/255.0 blue:208/255.0 alpha:0.75];
-    button.label.shadowColor = [UIColor colorWithWhite:1 alpha:0.25];
-    button.label.shadowOffset = CGSizeMake(0, 1);
-    if(buttonMap == SI_BUTTON_X)
-      button.label.text = @"X";
-    else if(buttonMap == SI_BUTTON_Y)
-      button.label.text = @"Y";
-  }
-  else if(buttonMap == SI_BUTTON_L || buttonMap == SI_BUTTON_R)
-  {
-    button.image = [UIImage imageNamed:@"ButtonGrey.png"];
-    button.label.textColor = [UIColor colorWithRed:136/255.0 green:140/255.0 blue:148/255.0 alpha:0.75];
-    button.label.shadowColor = [UIColor colorWithWhite:1 alpha:0.25];
-    button.label.shadowOffset = CGSizeMake(0, 1);
-    if(buttonMap == SI_BUTTON_L)
-      button.label.text = @"L";
-    else if(buttonMap == SI_BUTTON_R)
-      button.label.text = @"R";
-  }
+  
   return [button autorelease];
 }
 
@@ -192,12 +183,11 @@
     
     // menu button
     _optionsButton = [[UIButton buttonWithType:UIButtonTypeCustom] retain];
-    [_optionsButton setBackgroundImage:[UIImage imageNamed:@"ButtonWide.png"] forState:UIControlStateNormal];
+    _optionsButton.frame = _selectButton.frame;
+    [_optionsButton setBackgroundImage:_selectButton.currentBackgroundImage forState:UIControlStateNormal];
+    [_optionsButton.titleLabel setFont:_selectButton.titleLabel.font];
+    [_optionsButton setTitleColor:_selectButton.titleLabel.textColor forState:UIControlStateNormal];
     [_optionsButton setTitle:NSLocalizedString(@"MENU", nil) forState:UIControlStateNormal];
-    [_optionsButton setTitleColor:[UIColor colorWithWhite:1 alpha:0.75] forState:UIControlStateNormal];
-    [_optionsButton setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.35] forState:UIControlStateNormal];
-    _optionsButton.titleLabel.shadowOffset = CGSizeMake(0, -1);
-    _optionsButton.titleLabel.font = [UIFont systemFontOfSize:10];
     [self addSubview:_optionsButton];
     
     // ABXY buttons
@@ -221,7 +211,7 @@
     [self addSubview:_rButton];
     
     // d-pad
-    _dPadView = [[LMDPadView alloc] initWithFrame:(CGRect){0,0,10,10}];
+    _dPadView = [[LMDPadView alloc] init];
     [self addSubview:_dPadView];
     
     // iCade support
@@ -277,10 +267,10 @@
   [super layoutSubviews];
   
   BOOL fullScreen = [[NSUserDefaults standardUserDefaults] boolForKey:kLMSettingsFullScreen];
-  UIColor* plasticColor = [UIColor colorWithRed:195/255.0 green:198/255.0 blue:205/255.0 alpha:1];
-  UIColor* blackColor = [UIColor blackColor];
+  UIColor* plasticColor = [UIColor colorWithRed:20/255.0 green:20/255.0 blue:20/255.0 alpha:1.0];
+  UIColor* blackColor = [UIColor colorWithRed:20/255.0 green:20/255.0 blue:20/255.0 alpha:1.0];
   if(_viewMode == LMEmulatorControllerViewModeScreenOnly)
-    plasticColor = [UIColor blackColor];
+    plasticColor = blackColor;
   else if(_viewMode == LMEmulatorControllerViewModeControllerOnly)
     blackColor = plasticColor;
   int originalWidth = 256;
@@ -289,14 +279,14 @@
   int height = originalHeight;
   int screenOffsetY = 0;
   CGSize size = self.bounds.size;
-  int screenBorderX = 0;
-  int screenBorderY = 20;
-  int buttonSpacing = 0;
+  int screenBorderX = 6;
+  int screenBorderY = 30;
+  int buttonSpacing = 10;
   int smallButtonsOriginX = 0;
   int smallButtonsOriginY = 0;
-  int smallButtonsSpacing = 5;
+  int smallButtonsSpacing = 10;
   BOOL smallButtonsVertical = YES;
-  float controlsAlpha = 1;
+  float controlsAlpha = 0.1;
   if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
   {
     screenBorderX = 90;
@@ -312,11 +302,11 @@
     {
       // portrait - controller mode
       width = height = 0;
-      int dpadHeight = _dPadView.image.size.height;
+      int dpadHeight = _dPadView.frame.size.height;
       screenBorderY = size.height*0.5-dpadHeight*0.5;
       smallButtonsVertical = NO;
-      smallButtonsOriginY = size.height-smallButtonsSpacing-_startButton.image.size.height;
-      smallButtonsOriginX = size.width*0.5-_startButton.image.size.width*1.5-smallButtonsSpacing;
+      smallButtonsOriginY = size.height-smallButtonsSpacing-_startButton.frame.size.height;
+      smallButtonsOriginX = size.width*0.5-_startButton.frame.size.width*1.5-smallButtonsSpacing;
     }
     else
     {
@@ -337,7 +327,7 @@
         {
           smallButtonsVertical = YES;
           smallButtonsOriginX = (size.width-_startButton.frame.size.width)/2;
-          smallButtonsOriginY = size.height-_dPadView.image.size.height;
+          smallButtonsOriginY = size.height-_dPadView.frame.size.height;
         }
       }
       else
@@ -355,7 +345,7 @@
           screenOffsetY = -2;
           smallButtonsVertical = YES;
           smallButtonsOriginX = (size.width-_startButton.frame.size.width)/2;
-          smallButtonsOriginY = size.height-_dPadView.image.size.height;
+          smallButtonsOriginY = size.height-_dPadView.frame.size.height;
         }
       }
     }
@@ -368,11 +358,11 @@
       // landscape - controller mode
       self.backgroundColor = plasticColor;
       width = height = 0;
-      int dpadHeight = _dPadView.image.size.height;
+      int dpadHeight = _dPadView.frame.size.height;
       screenBorderY = size.height*0.5-dpadHeight*0.5;
       smallButtonsVertical = NO;
-      smallButtonsOriginY = size.height-smallButtonsSpacing-_startButton.image.size.height;
-      smallButtonsOriginX = size.width*0.5-_startButton.image.size.width*1.5-smallButtonsSpacing;
+      smallButtonsOriginY = size.height-smallButtonsSpacing-_startButton.frame.size.height;
+      smallButtonsOriginX = size.width*0.5-_startButton.frame.size.width*1.5-smallButtonsSpacing;
       if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
         screenBorderX = 30;
     }
@@ -392,7 +382,7 @@
         smallButtonsOriginY = smallButtonsOriginX;
         
         if(_hideUI == NO)
-          controlsAlpha = 0.5;
+          controlsAlpha = 0.1;
         else
           controlsAlpha = 0;
       }
@@ -412,7 +402,7 @@
           screenOffsetY = -2;
           smallButtonsVertical = YES;
           smallButtonsOriginX = (size.width-_startButton.frame.size.width)/2;
-          smallButtonsOriginY = size.height-_dPadView.image.size.height;
+          smallButtonsOriginY = size.height-_dPadView.frame.size.height;
         }
       }
     }
@@ -422,7 +412,7 @@
     controlsAlpha = 0;
   else if(_viewMode == LMEmulatorControllerViewModeControllerOnly)
   {
-    controlsAlpha = 1;
+    controlsAlpha = 0.1;
     
     
   }
@@ -432,7 +422,7 @@
   if(screenOffsetY == -1)
     screenOffsetY = screenOffsetX;
   else if(screenOffsetY == -2)
-    screenOffsetY = (size.height-screenBorderY-_dPadView.image.size.height-height)/2;
+    screenOffsetY = (size.height-screenBorderY-_dPadView.frame.size.height-height)/2;
   if(_viewMode == LMEmulatorControllerViewModeScreenOnly)
     // we're showing only the screen. center it
     _screenView.frame = (CGRect){(int)((size.width-width)*0.5), (int)((size.height-height)*0.5), width,height};
@@ -464,29 +454,29 @@
   }
   else
   {
-    _startButton.alpha = 1;
-    _selectButton.alpha = 1;
-    _optionsButton.alpha = 1;
+    _startButton.alpha = 0.1;
+    _selectButton.alpha = 0.1;
+    _optionsButton.alpha = 0.1;
   }
   
   // layout buttons
   int buttonSize = _aButton.frame.size.width;
-  _aButton.frame = (CGRect){size.width-buttonSize-screenBorderX, size.height-buttonSize-screenBorderY, _aButton.frame.size};
+  _aButton.frame = (CGRect){size.width-buttonSize-screenBorderX-buttonSpacing, size.height-buttonSize-screenBorderY, _aButton.frame.size};
   _aButton.alpha = controlsAlpha;
-  _bButton.frame = (CGRect){size.width-buttonSize*2-screenBorderX-buttonSpacing, size.height-buttonSize-screenBorderY, _bButton.frame.size};
+  _bButton.frame = (CGRect){size.width-buttonSize*2-screenBorderX-buttonSpacing*2, size.height-buttonSize-screenBorderY, _bButton.frame.size};
   _bButton.alpha = controlsAlpha;
-  _xButton.frame = (CGRect){size.width-buttonSize-screenBorderX, size.height-buttonSize*2-screenBorderY-buttonSpacing, _xButton.frame.size};
+  _xButton.frame = (CGRect){size.width-buttonSize-screenBorderX-buttonSpacing, size.height-buttonSize*2-screenBorderY-buttonSpacing, _xButton.frame.size};
   _xButton.alpha = controlsAlpha;
-  _yButton.frame = (CGRect){size.width-buttonSize*2-screenBorderX-buttonSpacing, size.height-buttonSize*2-screenBorderY-buttonSpacing, _yButton.frame.size};
+  _yButton.frame = (CGRect){size.width-buttonSize*2-screenBorderX-buttonSpacing*2, size.height-buttonSize*2-screenBorderY-buttonSpacing, _yButton.frame.size};
   _yButton.alpha = controlsAlpha;
   
   _lButton.alpha = controlsAlpha;
-  _lButton.frame = (CGRect){size.width-buttonSize*2-screenBorderX-buttonSpacing, size.height-buttonSize*3-screenBorderY-buttonSpacing, _yButton.frame.size};
+  _lButton.frame = (CGRect){size.width-buttonSize*2-screenBorderX-buttonSpacing*2, size.height-buttonSize*3-screenBorderY-buttonSpacing*2, _yButton.frame.size};
   _rButton.alpha = controlsAlpha;
-  _rButton.frame = (CGRect){size.width-buttonSize-screenBorderX, size.height-buttonSize*3-screenBorderY-buttonSpacing, _xButton.frame.size};
+  _rButton.frame = (CGRect){size.width-buttonSize-screenBorderX-buttonSpacing, size.height-buttonSize*3-screenBorderY-buttonSpacing*2, _xButton.frame.size};
   
   // layout d-pad
-  _dPadView.frame = (CGRect){screenBorderX,size.height-_dPadView.image.size.height-screenBorderY, _dPadView.image.size};
+  _dPadView.frame = (CGRect){screenBorderX+buttonSpacing,size.height-_dPadView.frame.size.height-screenBorderY-buttonSpacing, _dPadView.frame.size};
   _dPadView.alpha = controlsAlpha;
 }
 

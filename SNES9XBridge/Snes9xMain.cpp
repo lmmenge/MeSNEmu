@@ -8,6 +8,7 @@
 #include "../SNES9X/apu/apu.h"
 #include "../SNES9X/controls.h"
 #include "../SNES9X/display.h"
+#include "../SNES9X/cheats.h"
 
 #include "iOSAudio.h"
 
@@ -221,6 +222,26 @@ void SISaveSRAM()
 	}
 }
 
+#pragma mark - Cheat
+
+void SILoadCheatFile()
+{
+  char path[MAX_PATH];
+  
+  sprintf(path, "%s%s%s", SI_SRAMPath, DIR_SEPERATOR, SIGetFilename(".cht"));
+  S9xLoadCheatFile(path);
+  
+  Memory.InitROM();
+  
+  S9xInitCheatData();
+  S9xApplyCheats();
+}
+
+void SIDeleteCheats()
+{
+  S9xDeleteCheats();
+}
+
 #pragma mark - Notifications to the emulator
 
 extern "C" void SIUpdateSettings()
@@ -282,6 +303,7 @@ extern "C" int SIStartWithROM(char* rom_filename)
 	Settings.TurboSkipFrames = 15;
 	Settings.CartAName[0] = 0;
 	Settings.CartBName[0] = 0;
+  Settings.ApplyCheats = TRUE;
 #ifdef NETPLAY_SUPPORT
 	Settings.ServerName[0] = 0;
 #endif

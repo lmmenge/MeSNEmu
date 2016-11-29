@@ -51,7 +51,7 @@ typedef enum _LMEmulatorAlert
   char* romFileNameCString = (char*)calloc(strlen(originalString)+1, sizeof(char));
   strcpy(romFileNameCString, originalString);
   originalString = nil;
-
+  
   SISetEmulationPaused(0);
   SISetEmulationRunning(1);
   SIStartWithROM(romFileNameCString);
@@ -73,7 +73,7 @@ typedef enum _LMEmulatorAlert
     
     SISetScreenDelegate(self);
     [_customView setPrimaryBuffer];
-
+    
     [_externalEmulator release];
     _externalEmulator = nil;
   }
@@ -120,10 +120,13 @@ typedef enum _LMEmulatorAlert
                                             otherButtonTitles:
                           NSLocalizedString(@"RESET", nil),
 #ifdef SI_ENABLE_SAVES
-                          NSLocalizedString(@"LOAD_STATE", nil),
+                          NSLocalizedString(@"LOAD_CHEAT", nil),
                           NSLocalizedString(@"SAVE_STATE", nil),
 #endif
                           NSLocalizedString(@"SETTINGS", nil),
+                          
+                          NSLocalizedString(@"SNS", nil),
+                          
                           nil];
   _actionSheet = sheet;
   [sheet showInView:self.view];
@@ -164,7 +167,7 @@ typedef enum _LMEmulatorAlert
 {
 #ifdef SI_ENABLE_RUNNING_SAVES
   NSLog(@"Saving running state...");
-  [LMSaveManager saveRunningStateForROMNamed:_romFileName];
+  [LMSaveManager saveRunningStateForROMNamed:_romFileName screenshot:[self getScreen]];
   NSLog(@"Saved!");
 #endif
 }
@@ -182,16 +185,18 @@ typedef enum _LMEmulatorAlert
   int loadIndex = 2;
   int saveIndex = 3;
   int settingsIndex = 4;
+  int snsIndex = 5;
 #else
   int loadIndex = -1
   int saveIndex = -1;
   int settingsIndex = 2;
+  int snsIndex = 3;
 #endif
   if(buttonIndex == actionSheet.destructiveButtonIndex)
   {
-    [self LM_dismantleExternalScreen];
     SISetEmulationRunning(0);
     SIWaitForEmulationEnd();
+    [self LM_dismantleExternalScreen];
     [self dismissViewControllerAnimated:YES completion:nil];
   }
   else if(buttonIndex == resetIndex)
@@ -207,29 +212,33 @@ typedef enum _LMEmulatorAlert
   }
   else if(buttonIndex == loadIndex)
   {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"LOAD_SAVE?", nil)
-                                                    message:NSLocalizedString(@"EXIT_CONSEQUENCES", nil)
-                                                   delegate:self
-                                          cancelButtonTitle:NSLocalizedString(@"CANCEL", nil)
-                                          otherButtonTitles:NSLocalizedString(@"LOAD", nil), nil];
-    alert.tag = LMEmulatorAlertLoad;
-    [alert show];
-    [alert release];
+    SISetEmulationPaused(1);
+    SILoadCheatFile();
+    SISetEmulationPaused(0);
   }
   else if(buttonIndex == saveIndex)
   {
-    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"SAVE_SAVE?", nil)
-                                                    message:NSLocalizedString(@"SAVE_CONSEQUENCES", nil)
-                                                   delegate:self
-                                          cancelButtonTitle:NSLocalizedString(@"CANCEL", nil)
-                                          otherButtonTitles:NSLocalizedString(@"SAVE", nil), nil];
-    alert.tag = LMEmulatorAlertSave;
-    [alert show];
-    [alert release];
+    SISetEmulationPaused(1);
+    SIWaitForPause();
+    [LMSaveManager saveStateForROMNamed:_romFileName slot:[[NSString stringWithFormat:@"%ld", (long)[[NSDate date] timeIntervalSince1970]] intValue] screenshot:[self getScreen]];
+    SISetEmulationPaused(0);
   }
   else if(buttonIndex == settingsIndex)
   {
     [self LM_showSettings];
+  }
+  else if(buttonIndex == snsIndex)
+  {
+    UIImage *image = [self getScreen];
+    NSArray *items = [NSArray arrayWithObjects:image, nil];
+    UIActivityViewController *activityView = [[[UIActivityViewController alloc] initWithActivityItems:items applicationActivities:nil] autorelease];
+    void (^completionHandler)(NSString *_activityType, BOOL _completed) = ^(NSString *_activityType, BOOL _completed){
+      SISetEmulationPaused(0);
+    };
+    activityView.completionHandler = completionHandler;
+    [self presentViewController:activityView animated:YES completion:^{
+      //
+    }];
   }
   else
   {
@@ -270,7 +279,7 @@ typedef enum _LMEmulatorAlert
     {
       SISetEmulationPaused(1);
       SIWaitForPause();
-      [LMSaveManager saveStateForROMNamed:_romFileName slot:1];
+      [LMSaveManager saveStateForROMNamed:_romFileName slot:0 screenshot:[self getScreen]];
       SISetEmulationPaused(0);
     }
   }
@@ -286,7 +295,7 @@ typedef enum _LMEmulatorAlert
 #pragma mark iCadeEventDelegate
 
 - (void)buttonDown:(iCadeState)button
-{  
+{
   switch(button)
   {
     case iCadeJoystickRight:
@@ -333,7 +342,7 @@ typedef enum _LMEmulatorAlert
 }
 
 - (void)buttonUp:(iCadeState)button
-{  
+{
   switch(button)
   {
     case iCadeJoystickRight:
@@ -374,7 +383,7 @@ typedef enum _LMEmulatorAlert
       break;
     default:
       break;
-  } 
+  }
 }
 
 #pragma mark LMGameControllerManagerDelegate
@@ -509,6 +518,16 @@ typedef enum _LMEmulatorAlert
   return self;
 }
 
+- (UIImage*)getScreen
+{
+  UIImage *image = (_externalEmulator != nil)?[_externalEmulator getScreen]:[UIImage imageWithCGImage:(CGImageRef)_customView.screenView.layer.contents];
+  CGRect rect = CGRectMake(floor((image.size.width-256)/2), floor((image.size.height-224)/2), 256, 224);
+  CGImageRef clip = CGImageCreateWithImageInRect(image.CGImage,rect);
+  UIImage *image2 = [UIImage imageWithCGImage:clip];
+  CGImageRelease(clip);
+  return image2;
+}
+
 @end
 
 #pragma mark -
@@ -532,7 +551,7 @@ typedef enum _LMEmulatorAlert
 }
 
 - (void)viewWillAppear:(BOOL)animated
-{  
+{
   [super viewWillAppear:animated];
   
   [UIApplication sharedApplication].idleTimerDisabled = YES;
@@ -581,7 +600,7 @@ typedef enum _LMEmulatorAlert
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-	[super viewWillDisappear:animated];
+  [super viewWillDisappear:animated];
   
   [UIApplication sharedApplication].idleTimerDisabled = NO;
   
